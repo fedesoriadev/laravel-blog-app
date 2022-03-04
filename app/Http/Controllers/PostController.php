@@ -15,7 +15,9 @@ class PostController extends Controller
      */
     public function index(Request $request): Collection
     {
-        return Post::published()->get();
+        return Post::published()
+                    ->filter($request->only(['search']))
+                    ->get();
     }
 
     /**

@@ -12,11 +12,9 @@ class PostTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
-     *
      * @return void
      */
-    public function test_the_blog_index_only_shows_published_posts()
+    public function test_the_blog_index_only_shows_published_posts(): void
     {
         Post::factory()->create();
 
@@ -29,7 +27,28 @@ class PostTest extends TestCase
         $response->assertJsonCount(1);
     }
 
-    public function test_show_a_published_post()
+    /**
+     * @return void
+     */
+    public function test_search_posts_by_keyword_present_in_the_title_or_body(): void
+    {
+        Post::factory()->create(['title' => 'This post talks about Laravel']);
+
+        Post::factory()->create(['title' => 'Unrelated sports post']);
+
+        Post::factory()->create(['title' => 'Post about Symfony', 'body' => 'But Laravel is mentioned in the body']);
+
+        $response = $this->get('/?search=Laravel');
+
+        $response->assertOk();
+
+        $response->assertJsonCount(2);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_show_a_published_post(): void
     {
         $publishedPost = Post::factory()->create();
 
@@ -40,7 +59,10 @@ class PostTest extends TestCase
         $response->assertSee($publishedPost->title);
     }
 
-    public function test_show_an_unpublished_post_is_forbidden()
+    /**
+     * @return void
+     */
+    public function test_show_an_unpublished_post_is_forbidden(): void
     {
         $unpublishedPost = Post::factory()->draft()->create();
 

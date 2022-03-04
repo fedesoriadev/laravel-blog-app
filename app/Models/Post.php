@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property-read \Illuminate\Support\Carbon|null $published_at
  * @property-read bool $is_draft
- * @method static \Illuminate\Database\Eloquent\Builder published()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post published()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post filter(array $filters = [])
  */
 class Post extends Model
 {
@@ -72,6 +73,24 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('published_at', '<=', now());
+    }
+
+    /**
+     * Filter posts by multiple criteria
+     *
+     * @param Builder $query
+     * @param array $filter
+     * @return Builder
+     */
+    public function scopeFilter(Builder $query, array $filter = []): Builder
+    {
+        if (!empty($filter['search'])) {
+            return $query
+                ->where('title', 'LIKE', "%{$filter['search']}%")
+                ->orWhere('body', 'LIKE', "%{$filter['search']}%");
+        }
+
+        return $query;
     }
 
     /**
