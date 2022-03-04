@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder published()
+ */
 class Post extends Model
 {
     use HasFactory;
@@ -54,5 +58,16 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Filters only published posts.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('published_at', '<=', now());
     }
 }
