@@ -24,8 +24,28 @@ class PostTest extends TestCase
 
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response->assertJsonCount(1);
+    }
+
+    public function test_show_a_published_post()
+    {
+        $publishedPost = Post::factory()->create();
+
+        $response = $this->get("/posts/$publishedPost->slug");
+
+        $response->assertOk();
+
+        $response->assertSee($publishedPost->title);
+    }
+
+    public function test_show_an_unpublished_post_is_forbidden()
+    {
+        $unpublishedPost = Post::factory()->draft()->create();
+
+        $response = $this->get("/posts/$unpublishedPost->slug");
+
+        $response->assertForbidden();
     }
 }

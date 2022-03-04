@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property-read \Illuminate\Support\Carbon|null $published_at
+ * @property-read bool $is_draft
  * @method static \Illuminate\Database\Eloquent\Builder published()
  */
 class Post extends Model
@@ -69,5 +72,15 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('published_at', '<=', now());
+    }
+
+    /**
+     * @return Attribute
+     */
+    public function isDraft(): Attribute
+    {
+        return new Attribute(
+            get: fn() => is_null($this->published_at) || $this->published_at >= now()
+        );
     }
 }
