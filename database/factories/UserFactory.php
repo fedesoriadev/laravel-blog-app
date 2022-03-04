@@ -17,12 +17,20 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $username = $this->faker->userName();
+
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name'              => $this->faker->name(),
+            'email'             => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token'    => Str::random(10),
+            'avatar'            => 'https://i.pravatar.cc/150?u=' . $username,
+            'about_me'          => $this->faker->sentence(),
+            'twitter'           => 'https://twitter.com/' . $username,
+            'youtube'           => 'https://www.youtube.com/' . $username,
+            'twitch'            => 'https://www.twitch.tv/' . $username,
+            'github'            => 'https://github.com/' . $username,
         ];
     }
 
