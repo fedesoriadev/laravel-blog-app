@@ -11,10 +11,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property-read \Illuminate\Support\Carbon|null $published_at
- * @property-read bool $is_draft
+ * Fields
+ * @property int $id
+ * @property int $user_id
+ * @property string $title
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property string|null $image
+ * @property string|null $excerpt
+ * @property string $body
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * Relationships
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ *
+ * Scopes
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post published()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post filter(array $filters = [])
+ *
+ * Attribute Casting
+ * @property-read bool $is_draft
  */
 class Post extends Model
 {
