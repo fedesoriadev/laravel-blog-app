@@ -31,4 +31,14 @@ class PostFactory extends Factory
             'body'         => File::get(database_path('factories/stubs/post_body.md'))
         ];
     }
+
+    /**
+     * Indicate that the post is a draft or is unpublished
+     *
+     * @return Factory
+     */
+    public function draft(): Factory
+    {
+        return $this->state(fn(array $attributes) => ['published_at' => null]);
+    }
 }
