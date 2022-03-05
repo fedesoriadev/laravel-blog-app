@@ -4,14 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    //use RefreshDatabase;
-use DatabaseMigrations;
+    use RefreshDatabase;
+
     /** @test */
     public function the_blog_index_only_shows_published_posts(): void
     {
