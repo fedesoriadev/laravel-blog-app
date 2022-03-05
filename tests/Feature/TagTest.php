@@ -21,18 +21,12 @@ class TagTest extends TestCase
 
         $tag->posts()->sync(Post::factory(2)->create());
 
-        $response = $this->get("/tags/$tag->slug");
+        $response = $this->get(route('tags.show', $tag->slug));
 
         $response->assertOk();
 
         $response->assertSee($tag->name);
 
         $this->assertCount(2, $tag->posts);
-    }
-
-    /** @test */
-    public function it_makes_me_cry(): void
-    {
-        $this->assertTrue(true);
     }
 }

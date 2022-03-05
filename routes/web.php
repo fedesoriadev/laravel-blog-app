@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,6 @@ Route::get('/posts/{post:slug}', [PostController::class, 'show'])
 
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
     ->name('tags.show');
+
+Route::get('/@{user:username}', [UserController::class, 'show'])
+    ->name('authors.show');

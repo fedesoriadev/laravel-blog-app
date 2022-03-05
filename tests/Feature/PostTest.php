@@ -3,13 +3,15 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase;
-
+    //use RefreshDatabase;
+use DatabaseMigrations;
     /** @test */
     public function the_blog_index_only_shows_published_posts(): void
     {
@@ -60,5 +62,21 @@ class PostTest extends TestCase
         $response = $this->get(route('posts.show', $unpublishedPost->slug));
 
         $response->assertForbidden();
+    }
+
+    /** @test */
+    public function it_shows_posts_of_an_author(): void
+    {
+        $author = User::factory()->create();
+
+        $author->posts()->saveMany(Post::factory(3)->create());
+
+        $response = $this->get(route('authors.show', $author->username));
+
+        $response->assertOk();
+
+        $response->assertSee($author->name);
+
+        $this->assertCount(3, $author->posts);
     }
 }
