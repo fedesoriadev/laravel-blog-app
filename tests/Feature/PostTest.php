@@ -4,17 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return void
-     */
-    public function test_the_blog_index_only_shows_published_posts(): void
+    /** @test */
+    public function the_blog_index_only_shows_published_posts(): void
     {
         Post::factory()->create();
 
@@ -27,10 +24,8 @@ class PostTest extends TestCase
         $response->assertJsonCount(1);
     }
 
-    /**
-     * @return void
-     */
-    public function test_search_posts_by_keyword_present_in_the_title_or_body(): void
+    /** @test */
+    public function search_posts_by_keyword_present_in_the_title_or_body(): void
     {
         Post::factory()->create(['title' => 'This post talks about Laravel']);
 
@@ -45,28 +40,24 @@ class PostTest extends TestCase
         $response->assertJsonCount(2);
     }
 
-    /**
-     * @return void
-     */
-    public function test_show_a_published_post(): void
+    /** @test */
+    public function it_shows_a_published_post(): void
     {
         $publishedPost = Post::factory()->create();
 
-        $response = $this->get("/posts/$publishedPost->slug");
+        $response = $this->get(route('posts.show', $publishedPost->slug));
 
         $response->assertOk();
 
         $response->assertSee($publishedPost->title);
     }
 
-    /**
-     * @return void
-     */
-    public function test_show_an_unpublished_post_is_forbidden(): void
+    /** @test */
+    public function show_an_unpublished_post_is_forbidden(): void
     {
         $unpublishedPost = Post::factory()->draft()->create();
 
-        $response = $this->get("/posts/$unpublishedPost->slug");
+        $response = $this->get(route('posts.show', $unpublishedPost->slug));
 
         $response->assertForbidden();
     }

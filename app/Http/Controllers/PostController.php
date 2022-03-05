@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     /**
-     * @param Request $request
-     * @return Collection
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function index(Request $request): Collection
     {
@@ -21,10 +20,10 @@ class PostController extends Controller
     }
 
     /**
-     * @param Post $post
-     * @return Post
+     * @param \App\Models\Post $post
+     * @return \App\Models\Post
      */
-    public function show(Post $post): Model
+    public function show(Post $post): Post
     {
         return $post;
     }
