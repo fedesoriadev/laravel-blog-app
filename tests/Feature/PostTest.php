@@ -78,4 +78,28 @@ class PostTest extends TestCase
 
         $this->assertCount(3, $author->posts);
     }
+
+    /** @test */
+    public function it_stores_a_post_if_user_is_authenticated(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('posts.store'), [
+            'user_id' => $user->id,
+            'title' => 'My awesome post',
+            'slug' => 'my-awesome-post',
+            'published_at' => now(),
+            'body' => '## Some markdown body content'
+        ]);
+
+        $response->assertCreated();
+
+        $this->assertDatabaseHas('posts', ['title' => 'My awesome post']);
+    }
 }

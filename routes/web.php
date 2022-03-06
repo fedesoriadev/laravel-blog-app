@@ -21,6 +21,9 @@ Route::get('/', [PostController::class, 'index'])
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])
     ->name('posts.show')
     ->middleware(['can:view,post']);
+Route::post('/posts', [PostController::class, 'store'])
+    ->name('posts.store')
+    ->middleware(['can:create,App\Models\Post']);
 
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
     ->name('tags.show');

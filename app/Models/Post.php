@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * Attribute Casting
  * @property-read bool $is_draft
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Post extends Model
 {

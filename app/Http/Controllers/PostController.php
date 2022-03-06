@@ -27,4 +27,9 @@ class PostController extends Controller
     {
         return $post;
     }
+
+    public function store(Request $request): Post
+    {
+        return Post::create($request->only('user_id', 'title', 'slug', 'published_at', 'body'));
+    }
 }

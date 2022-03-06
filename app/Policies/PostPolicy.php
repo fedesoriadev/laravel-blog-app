@@ -42,7 +42,8 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        // By now it only needs an authenticated user
+        return true;
     }
 
     /**
