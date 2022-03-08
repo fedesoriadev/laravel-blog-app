@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -28,8 +29,36 @@ class PostController extends Controller
         return $post;
     }
 
-    public function store(Request $request): Post
+    /**
+     * @param \App\Http\Requests\PostRequest $request
+     * @return \App\Models\Post
+     */
+    public function store(PostRequest $request): Post
     {
-        return Post::create($request->only('user_id', 'title', 'slug', 'published_at', 'body'));
+        $attributes = $request->validated();
+
+        if ($request->has('image')) {
+            $attributes['image'] = $request->file('image')->store('posts', 'public');
+        }
+
+        return Post::create($attributes);
+    }
+
+    /**
+     * @param \App\Http\Requests\PostRequest $request
+     * @param \App\Models\Post $post
+     * @return \App\Models\Post
+     */
+    public function update(PostRequest $request, Post $post): Post
+    {
+        $attributes = $request->validated();
+
+        if ($request->has('image')) {
+            $attributes['image'] = $request->file('image')->store('posts', 'public');
+        }
+
+        $post->update($attributes);
+
+        return $post;
     }
 }

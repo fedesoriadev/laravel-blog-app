@@ -24,6 +24,9 @@ Route::get('/posts/{post:slug}', [PostController::class, 'show'])
 Route::post('/posts', [PostController::class, 'store'])
     ->name('posts.store')
     ->middleware(['can:create,App\Models\Post']);
+Route::patch('/posts/{post:slug}', [PostController::class, 'update'])
+    ->name('posts.update')
+    ->middleware(['can:update,post']);
 
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
     ->name('tags.show');

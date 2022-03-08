@@ -40,7 +40,7 @@ class PostPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): Response|bool
     {
         // By now it only needs an authenticated user
         return true;
@@ -53,9 +53,10 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): Response|bool
     {
-        //
+        // By now it only needs an authenticated user
+        return true;
     }
 
     /**
