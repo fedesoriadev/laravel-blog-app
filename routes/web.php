@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -30,6 +31,14 @@ Route::patch('/posts/{post:slug}', [PostController::class, 'update'])
 Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])
     ->name('posts.destroy')
     ->middleware(['can:delete,post']);
+
+Route::post('/posts/{post:slug}/comments', [CommentController::class, 'store'])
+    ->name('comments.store')
+    ->middleware(['auth']);
+
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+    ->name('comments.destroy')
+    ->middleware(['auth']);
 
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
     ->name('tags.show');
