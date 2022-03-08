@@ -61,4 +61,13 @@ class PostController extends Controller
 
         return $post;
     }
+
+    /**
+     * @param \App\Models\Post $post
+     * @return bool
+     */
+    public function destroy(Post $post): bool
+    {
+        return $post->delete();
+    }
 }

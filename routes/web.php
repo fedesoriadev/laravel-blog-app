@@ -27,6 +27,9 @@ Route::post('/posts', [PostController::class, 'store'])
 Route::patch('/posts/{post:slug}', [PostController::class, 'update'])
     ->name('posts.update')
     ->middleware(['can:update,post']);
+Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])
+    ->name('posts.destroy')
+    ->middleware(['can:delete,post']);
 
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
     ->name('tags.show');

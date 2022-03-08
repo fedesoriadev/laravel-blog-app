@@ -66,9 +66,10 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, Post $post): Response|bool
     {
-        //
+        // By now it only needs an authenticated user
+        return true;
     }
 
     /**

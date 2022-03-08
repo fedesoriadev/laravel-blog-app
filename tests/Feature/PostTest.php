@@ -138,4 +138,24 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas(Post::class, ['title' => 'Updated post title']);
     }
+
+    /** @test */
+    public function it_deletes_a_post(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $this->assertAuthenticated();
+
+        $post = Post::factory()->create();
+
+        $response = $this->delete(route('posts.destroy', $post->slug));
+
+        $response->assertSuccessful();
+
+        $this->assertModelMissing($post);
+    }
 }
