@@ -45,3 +45,15 @@ Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
 
 Route::get('/@{user:username}', [UserController::class, 'show'])
     ->name('authors.show');
+
+Route::post('/users', [UserController::class, 'store'])
+    ->name('users.store')
+    ->middleware(['auth']);
+
+Route::patch('/users/{user:username}', [UserController::class, 'update'])
+    ->name('users.update')
+    ->middleware(['auth']);
+
+Route::delete('/users/{user:username}', [UserController::class, 'destroy'])
+    ->name('users.destroy')
+    ->middleware(['auth']);
