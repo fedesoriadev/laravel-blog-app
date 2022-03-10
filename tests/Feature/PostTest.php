@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -127,9 +128,9 @@ class PostTest extends TestCase
 
         $response = $this->patch(route('posts.update', $post->slug), [
             'user_id' => $post->user_id,
-            'title' => 'Updated post title',
-            'slug' => $post->slug,
-            'body' => '## Some markdown body content'
+            'title'   => 'Updated post title',
+            'slug'    => $post->slug,
+            'body'    => '## Some markdown body content'
         ]);
 
         $response->assertSuccessful();
@@ -137,6 +138,44 @@ class PostTest extends TestCase
         $this->assertDatabaseMissing(Post::class, ['title' => 'Original post title']);
 
         $this->assertDatabaseHas(Post::class, ['title' => 'Updated post title']);
+    }
+
+    /** @test */
+    public function it_attaches_tags_when_save_a_post(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $response = $this->post(route('posts.store'), [
+            'user_id' => User::factory()->create()->id,
+            'title'   => 'A post with tags',
+            'slug'    => 'a-post-with-tags',
+            'body'    => '## Some markdown body content',
+            'tags'    => ['Laravel', 'PHP']
+        ]);
+
+        $response->assertSuccessful();
+
+        $this->assertDatabaseHas(Tag::class, ['name' => 'Laravel']);
+
+        $this->assertDatabaseHas(Tag::class, ['name' => 'PHP']);
+
+        $post = Post::find(1);
+
+        $this->assertCount(2, $post->tags);
+
+        $response = $this->patch(route('posts.update', $post->slug), [
+            'user_id' => $post->user_id,
+            'title'   => $post->title,
+            'slug'    => $post->slug,
+            'body'    => $post->body,
+            'tags'    => ['Programming']
+        ]);
+
+        $response->assertSuccessful();
+
+        $this->assertCount(1, $post->refresh()->tags);
+
+        $this->assertEquals(['Programming'], $post->refresh()->tags->pluck('name')->all());
     }
 
     /** @test */

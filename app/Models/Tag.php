@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * Relationships
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Tag extends Model
 {

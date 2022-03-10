@@ -5,17 +5,14 @@ namespace Tests\Feature;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TagTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return void
-     */
-    public function test_show_a_tag_with_its_posts(): void
+    /** @test */
+    public function it_shows_a_tag_with_its_posts(): void
     {
         $tag = Tag::factory()->create();
 
