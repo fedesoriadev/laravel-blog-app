@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -115,6 +118,62 @@ class UserTest extends TestCase
         $this->assertDatabaseHas(User::class, ['name' => 'John Doe', 'about_me' => 'I like to make tests']);
 
         $this->assertEquals($user->email, $response['email']);
+    }
+
+    /** @test */
+    public function it_adds_an_avatar_for_a_user(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->assertAuthenticated();
+
+        Storage::fake('public');
+
+        $avatar = UploadedFile::fake()->image('avatar.jpg');
+
+        $response = $this->post(route('users.store'), [
+            'email'                 => 'test@test.com',
+            'name'                  => 'Some user test',
+            'username'              => 'some.user',
+            'password'              => 'test1234',
+            'password_confirmation' => 'test1234',
+            'avatar'                => $avatar,
+        ]);
+
+        $response->assertCreated();
+
+        $imagePath = "avatars/{$avatar->hashName()}";
+
+        Storage::disk('public')->assertExists($imagePath);
+
+        $this->assertDatabaseHas('users', ['avatar' => $imagePath]);
+    }
+
+    /** @test */
+    public function it_attaches_a_role_for_a_user(): void
+    {
+        Role::create(['name' => 'admin']);
+
+        $this->actingAs(User::factory()->create());
+
+        $this->assertAuthenticated();
+
+        $response = $this->post(route('users.store'), [
+            'email'                 => 'test@test.com',
+            'name'                  => 'Some user test',
+            'username'              => 'some.user',
+            'password'              => 'test1234',
+            'password_confirmation' => 'test1234',
+            'roles'                 => ['admin'],
+        ]);
+
+        $response->assertCreated();
+
+        $user = User::where('email', 'test@test.com')->first();
+
+        $this->assertCount(1, $user->roles);
+
+        $this->assertTrue($user->hasRole('admin'));
     }
 
     /** @test */

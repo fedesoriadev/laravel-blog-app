@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * Relationships
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Role extends Model
 {

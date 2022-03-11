@@ -24,7 +24,21 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): User
     {
-        return User::create($request->validated());
+        $attributes = $request->validated();
+
+        if ($request->has('avatar')) {
+            $attributes['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user = User::create($attributes);
+
+        if ($request->has('roles')) {
+            foreach ($request->roles as $role) {
+                $user->addRole($role);
+            }
+        }
+
+        return $user;
     }
 
     /**
@@ -34,7 +48,19 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user): User
     {
-        $user->update($request->validated());
+        $attributes = $request->validated();
+
+        if ($request->has('avatar')) {
+            $attributes['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->update($attributes);
+
+        if ($request->has('roles')) {
+            foreach ($request->roles as $role) {
+                $user->addRole($role);
+            }
+        }
 
         return $user;
     }
