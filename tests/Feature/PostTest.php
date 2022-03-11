@@ -93,24 +93,17 @@ class PostTest extends TestCase
 
         $this->assertAuthenticated();
 
-        Storage::fake('public');
-
-        $postCover = UploadedFile::fake()->image('post-cover.jpg');
-
         $response = $this->post(route('posts.store'), [
             'user_id' => $user->id,
             'title' => 'My awesome post',
             'slug' => 'my-awesome-post',
             'published_at' => now(),
-            'image' => $postCover,
             'body' => '## Some markdown body content'
         ]);
 
         $response->assertCreated();
 
         $this->assertDatabaseHas('posts', ['title' => 'My awesome post']);
-
-        Storage::disk('public')->assertExists("posts/{$postCover->hashName()}");
     }
 
     /** @test */
@@ -176,6 +169,38 @@ class PostTest extends TestCase
         $this->assertCount(1, $post->refresh()->tags);
 
         $this->assertEquals(['Programming'], $post->refresh()->tags->pluck('name')->all());
+    }
+
+    /** @test */
+    public function it_uploads_a_cover_image(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $this->assertAuthenticated();
+
+        Storage::fake('public');
+
+        $postCover = UploadedFile::fake()->image('post-cover.jpg');
+
+        $response = $this->post(route('posts.store'), [
+            'user_id' => $user->id,
+            'title' => 'My awesome post',
+            'slug' => 'my-awesome-post',
+            'image' => $postCover,
+            'body' => '## Some markdown body content'
+        ]);
+
+        $response->assertCreated();
+
+        $imagePath = "posts/{$postCover->hashName()}";
+
+        Storage::disk('public')->assertExists($imagePath);
+
+        $this->assertDatabaseHas('posts', ['image' => $imagePath]);
     }
 
     /** @test */
