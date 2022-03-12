@@ -4,19 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function it_validates_required_fields(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->login();
 
         $response = $this->post(route('users.store'), []);
 
@@ -36,9 +33,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_email_is_unique(): void
     {
-        $this->actingAs(User::factory()->create());
-
-        User::factory()->create(['email' => 'test@test.com']);
+        $this->login(User::factory()->create(['email' => 'test@test.com']));
 
         $response = $this->post(route('users.store'), [
             'email' => 'test@test.com',
@@ -50,9 +45,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_username_is_unique(): void
     {
-        $this->actingAs(User::factory()->create());
-
-        User::factory()->create(['username' => 'test']);
+        $this->login(User::factory()->create(['username' => 'test']));
 
         $response = $this->post(route('users.store'), [
             'username' => 'test',
@@ -64,7 +57,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_password_must_be_confirmed(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->login();
 
         $response = $this->post(route('users.store'), [
             'password'              => 'test1234',
@@ -84,7 +77,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_creates_a_user(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->login();
 
         $response = $this->post(route('users.store'), [
             'email'                 => 'test@test.com',
@@ -102,9 +95,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_updates_a_user(): void
     {
-        $this->actingAs(User::factory()->create());
-
-        $user = User::factory()->create();
+        $user = $this->login();
 
         $response = $this->patch(route('users.update', $user->username), [
             'email'    => $user->email,
@@ -123,9 +114,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_adds_an_avatar_for_a_user(): void
     {
-        $this->actingAs(User::factory()->create());
-
-        $this->assertAuthenticated();
+        $this->login();
 
         Storage::fake('public');
 
@@ -154,9 +143,7 @@ class UserTest extends TestCase
     {
         Role::create(['name' => 'admin']);
 
-        $this->actingAs(User::factory()->create());
-
-        $this->assertAuthenticated();
+        $this->login();
 
         $response = $this->post(route('users.store'), [
             'email'                 => 'test@test.com',
@@ -179,7 +166,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_deletes_a_user(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->login();
 
         $user = User::factory()->create();
 

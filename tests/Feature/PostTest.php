@@ -5,43 +5,41 @@ namespace Tests\Feature;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
-    public function the_blog_index_only_shows_published_posts(): void
+    public function it_shows_a_list_of_published_posts_only(): void
     {
         Post::factory()->create();
 
         Post::factory()->draft()->create();
 
-        $response = $this->get('/');
-
-        $response->assertOk();
-
-        $response->assertJsonCount(1);
+        $this
+            ->get('/')
+            ->assertOk()
+            ->assertJsonCount(1);
     }
 
     /** @test */
-    public function search_posts_by_keyword_present_in_the_title_or_body(): void
+    public function it_searches_posts_by_keyword(): void
     {
         Post::factory()->create(['title' => 'This post talks about Laravel']);
 
         Post::factory()->create(['title' => 'Unrelated sports post']);
 
-        Post::factory()->create(['title' => 'Post about Symfony', 'body' => 'But Laravel is mentioned in the body']);
+        Post::factory()->create([
+            'title' => 'Post about Symfony',
+            'body'  => 'But Laravel is mentioned in the body'
+        ]);
 
-        $response = $this->get('/?search=Laravel');
-
-        $response->assertOk();
-
-        $response->assertJsonCount(2);
+        $this
+            ->get('/?search=Laravel')
+            ->assertOk()
+            ->assertJsonCount(2);
     }
 
     /** @test */
@@ -49,21 +47,20 @@ class PostTest extends TestCase
     {
         $publishedPost = Post::factory()->create();
 
-        $response = $this->get(route('posts.show', $publishedPost->slug));
-
-        $response->assertOk();
-
-        $response->assertSee($publishedPost->title);
+        $this
+            ->get(route('posts.show', $publishedPost->slug))
+            ->assertOk()
+            ->assertSee($publishedPost->title);
     }
 
     /** @test */
-    public function show_an_unpublished_post_is_forbidden(): void
+    public function it_denies_access_to_unpublished_posts(): void
     {
         $unpublishedPost = Post::factory()->draft()->create();
 
-        $response = $this->get(route('posts.show', $unpublishedPost->slug));
-
-        $response->assertForbidden();
+        $this
+            ->get(route('posts.show', $unpublishedPost->slug))
+            ->assertForbidden();
     }
 
     /** @test */
@@ -71,13 +68,14 @@ class PostTest extends TestCase
     {
         $author = User::factory()->create();
 
-        $author->posts()->saveMany(Post::factory(3)->create());
+        $author
+            ->posts()
+            ->saveMany(Post::factory(3)->create());
 
-        $response = $this->get(route('authors.show', $author->username));
-
-        $response->assertOk();
-
-        $response->assertSee($author->name);
+        $this
+            ->get(route('authors.show', $author->username))
+            ->assertOk()
+            ->assertSee($author->name);
 
         $this->assertCount(3, $author->posts);
     }
@@ -85,23 +83,17 @@ class PostTest extends TestCase
     /** @test */
     public function it_stores_a_post_if_user_is_authenticated(): void
     {
-        $this->withoutExceptionHandling();
+        $user = $this->login();
 
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $this->assertAuthenticated();
-
-        $response = $this->post(route('posts.store'), [
-            'user_id' => $user->id,
-            'title' => 'My awesome post',
-            'slug' => 'my-awesome-post',
-            'published_at' => now(),
-            'body' => '## Some markdown body content'
-        ]);
-
-        $response->assertCreated();
+        $this
+            ->post(route('posts.store'), [
+                'user_id'      => $user->id,
+                'title'        => 'My awesome post',
+                'slug'         => 'my-awesome-post',
+                'published_at' => now(),
+                'body'         => '## Some markdown body content'
+            ])
+            ->assertCreated();
 
         $this->assertDatabaseHas('posts', ['title' => 'My awesome post']);
     }
@@ -109,24 +101,18 @@ class PostTest extends TestCase
     /** @test */
     public function it_updates_a_post(): void
     {
-        $this->withoutExceptionHandling();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $this->assertAuthenticated();
+        $this->login();
 
         $post = Post::factory()->create(['title' => 'Original post title']);
 
-        $response = $this->patch(route('posts.update', $post->slug), [
-            'user_id' => $post->user_id,
-            'title'   => 'Updated post title',
-            'slug'    => $post->slug,
-            'body'    => '## Some markdown body content'
-        ]);
-
-        $response->assertSuccessful();
+        $this
+            ->patch(route('posts.update', $post->slug), [
+                'user_id' => $post->user_id,
+                'title'   => 'Updated post title',
+                'slug'    => $post->slug,
+                'body'    => '## Some markdown body content'
+            ])
+            ->assertSuccessful();
 
         $this->assertDatabaseMissing(Post::class, ['title' => 'Original post title']);
 
@@ -136,17 +122,17 @@ class PostTest extends TestCase
     /** @test */
     public function it_attaches_tags_when_save_a_post(): void
     {
-        $this->actingAs(User::factory()->create());
+        $user = $this->login();
 
-        $response = $this->post(route('posts.store'), [
-            'user_id' => User::factory()->create()->id,
-            'title'   => 'A post with tags',
-            'slug'    => 'a-post-with-tags',
-            'body'    => '## Some markdown body content',
-            'tags'    => ['Laravel', 'PHP']
-        ]);
-
-        $response->assertSuccessful();
+        $this
+            ->post(route('posts.store'), [
+                'user_id' => $user->id,
+                'title'   => 'A post with tags',
+                'slug'    => 'a-post-with-tags',
+                'body'    => '## Some markdown body content',
+                'tags'    => ['Laravel', 'PHP']
+            ])
+            ->assertSuccessful();
 
         $this->assertDatabaseHas(Tag::class, ['name' => 'Laravel']);
 
@@ -156,15 +142,15 @@ class PostTest extends TestCase
 
         $this->assertCount(2, $post->tags);
 
-        $response = $this->patch(route('posts.update', $post->slug), [
-            'user_id' => $post->user_id,
-            'title'   => $post->title,
-            'slug'    => $post->slug,
-            'body'    => $post->body,
-            'tags'    => ['Programming']
-        ]);
-
-        $response->assertSuccessful();
+        $this
+            ->patch(route('posts.update', $post->slug), [
+                'user_id' => $post->user_id,
+                'title'   => $post->title,
+                'slug'    => $post->slug,
+                'body'    => $post->body,
+                'tags'    => ['Programming']
+            ])
+            ->assertSuccessful();
 
         $this->assertCount(1, $post->refresh()->tags);
 
@@ -174,27 +160,21 @@ class PostTest extends TestCase
     /** @test */
     public function it_uploads_a_cover_image(): void
     {
-        $this->withoutExceptionHandling();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $this->assertAuthenticated();
+        $user = $this->login();
 
         Storage::fake('public');
 
         $postCover = UploadedFile::fake()->image('post-cover.jpg');
 
-        $response = $this->post(route('posts.store'), [
-            'user_id' => $user->id,
-            'title' => 'My awesome post',
-            'slug' => 'my-awesome-post',
-            'image' => $postCover,
-            'body' => '## Some markdown body content'
-        ]);
-
-        $response->assertCreated();
+        $this
+            ->post(route('posts.store'), [
+                'user_id' => $user->id,
+                'title'   => 'My awesome post',
+                'slug'    => 'my-awesome-post',
+                'image'   => $postCover,
+                'body'    => '## Some markdown body content'
+            ])
+            ->assertCreated();
 
         $imagePath = "posts/{$postCover->hashName()}";
 
@@ -206,19 +186,13 @@ class PostTest extends TestCase
     /** @test */
     public function it_deletes_a_post(): void
     {
-        $this->withoutExceptionHandling();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $this->assertAuthenticated();
+        $this->login();
 
         $post = Post::factory()->create();
 
-        $response = $this->delete(route('posts.destroy', $post->slug));
-
-        $response->assertSuccessful();
+        $this
+            ->delete(route('posts.destroy', $post->slug))
+            ->assertSuccessful();
 
         $this->assertModelMissing($post);
     }
