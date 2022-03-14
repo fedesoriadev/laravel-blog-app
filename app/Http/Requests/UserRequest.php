@@ -25,16 +25,16 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => 'required',
+            'name'     => ['required'],
             'username' => ['required', Rule::unique('users')->ignore($this->user?->id)],
             'email'    => ['required', 'email', Rule::unique('users')->ignore($this->user?->id)],
             'password' => [Rule::requiredIf(!$this->user), 'confirmed', 'min:8'],
-            'avatar'   => 'nullable|image|max:1024',
-            'about_me' => 'nullable',
-            'twitter'  => 'nullable|url',
-            'youtube'  => 'nullable|url',
-            'twitch'   => 'nullable|url',
-            'github'   => 'nullable|url'
+            'avatar'   => ['nullable', 'image', 'max:1024'],
+            'about_me' => ['nullable'],
+            'twitter'  => ['nullable', 'url'],
+            'youtube'  => ['nullable', 'url'],
+            'twitch'   => ['nullable', 'url'],
+            'github'   => ['nullable', 'url'],
         ];
     }
 }
