@@ -17,14 +17,11 @@ class PostFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        $title = $this->faker->sentence();
-
         return [
             'user_id'      => User::factory(),
-            'title'        => $title,
-            'slug'         => Str::slug($title),
+            'title'        => $this->faker->sentence(),
             'published_at' => now(),
             'image'        => 'https://picsum.photos/seed/' . Str::random(8) . '/1600/700',
             'excerpt'      => $this->faker->sentence(10),

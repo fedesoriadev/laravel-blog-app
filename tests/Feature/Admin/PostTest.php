@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -19,13 +20,15 @@ class PostTest extends TestCase
             ->post(route('posts.store'), [
                 'user_id'      => $user->id,
                 'title'        => 'My awesome post',
-                'slug'         => 'my-awesome-post',
                 'published_at' => now(),
                 'body'         => '## Some markdown body content'
             ])
             ->assertCreated();
 
-        $this->assertDatabaseHas('posts', ['title' => 'My awesome post']);
+        $this->assertDatabaseHas('posts', [
+            'title' => 'My awesome post',
+            'slug'  => Str::slug('My awesome post')
+        ]);
     }
 
     /** @test */
@@ -39,7 +42,6 @@ class PostTest extends TestCase
             ->patch(route('posts.update', $post->slug), [
                 'user_id' => $post->user_id,
                 'title'   => 'Updated post title',
-                'slug'    => $post->slug,
                 'body'    => '## Some markdown body content'
             ])
             ->assertSuccessful();
@@ -58,7 +60,6 @@ class PostTest extends TestCase
             ->post(route('posts.store'), [
                 'user_id' => $user->id,
                 'title'   => 'A post with tags',
-                'slug'    => 'a-post-with-tags',
                 'body'    => '## Some markdown body content',
                 'tags'    => ['Laravel', 'PHP']
             ])
@@ -76,7 +77,6 @@ class PostTest extends TestCase
             ->patch(route('posts.update', $post->slug), [
                 'user_id' => $post->user_id,
                 'title'   => $post->title,
-                'slug'    => $post->slug,
                 'body'    => $post->body,
                 'tags'    => ['Programming']
             ])
@@ -102,7 +102,6 @@ class PostTest extends TestCase
             ->post(route('posts.store'), [
                 'user_id' => $user->id,
                 'title'   => 'My awesome post',
-                'slug'    => 'my-awesome-post',
                 'image'   => $postCover,
                 'body'    => '## Some markdown body content'
             ])

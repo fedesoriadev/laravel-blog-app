@@ -28,7 +28,6 @@ class PostRequest extends FormRequest
             'user_id'      => ['required', 'int', Rule::exists('users', 'id')],
             'title'        => ['required', 'string'],
             'slug'         => [
-                'required',
                 'string',
                 'regex:/^[a-z0-9_-]+$/i',
                 Rule::unique('posts', 'slug')->ignore($this->post?->id)

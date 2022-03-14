@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 /**
  * Fields
@@ -60,6 +61,18 @@ class Post extends Model
     protected $casts = [
         'published_at' => 'datetime'
     ];
+
+    /**
+     * @inheritdoc
+     */
+    protected static function booted()
+    {
+        self::creating(function (Post $post) {
+            if (!$post->slug) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+    }
 
     /**
      * @return BelongsTo
