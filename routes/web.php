@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -22,15 +23,6 @@ Route::get('/', [PostController::class, 'index'])
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])
     ->name('posts.show')
     ->middleware(['can:view,post']);
-Route::post('/posts', [PostController::class, 'store'])
-    ->name('posts.store')
-    ->middleware(['can:create,App\Models\Post']);
-Route::patch('/posts/{post:slug}', [PostController::class, 'update'])
-    ->name('posts.update')
-    ->middleware(['can:update,post']);
-Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])
-    ->name('posts.destroy')
-    ->middleware(['can:delete,post']);
 
 Route::post('/posts/{post:slug}/comments', [CommentController::class, 'store'])
     ->name('comments.store')
@@ -57,3 +49,11 @@ Route::patch('/users/{user:username}', [UserController::class, 'update'])
 Route::delete('/users/{user:username}', [UserController::class, 'destroy'])
     ->name('users.destroy')
     ->middleware(['auth']);
+
+
+Route::prefix('admin')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::resource('posts', AdminPostController::class)
+            ->except(['index', 'show']);
+    });
