@@ -17,7 +17,7 @@ class RoleTest extends TestCase
 
         $role = Role::create(['name' => 'admin']);
 
-        $user->addRole($role);
+        $user->roles()->attach($role);
 
         $this->assertTrue($user->refresh()->hasRole('admin'));
     }
@@ -29,11 +29,11 @@ class RoleTest extends TestCase
 
         $role = Role::create(['name' => 'admin']);
 
-        $user->addRole($role);
+        $user->roles()->attach($role);
 
         $this->assertTrue($user->hasRole('admin'));
 
-        $user->removeRole('admin');
+        $user->roles()->detach($role);
 
         $this->assertFalse($user->refresh()->hasRole('admin'));
     }

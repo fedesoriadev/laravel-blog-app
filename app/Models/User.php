@@ -101,38 +101,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @param \App\Models\Role|string $role
-     * @return void
-     */
-    public function addRole(Role|string $role): void
-    {
-        if (is_string($role)) {
-            $role = Role::where('name', $role)->firstOrFail();
-        }
-
-        $this->roles()->attach($role);
-    }
-
-    /**
      * @param string $role
      * @return bool
      */
     public function hasRole(string $role): bool
     {
         return $this->roles->contains('name', $role);
-    }
-
-    /**
-     * @param \App\Models\Role|string $role
-     * @return void
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
-    public function removeRole(Role|string $role): void
-    {
-        if (is_string($role)) {
-            $role = Role::where('name', $role)->firstOrFail();
-        }
-
-        $this->roles()->detach($role);
     }
 }

@@ -141,7 +141,9 @@ class UserTest extends TestCase
     /** @test */
     public function it_attaches_a_role_for_a_user(): void
     {
-        Role::create(['name' => 'admin']);
+        $this->withoutExceptionHandling();
+
+        $role = Role::create(['name' => 'admin']);
 
         $this->login();
 
@@ -151,7 +153,7 @@ class UserTest extends TestCase
             'username'              => 'some.user',
             'password'              => 'test1234',
             'password_confirmation' => 'test1234',
-            'roles'                 => ['admin'],
+            'roles'                 => [$role->id],
         ]);
 
         $response->assertCreated();

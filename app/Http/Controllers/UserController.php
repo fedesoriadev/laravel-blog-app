@@ -27,16 +27,12 @@ class UserController extends Controller
         $attributes = $request->validated();
 
         if ($request->has('avatar')) {
-            $attributes['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $attributes['avatar'] = $this->handleAvatar($request);
         }
 
         $user = User::create($attributes);
 
-        if ($request->has('roles')) {
-            foreach ($request->roles as $role) {
-                $user->addRole($role);
-            }
-        }
+        $user->roles()->sync($request->get('roles', []));
 
         return $user;
     }
@@ -51,16 +47,12 @@ class UserController extends Controller
         $attributes = $request->validated();
 
         if ($request->has('avatar')) {
-            $attributes['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $attributes['avatar'] = $this->handleAvatar($request);
         }
 
         $user->update($attributes);
 
-        if ($request->has('roles')) {
-            foreach ($request->roles as $role) {
-                $user->addRole($role);
-            }
-        }
+        $user->roles()->sync($request->get('roles', []));
 
         return $user;
     }
@@ -72,5 +64,14 @@ class UserController extends Controller
     public function destroy(User $user): bool
     {
         return $user->delete();
+    }
+
+    /**
+     * @param \App\Http\Requests\UserRequest $request
+     * @return false|string
+     */
+    private function handleAvatar(UserRequest $request): string|false
+    {
+        return $request->file('avatar')->store('avatars', 'public');
     }
 }
