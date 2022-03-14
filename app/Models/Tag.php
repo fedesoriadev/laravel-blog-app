@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 /**
  * Fields
@@ -32,6 +33,18 @@ class Tag extends Model
         'slug',
         'description'
     ];
+
+    /**
+     * @inheritdoc
+     */
+    protected static function booted()
+    {
+        static::creating(function (Tag $tag) {
+            if (!$tag->slug) {
+                $tag->slug = Str::slug($tag->name);
+            }
+        });
+    }
 
     /**
      * @return BelongsToMany

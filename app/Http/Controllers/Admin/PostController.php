@@ -7,7 +7,6 @@ use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -70,11 +69,7 @@ class PostController extends Controller
 
         if ($request->has('tags')) {
             foreach ($request->tags as $tag) {
-                $tags[] = Tag::firstOrCreate(['name' => $tag], [
-                        'name' => $tag,
-                        'slug' => Str::slug($tag)
-                    ]
-                )['id'];
+                $tags[] = Tag::firstOrCreate(['name' => $tag], ['name' => $tag])['id'];
             }
         }
 

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class TagTest extends TestCase
@@ -12,6 +13,8 @@ class TagTest extends TestCase
     public function it_shows_a_tag_with_its_posts(): void
     {
         $tag = Tag::factory()->create();
+
+        $this->assertEquals($tag->slug, Str::slug($tag->name));
 
         $tag
             ->posts()

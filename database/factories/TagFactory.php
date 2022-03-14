@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
@@ -16,13 +15,10 @@ class TagFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        $tag = $this->faker->sentence(Arr::random([1, 2]));
-
         return [
-            'name'        => Str::title($tag),
-            'slug'        => Str::slug($tag),
+            'name'        => $this->faker->sentence(Arr::random([1, 2])),
             'description' => $this->faker->sentence()
         ];
     }
