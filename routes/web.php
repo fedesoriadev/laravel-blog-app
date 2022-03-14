@@ -24,7 +24,7 @@ Route::get('/', [PostController::class, 'index'])->name('home');
 
 Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show')->middleware(['can:view,post']);
 
-Route::get('authors/{user}', AuthorController::class)->name('authors.show');
+Route::get('authors/{author}', AuthorController::class)->name('authors.show');
 
 Route::get('tags/{tag}', TagController::class)->name('tags.show');
 

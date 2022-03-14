@@ -37,19 +37,15 @@ class RouteServiceProvider extends ServiceProvider
             return Post::where('slug', $slug)->first();
         });
 
-        Route::bind('user', function (string|int $username) {
-            if (is_int($username)) {
-                return User::find($username);
-            }
-
+        Route::bind('user', function (string $username) {
             return User::where('username', $username)->first();
         });
 
-        Route::bind('tag', function (string|int $slug) {
-            if (is_int($slug)) {
-                return Tag::find($slug);
-            }
+        Route::bind('author', function (string $username) {
+            return User::where('username', $username)->first();
+        });
 
+        Route::bind('tag', function (string $slug) {
             return Tag::where('slug', $slug)->first();
         });
 

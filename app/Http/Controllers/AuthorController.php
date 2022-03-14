@@ -7,13 +7,13 @@ use App\Models\User;
 class AuthorController extends Controller
 {
     /**
-     * @param \App\Models\User $user
+     * @param \App\Models\User $author
      * @return \App\Models\User
      */
-    public function __invoke(User $user): User
+    public function __invoke(User $author): User
     {
-        $user->load('posts');
+        $author->load('posts');
 
-        return $user;
+        return $author;
     }
 }
