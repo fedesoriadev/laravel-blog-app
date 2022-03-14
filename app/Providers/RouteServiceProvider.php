@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -33,6 +35,22 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             return Post::where('slug', $slug)->first();
+        });
+
+        Route::bind('user', function (string|int $username) {
+            if (is_int($username)) {
+                return User::find($username);
+            }
+
+            return User::where('username', $username)->first();
+        });
+
+        Route::bind('tag', function (string|int $slug) {
+            if (is_int($slug)) {
+                return Tag::find($slug);
+            }
+
+            return Tag::where('slug', $slug)->first();
         });
 
         $this->configureRateLimiting();

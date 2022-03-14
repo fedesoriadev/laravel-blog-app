@@ -10,7 +10,7 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \App\Models\Tag
      */
-    public function show(Tag $tag): Tag
+    public function __invoke(Tag $tag): Tag
     {
         $tag->load('posts');
 
