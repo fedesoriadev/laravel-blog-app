@@ -55,5 +55,5 @@ Route::prefix('admin')
     ->middleware(['auth'])
     ->group(function () {
         Route::resource('posts', AdminPostController::class)
-            ->except(['index', 'show']);
+            ->except(['show']);
     });
