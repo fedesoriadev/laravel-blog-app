@@ -25,18 +25,18 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'      => 'required|int|exists:users,id',
-            'title'        => 'required|string',
+            'user_id'      => ['required', 'int', Rule::exists('users', 'id')],
+            'title'        => ['required', 'string'],
             'slug'         => [
                 'required',
                 'string',
                 'regex:/^[a-z0-9_-]+$/i',
                 Rule::unique('posts', 'slug')->ignore($this->post?->id)
             ],
-            'published_at' => 'date',
-            'image'        => 'image|max:2048',
-            'excerpt'      => 'string',
-            'body'         => 'required'
+            'published_at' => ['date'],
+            'image'        => ['image', 'max:2048'],
+            'excerpt'      => ['string'],
+            'body'         => ['required']
         ];
     }
 }

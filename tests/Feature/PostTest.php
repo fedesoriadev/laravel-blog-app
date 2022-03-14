@@ -160,6 +160,8 @@ class PostTest extends TestCase
     /** @test */
     public function it_uploads_a_cover_image(): void
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->login();
 
         Storage::fake('public');

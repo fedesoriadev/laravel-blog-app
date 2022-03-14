@@ -40,12 +40,12 @@ class PostController extends Controller
         $attributes = $request->validated();
 
         if ($request->has('image')) {
-            $attributes['image'] = $request->file('image')->store('posts', 'public');
+            $attributes['image'] = $this->handleImage($request);
         }
 
         $post = Post::create($attributes);
 
-        $this->syncTags($request, $post);
+        $this->handleTags($request, $post);
 
         return $post;
     }
@@ -60,12 +60,12 @@ class PostController extends Controller
         $attributes = $request->validated();
 
         if ($request->has('image')) {
-            $attributes['image'] = $request->file('image')->store('posts', 'public');
+            $attributes['image'] = $this->handleImage($request);
         }
 
         $post->update($attributes);
 
-        $this->syncTags($request, $post);
+        $this->handleTags($request, $post);
 
         return $post;
     }
@@ -84,7 +84,7 @@ class PostController extends Controller
      * @param Post $post
      * @return void
      */
-    private function syncTags(Request $request, Post $post): void
+    private function handleTags(Request $request, Post $post): void
     {
         $tags = [];
 
@@ -99,5 +99,14 @@ class PostController extends Controller
         }
 
         $post->tags()->sync($tags);
+    }
+
+    /**
+     * @param \App\Http\Requests\PostRequest $request
+     * @return string
+     */
+    private function handleImage(PostRequest $request): string
+    {
+        return $request->file('image')->store('posts', 'public');
     }
 }
