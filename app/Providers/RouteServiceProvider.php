@@ -20,7 +20,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -28,6 +28,37 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
+    {
+        $this->configureModelBindings();
+
+        $this->configureRateLimiting();
+
+        $this->routes(function () {
+            Route::prefix('api')
+                ->middleware('api')
+                ->group(base_path('routes/api.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
+        });
+    }
+
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+    }
+
+    /**
+     * @return void
+     */
+    private function configureModelBindings(): void
     {
         Route::bind('post', function (string|int $slug) {
             if (is_int($slug)) {
@@ -47,29 +78,6 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('tag', function (string $slug) {
             return Tag::where('slug', $slug)->first();
-        });
-
-        $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
-    }
-
-    /**
-     * Configure the rate limiters for the application.
-     *
-     * @return void
-     */
-    protected function configureRateLimiting()
-    {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }
