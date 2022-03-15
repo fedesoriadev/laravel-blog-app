@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -19,23 +21,39 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $status = $this->faker->randomElement(PostStatus::cases());
+
         return [
             'user_id'      => User::factory(),
             'title'        => $this->faker->sentence(),
-            'published_at' => now(),
             'image'        => 'https://picsum.photos/seed/' . Str::random(8) . '/1600/700',
             'excerpt'      => $this->faker->sentence(10),
-            'body'         => File::get(database_path('factories/stubs/post_body.md'))
+            'body'         => File::get(database_path('factories/stubs/post_body.md')),
+            'status'       => $status->value,
+            'published_at' => $status === PostStatus::PUBLISHED ? now() : null,
         ];
     }
 
     /**
-     * Indicate that the post is a draft or is unpublished
-     *
+     * @param \Carbon\Carbon|null $timestamp
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function published(Carbon $timestamp = null ): Factory
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => PostStatus::PUBLISHED,
+            'published_at' => $timestamp ?? now()
+        ]);
+    }
+
+    /**
      * @return Factory
      */
     public function draft(): Factory
     {
-        return $this->state(fn(array $attributes) => ['published_at' => null]);
+        return $this->state(fn(array $attributes) => [
+            'status' => PostStatus::DRAFT,
+            'published_at' => null
+        ]);
     }
 }

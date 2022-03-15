@@ -31,7 +31,7 @@ class PostPolicy
      */
     public function view(?User $user, Post $post): Response|bool
     {
-        return !$post->is_draft;
+        return $post->status->isPubliclyAccessible() && $post->published_at <= now();
     }
 
     /**

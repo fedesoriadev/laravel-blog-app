@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PostStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('excerpt')->nullable();
             $table->text('body');
+            $table->enum('status', PostStatus::toArray())->default(PostStatus::DRAFT->value);
             $table->timestamp('published_at')->nullable();
             $table->softDeletes();
             $table->timestamps();

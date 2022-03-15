@@ -13,7 +13,9 @@ class CommentTest extends TestCase
     {
         $user = $this->login();
 
-        $post = Post::factory()->create();
+        $post = Post::factory()
+            ->published()
+            ->create();
 
         $this
             ->post(route('comments.store', $post->slug), [
@@ -42,7 +44,10 @@ class CommentTest extends TestCase
     /** @test */
     public function a_post_may_have_many_comments(): void
     {
-        $post = Post::factory()->has(Comment::factory(5))->create();
+        $post = Post::factory()
+            ->published()
+            ->has(Comment::factory(5))
+            ->create();
 
         $this->assertCount(5, $post->comments);
     }

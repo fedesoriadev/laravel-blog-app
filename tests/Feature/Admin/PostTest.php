@@ -36,7 +36,9 @@ class PostTest extends TestCase
     {
         $this->login();
 
-        $post = Post::factory()->create(['title' => 'Original post title']);
+        $post = Post::factory()
+            ->published()
+            ->create(['title' => 'Original post title']);
 
         $this
             ->patch(route('posts.update', $post->slug), [

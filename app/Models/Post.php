@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
+use App\Exceptions\AlreadyArchivedException;
+use App\Exceptions\AlreadyPublishedException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,10 +19,11 @@ use Illuminate\Support\Str;
  * @property int $user_id
  * @property string $title
  * @property string $slug
- * @property \Illuminate\Support\Carbon|null $published_at
  * @property string|null $image
  * @property string|null $excerpt
  * @property string $body
+ * @property \App\Enums\PostStatus $status
+ * @property \Illuminate\Support\Carbon|null $published_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -32,9 +35,6 @@ use Illuminate\Support\Str;
  * Scopes
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post published()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post filter(array $filters = [])
- *
- * Attribute Casting
- * @property-read bool $is_draft
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -49,16 +49,18 @@ class Post extends Model
         'user_id',
         'title',
         'slug',
-        'published_at',
         'image',
         'excerpt',
-        'body'
+        'body',
+        'status',
+        'published_at',
     ];
 
     /**
      * @inheritdoc
      */
     protected $casts = [
+        'status'       => PostStatus::class,
         'published_at' => 'datetime'
     ];
 
@@ -106,7 +108,9 @@ class Post extends Model
      */
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('published_at', '<=', now());
+        return $query
+            ->where('published_at', '<=', now())
+            ->where('status', PostStatus::PUBLISHED->value);
     }
 
     /**
@@ -128,12 +132,32 @@ class Post extends Model
     }
 
     /**
-     * @return Attribute
+     * @return $this
+     * @throws \App\Exceptions\AlreadyPublishedException
      */
-    public function isDraft(): Attribute
+    public function publish(): self
     {
-        return new Attribute(
-            get: fn() => is_null($this->published_at) || $this->published_at >= now()
-        );
+        if ($this->status === PostStatus::PUBLISHED) {
+            throw new AlreadyPublishedException;
+        }
+
+        $this->update(['status' => PostStatus::PUBLISHED, 'published_at' => now()]);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \App\Exceptions\AlreadyArchivedException
+     */
+    public function archive(): self
+    {
+        if ($this->status === PostStatus::ARCHIVED) {
+            throw new AlreadyArchivedException;
+        }
+
+        $this->update(['status' => PostStatus::ARCHIVED]);
+
+        return $this;
     }
 }

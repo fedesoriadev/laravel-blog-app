@@ -11,9 +11,13 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_a_list_of_published_posts_only(): void
     {
-        Post::factory()->create();
+        Post::factory()
+            ->published()
+            ->create();
 
-        Post::factory()->draft()->create();
+        Post::factory()
+            ->draft()
+            ->create();
 
         $this
             ->get('/')
@@ -24,14 +28,15 @@ class PostTest extends TestCase
     /** @test */
     public function it_searches_posts_by_keyword(): void
     {
-        Post::factory()->create(['title' => 'This post talks about Laravel']);
-
-        Post::factory()->create(['title' => 'Unrelated sports post']);
-
-        Post::factory()->create([
-            'title' => 'Post about Symfony',
-            'body'  => 'But Laravel is mentioned in the body'
-        ]);
+        Post::factory()
+            ->count(3)
+            ->published()
+            ->sequence(
+                ['title' => 'This post talks about Laravel'],
+                ['title' => 'Unrelated sports post'],
+                ['title' => 'Post about Symfony', 'body' => 'But Laravel is mentioned in the body']
+            )
+            ->create();
 
         $this
             ->get('/?search=Laravel')
@@ -42,7 +47,9 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_a_published_post(): void
     {
-        $publishedPost = Post::factory()->create();
+        $publishedPost = Post::factory()
+            ->published()
+            ->create();
 
         $this
             ->get(route('posts.show', $publishedPost->slug))
@@ -53,10 +60,12 @@ class PostTest extends TestCase
     /** @test */
     public function it_denies_access_to_unpublished_posts(): void
     {
-        $unpublishedPost = Post::factory()->draft()->create();
+        $draftPost = Post::factory()
+            ->draft()
+            ->create();
 
         $this
-            ->get(route('posts.show', $unpublishedPost->slug))
+            ->get(route('posts.show', $draftPost->slug))
             ->assertForbidden();
     }
 
@@ -67,7 +76,11 @@ class PostTest extends TestCase
 
         $author
             ->posts()
-            ->saveMany(Post::factory(3)->create());
+            ->saveMany(
+                Post::factory(3)
+                    ->published()
+                    ->create()
+            );
 
         $this
             ->get(route('authors.show', $author->username))
