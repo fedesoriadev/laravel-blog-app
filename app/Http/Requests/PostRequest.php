@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'      => ['required', 'int', Rule::exists('users', 'id')],
+            'user_id'      => ['required', 'integer', Rule::exists('users', 'id')],
             'title'        => ['required', 'string'],
             'slug'         => [
                 'string',

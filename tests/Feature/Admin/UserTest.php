@@ -17,18 +17,18 @@ class UserTest extends TestCase
     public function validationDataProvider(): array
     {
         return [
-            'Test email is required'                 => ['email', '', 'validation.required'],
-            'Test email is valid'                    => ['email', 'not-an-email', 'validation.email'],
-            'Test email is unique'                   => ['email', 'admin@admin.com', 'validation.unique'],
-            'Test username is required'              => ['username', '', 'validation.required'],
-            'Test username is unique'                => ['username', 'admin', 'validation.unique'],
-            'Test name is required'                  => ['name', '', 'validation.required'],
-            'Test password is required'              => ['password', '', 'validation.required'],
-            'Test password is min 8 characters long' => ['password', '1234', 'validation.min.string', ['min' => 8]],
+            'Test email is required'                 => ['email', '', 'required'],
+            'Test email is valid'                    => ['email', 'not-an-email', 'email'],
+            'Test email is unique'                   => ['email', 'admin@admin.com', 'unique'],
+            'Test username is required'              => ['username', '', 'required'],
+            'Test username is unique'                => ['username', 'admin', 'unique'],
+            'Test name is required'                  => ['name', '', 'required'],
+            'Test password is required'              => ['password', '', 'required'],
+            'Test password is min 8 characters long' => ['password', '1234', 'min.string', ['min' => 8]],
             'Test password is confirmed'             => [
                 'password',
                 'random1234',
-                'validation.confirmed',
+                'confirmed',
                 [],
                 ['password_confirmation' => 'random5678']
             ],
@@ -39,10 +39,10 @@ class UserTest extends TestCase
      * @test
      * @dataProvider validationDataProvider
      */
-    public function it_validates_fields(
+    public function it_validates_user_request(
         $field,
         $value,
-        $error,
+        $errorRule,
         array $messageParams = [],
         array $extraFields = []
     ): void {
@@ -58,7 +58,7 @@ class UserTest extends TestCase
             ->assertInvalid(
                 [
                     $field => Lang::get(
-                        $error,
+                        "validation.$errorRule",
                         array_merge(['attribute' => str_replace('_', ' ', $field)], $messageParams)
                     )
                 ]

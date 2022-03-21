@@ -7,12 +7,59 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
+    public function validationDataProvider(): array
+    {
+        return [
+            'Test author is required'         => ['user_id', '', 'required'],
+            'Test author id is an integer'    => ['user_id', 'some-string', 'integer'],
+            'Test author exists'              => ['user_id', 50, 'exists'],
+            'Test title is required'          => ['title', '', 'required'],
+            'Test title is string'            => ['title', true, 'string'],
+            'Test slug is string'             => ['slug', 10.5, 'string'],
+            'Test slug has allowed character' => ['slug', '$//[]ñ', 'regex'],
+            'Test slug is unique'             => ['slug', 'first-post', 'unique'],
+            'Test published_at is a date'     => ['published_at', '2022-50-100', 'date'],
+            'Test image is valid'             => ['image', 'not-a-image', 'image'],
+            'Test excerpt is a string'        => ['excerpt', 1, 'string'],
+            'Test body is required'           => ['body', '', 'required'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider validationDataProvider
+     */
+    public function it_validates_post_request(
+        $field,
+        $value,
+        $errorRule,
+        array $messageParams = []
+    ): void {
+        Post::factory()->create(['slug' => 'first-post']);
+
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin);
+
+        $this
+            ->post(route('posts.store'), [$field => $value])
+            ->assertInvalid(
+                [
+                    $field => Lang::get(
+                        "validation.$errorRule",
+                        array_merge(['attribute' => str_replace('_', ' ', $field)], $messageParams)
+                    )
+                ]
+            );
+    }
+
     /** @test */
     public function it_denies_create_posts_for_anonymous_or_regular_users(): void
     {
@@ -118,6 +165,7 @@ class PostTest extends TestCase
             'slug'  => Str::slug('This post was created by an editor')
         ]);
     }
+
     /** @test */
     public function it_allows_editors_to_update_or_delete_owned_posts(): void
     {
@@ -215,12 +263,4 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas('posts', ['image' => $imagePath]);
     }
-
-    // Publish posts
-    // Archive posts
-
-    // Validate fields
-    // Unique slug
-    // Must have a valid author
-
 }
