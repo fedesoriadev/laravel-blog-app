@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Enums\UserRole;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -12,15 +14,61 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     /** @test */
-    public function it_stores_a_post_if_user_is_authenticated(): void
+    public function it_denies_create_posts_for_anonymous_or_regular_users(): void
     {
-        $user = $this->login();
+        $this
+            ->post(route('posts.store'), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
+
+        $this
+            ->actingAs($regularUser = User::factory()->create())
+            ->assertAuthenticated()
+            ->post(route('posts.store'), [])
+            ->assertForbidden();
+
+        $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
+        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+    }
+
+    /** @test */
+    public function it_denies_update_posts_for_anonymous_or_regular_users(): void
+    {
+        $post = Post::factory()->create();
+
+        $this->assertDatabaseHas('posts', ['title' => $post->title]);
+
+        $this
+            ->patch(route('posts.update', $post->slug), [
+                'title' => 'Updating title'
+            ], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
+
+        $this
+            ->actingAs($regularUser = User::factory()->create())
+            ->assertAuthenticated()
+            ->patch(route('posts.update', $post->slug), [
+                'title' => 'Updating title'
+            ], ['Accept' => 'application/json'])
+            ->assertForbidden();
+
+        $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
+        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+
+        $this->assertDatabaseMissing('posts', ['title' => 'Updating title']);
+    }
+
+    /** @test */
+    public function it_allows_admins_to_create_update_and_delete_posts(): void
+    {
+        $this
+            ->actingAs($adminUser = User::factory()->admin()->create())
+            ->assertAuthenticated()
+            ->assertTrue($adminUser->hasRole(UserRole::ADMIN));
 
         $this
             ->post(route('posts.store'), [
-                'user_id'      => $user->id,
+                'user_id'      => $adminUser->id,
                 'title'        => 'My awesome post',
-                'published_at' => now(),
                 'body'         => '## Some markdown body content'
             ])
             ->assertCreated();
@@ -29,34 +77,88 @@ class PostTest extends TestCase
             'title' => 'My awesome post',
             'slug'  => Str::slug('My awesome post')
         ]);
-    }
 
-    /** @test */
-    public function it_updates_a_post(): void
-    {
-        $this->login();
-
-        $post = Post::factory()
-            ->published()
-            ->create(['title' => 'Original post title']);
+        $post = Post::firstOrFail();
 
         $this
             ->patch(route('posts.update', $post->slug), [
+                'title'   => 'Updated post',
                 'user_id' => $post->user_id,
-                'title'   => 'Updated post title',
-                'body'    => '## Some markdown body content'
+                'body'    => $post->body
             ])
             ->assertSuccessful();
 
-        $this->assertDatabaseMissing(Post::class, ['title' => 'Original post title']);
+        $this->assertDatabaseHas('posts', ['title' => 'Updated post']);
 
-        $this->assertDatabaseHas(Post::class, ['title' => 'Updated post title']);
+        $this
+            ->delete(route('posts.destroy', $post->slug))
+            ->assertSuccessful();
+
+        $this->assertModelMissing($post);
+    }
+
+    /** @test */
+    public function it_allows_editors_to_create_posts(): void
+    {
+        $this
+            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->assertAuthenticated()
+            ->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+
+        $this
+            ->post(route('posts.store'), [
+                'user_id'      => $editorUser->id,
+                'title'        => 'This post was created by an editor',
+                'body'         => '## Some markdown body content'
+            ])
+            ->assertCreated();
+
+        $this->assertDatabaseHas('posts', [
+            'title' => 'This post was created by an editor',
+            'slug'  => Str::slug('This post was created by an editor')
+        ]);
+    }
+    /** @test */
+    public function it_allows_editors_to_update_or_delete_owned_posts(): void
+    {
+        $this
+            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->assertAuthenticated()
+            ->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+
+        $post = Post::factory()->create(['user_id' => $editorUser->id]);
+
+        $this
+            ->patch(route('posts.update', $post->slug), [
+                'title'   => 'My post was updated',
+                'user_id' => $post->user_id,
+                'body'    => $post->body
+            ])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('posts', ['title' => 'My post was updated']);
+
+        $this
+            ->delete(route('posts.destroy', $post->slug))
+            ->assertSuccessful();
+
+        $this->assertModelMissing($post);
+
+        $notMyPost = Post::factory()->create();
+
+        $this
+            ->patch(route('posts.update', $notMyPost->slug), [])
+            ->assertForbidden();
+
+        $this
+            ->delete(route('posts.destroy', $notMyPost->slug), [])
+            ->assertForbidden();
     }
 
     /** @test */
     public function it_attaches_tags_when_save_a_post(): void
     {
-        $user = $this->login();
+        $this->actingAs($user = User::factory()->admin()->create());
 
         $this
             ->post(route('posts.store'), [
@@ -71,7 +173,7 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas(Tag::class, ['name' => 'PHP']);
 
-        $post = Post::find(1);
+        $post = Post::first();
 
         $this->assertCount(2, $post->tags);
 
@@ -92,9 +194,7 @@ class PostTest extends TestCase
     /** @test */
     public function it_uploads_a_cover_image(): void
     {
-        $this->withoutExceptionHandling();
-
-        $user = $this->login();
+        $this->actingAs($user = User::factory()->admin()->create());
 
         Storage::fake('public');
 
@@ -116,17 +216,11 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('posts', ['image' => $imagePath]);
     }
 
-    /** @test */
-    public function it_deletes_a_post(): void
-    {
-        $this->login();
+    // Publish posts
+    // Archive posts
 
-        $post = Post::factory()->create();
+    // Validate fields
+    // Unique slug
+    // Must have a valid author
 
-        $this
-            ->delete(route('posts.destroy', $post->slug))
-            ->assertSuccessful();
-
-        $this->assertModelMissing($post);
-    }
 }

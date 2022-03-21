@@ -11,13 +11,9 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_a_list_of_published_posts_only(): void
     {
-        Post::factory()
-            ->published()
-            ->create();
+        Post::factory()->published()->create();
 
-        Post::factory()
-            ->draft()
-            ->create();
+        Post::factory()->draft()->create();
 
         $this
             ->get('/')
@@ -47,9 +43,7 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_a_published_post(): void
     {
-        $publishedPost = Post::factory()
-            ->published()
-            ->create();
+        $publishedPost = Post::factory()->published()->create();
 
         $this
             ->get(route('posts.show', $publishedPost->slug))
@@ -60,9 +54,7 @@ class PostTest extends TestCase
     /** @test */
     public function it_denies_access_to_unpublished_posts(): void
     {
-        $draftPost = Post::factory()
-            ->draft()
-            ->create();
+        $draftPost = Post::factory()->draft()->create();
 
         $this
             ->get(route('posts.show', $draftPost->slug))
@@ -72,7 +64,7 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_posts_of_an_author(): void
     {
-        $author = User::factory()->create();
+        $author = User::factory()->editor()->create();
 
         $author
             ->posts()

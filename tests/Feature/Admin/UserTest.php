@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Enums\UserRole;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -12,10 +13,23 @@ use function route;
 
 class UserTest extends TestCase
 {
+    // Regular users and editor or unauthenticated cannot create users
+    // Regular users and editor or unauthenticated cannot update or delete users
+
+    // Admin can create update and delete users
+
+    // Authenticated can update own user
+
+    // Validate fields
+    // Unique email
+    // Unique username
+    // Upload avatar
+    // Attach Role
+
     /** @test */
     public function it_validates_required_fields(): void
     {
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());
 
         $response = $this->post(route('users.store'), []);
 
@@ -35,7 +49,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_email_is_unique(): void
     {
-        $this->login(User::factory()->create(['email' => 'test@test.com']));
+        $this->actingAs(User::factory()->admin()->create(['email' => 'test@test.com']));
 
         $response = $this->post(route('users.store'), [
             'email' => 'test@test.com',
@@ -47,7 +61,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_username_is_unique(): void
     {
-        $this->login(User::factory()->create(['username' => 'test']));
+        $this->actingAs(User::factory()->admin()->create(['username' => 'test']));
 
         $response = $this->post(route('users.store'), [
             'username' => 'test',
@@ -59,7 +73,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_validates_password_must_be_confirmed(): void
     {
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());
 
         $response = $this->post(route('users.store'), [
             'password'              => 'test1234',
@@ -79,7 +93,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_creates_a_user(): void
     {
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());
 
         $response = $this->post(route('users.store'), [
             'email'                 => 'test@test.com',
@@ -97,7 +111,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_updates_a_user(): void
     {
-        $user = $this->login();
+        $this->actingAs($user = User::factory()->admin()->create());
 
         $response = $this->patch(route('users.update', $user->username), [
             'email'    => $user->email,
@@ -116,7 +130,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_adds_an_avatar_for_a_user(): void
     {
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());
 
         Storage::fake('public');
 
@@ -145,9 +159,9 @@ class UserTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::create(['name' => UserRole::ADMIN]);
 
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());;
 
         $response = $this->post(route('users.store'), [
             'email'                 => 'test@test.com',
@@ -164,13 +178,13 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $user->roles);
 
-        $this->assertTrue($user->hasRole('admin'));
+        $this->assertTrue($user->hasRole(UserRole::ADMIN));
     }
 
     /** @test */
     public function it_deletes_a_user(): void
     {
-        $this->login();
+        $this->actingAs(User::factory()->admin()->create());
 
         $user = User::factory()->create();
 
