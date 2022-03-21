@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -15,7 +18,7 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition():array
     {
         $username = $this->faker->userName();
 
@@ -40,12 +43,34 @@ class UserFactory extends Factory
      *
      * @return static
      */
-    public function unverified()
+    public function unverified(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
+        return $this->state(fn(array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function admin(): static
+    {
+        return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
+            Role::create(['name' => UserRole::ADMIN])
+                ->users()
+                ->attach($user);
+        });
+    }
+
+    /**
+     * @return $this
+     */
+    public function editor(): static
+    {
+        return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
+            Role::create(['name' => UserRole::EDITOR])
+                ->users()
+                ->attach($user);
         });
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PostStatus: string
+enum PostStatus: string implements Arrayable
 {
     case DRAFT = 'draft';
     case PUBLISHED = 'published';

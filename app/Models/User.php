@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -101,10 +102,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @param string $role
+     * @param \App\Enums\UserRole $role
      * @return bool
      */
-    public function hasRole(string $role): bool
+    public function hasRole(UserRole $role): bool
     {
         return $this->roles->contains('name', $role);
     }

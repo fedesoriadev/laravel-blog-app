@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\UserRole;
 use App\Models\Role;
 use App\Models\User;
 use Tests\TestCase;
@@ -13,13 +14,13 @@ class RoleTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->assertFalse($user->hasRole('admin'));
+        $this->assertFalse($user->hasRole(UserRole::ADMIN));
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::create(['name' => UserRole::ADMIN]);
 
         $user->roles()->attach($role);
 
-        $this->assertTrue($user->refresh()->hasRole('admin'));
+        $this->assertTrue($user->refresh()->hasRole(UserRole::ADMIN));
     }
 
     /** @test */
@@ -27,14 +28,14 @@ class RoleTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $role = Role::create(['name' => 'admin']);
+        $role = Role::create(['name' => UserRole::ADMIN]);
 
         $user->roles()->attach($role);
 
-        $this->assertTrue($user->hasRole('admin'));
+        $this->assertTrue($user->hasRole(UserRole::ADMIN));
 
         $user->roles()->detach($role);
 
-        $this->assertFalse($user->refresh()->hasRole('admin'));
+        $this->assertFalse($user->refresh()->hasRole(UserRole::ADMIN));
     }
 }
