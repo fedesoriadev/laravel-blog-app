@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class);
+    }
+
     /**
      * @param \App\Http\Requests\PostRequest $request
      * @return \App\Models\Post

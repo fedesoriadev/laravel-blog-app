@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -12,17 +13,6 @@ class PostPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User|null  $user
@@ -31,6 +21,10 @@ class PostPolicy
      */
     public function view(?User $user, Post $post): Response|bool
     {
+        if ($user && $user->hasRole(UserRole::EDITOR) && $post->author->is($user)) {
+            return true;
+        }
+
         return $post->status->isPubliclyAccessible() && $post->published_at <= now();
     }
 
@@ -42,8 +36,7 @@ class PostPolicy
      */
     public function create(User $user): Response|bool
     {
-        // By now it only needs an authenticated user
-        return true;
+        return $user->hasRole(UserRole::EDITOR);
     }
 
     /**
@@ -55,8 +48,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): Response|bool
     {
-        // By now it only needs an authenticated user
-        return true;
+        return $user->hasRole(UserRole::EDITOR) && $post->author->is($user);
     }
 
     /**
@@ -68,31 +60,6 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): Response|bool
     {
-        // By now it only needs an authenticated user
-        return true;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Post $post)
-    {
-        //
+        return $user->hasRole(UserRole::EDITOR) && $post->author->is($user);
     }
 }
