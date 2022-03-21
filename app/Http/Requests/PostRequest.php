@@ -30,7 +30,7 @@ class PostRequest extends FormRequest
             'slug'         => [
                 'string',
                 'regex:/^[a-z0-9_-]+$/i',
-                Rule::unique('posts', 'slug')->ignore($this->post?->id)
+                Rule::unique('posts', 'slug')->ignore($this->route('post')?->id)
             ],
             'published_at' => ['date'],
             'image'        => ['image', 'max:2048'],

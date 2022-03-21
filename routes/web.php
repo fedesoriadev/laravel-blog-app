@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\CommentController;
-use App\Http\Controllers\Admin\PostController as AdminPostController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
@@ -20,20 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/', [PostController::class, 'index'])
+    ->name('home');
 
-Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show')->middleware(['can:view,post']);
+Route::get('posts/{post}', [PostController::class, 'show'])
+    ->name('posts.show')
+    ->middleware('can:view,post');
 
-Route::get('authors/{author}', AuthorController::class)->name('authors.show');
+Route::get('authors/{author}', AuthorController::class)
+    ->name('authors.show');
 
-Route::get('tags/{tag}', TagController::class)->name('tags.show');
+Route::get('tags/{tag}', TagController::class)
+    ->name('tags.show');
 
-Route::post('posts/{post}/comments', PostCommentsController::class)->name('comments.store')->middleware(['auth']);
+Route::post('posts/{post}/comments', PostCommentsController::class)
+    ->name('comments.store')
+    ->middleware('auth');
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::resource('posts', AdminPostController::class)->except(['show']);
 
-    Route::resource('users', UserController::class)->except(['show']);
-
-    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-});
