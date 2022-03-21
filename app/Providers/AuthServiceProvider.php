@@ -29,6 +29,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(fn(User $user, $ability) => $user->hasRole(UserRole::ADMIN) ?: null);
 
-        Gate::define('admin', fn(User $user, $ability) => $user->hasRole(UserRole::ADMIN) ?: null);
+        Gate::define('admin', fn(User $user) => $user->hasRole(UserRole::ADMIN) ?: null);
     }
 }

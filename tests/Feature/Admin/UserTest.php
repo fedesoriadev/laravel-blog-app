@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -13,118 +14,151 @@ use function route;
 
 class UserTest extends TestCase
 {
-    // Regular users and editor or unauthenticated cannot create users
-    // Regular users and editor or unauthenticated cannot update or delete users
-
-    // Admin can create update and delete users
-
-    // Authenticated can update own user
-
-    // Validate fields
-    // Unique email
-    // Unique username
-    // Upload avatar
-    // Attach Role
-
-    /** @test */
-    public function it_validates_required_fields(): void
+    public function validationDataProvider(): array
     {
-        $this->actingAs(User::factory()->admin()->create());
+        return [
+            'Test email is required'                 => ['email', '', 'validation.required'],
+            'Test email is valid'                    => ['email', 'not-an-email', 'validation.email'],
+            'Test email is unique'                   => ['email', 'admin@admin.com', 'validation.unique'],
+            'Test username is required'              => ['username', '', 'validation.required'],
+            'Test username is unique'                => ['username', 'admin', 'validation.unique'],
+            'Test name is required'                  => ['name', '', 'validation.required'],
+            'Test password is required'              => ['password', '', 'validation.required'],
+            'Test password is min 8 characters long' => ['password', '1234', 'validation.min.string', ['min' => 8]],
+            'Test password is confirmed'             => [
+                'password',
+                'random1234',
+                'validation.confirmed',
+                [],
+                ['password_confirmation' => 'random5678']
+            ],
+        ];
+    }
 
-        $response = $this->post(route('users.store'), []);
-
-        $response->assertInvalid(['name', 'username', 'email', 'password']);
-
-        $response = $this->post(route('users.store'), [
-            'email'                 => 'test@test.com',
-            'name'                  => 'Some user test',
-            'username'              => 'some.user',
-            'password'              => 'test1234',
-            'password_confirmation' => 'test1234'
+    /**
+     * @test
+     * @dataProvider validationDataProvider
+     */
+    public function it_validates_fields(
+        $field,
+        $value,
+        $error,
+        array $messageParams = [],
+        array $extraFields = []
+    ): void {
+        $admin = User::factory()->admin()->create([
+            'email'    => 'admin@admin.com',
+            'username' => 'admin'
         ]);
 
-        $response->assertValid();
+        $this->actingAs($admin);
+
+        $this
+            ->post(route('users.store'), array_merge([$field => $value], $extraFields))
+            ->assertInvalid(
+                [
+                    $field => Lang::get(
+                        $error,
+                        array_merge(['attribute' => str_replace('_', ' ', $field)], $messageParams)
+                    )
+                ]
+            );
     }
 
     /** @test */
-    public function it_validates_email_is_unique(): void
+    public function it_denies_to_create_update_and_delete_users_for_anonymous_regular_and_editors_users(): void
     {
-        $this->actingAs(User::factory()->admin()->create(['email' => 'test@test.com']));
+        $this
+            ->post(route('users.store'), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
 
-        $response = $this->post(route('users.store'), [
-            'email' => 'test@test.com',
-        ]);
+        $this
+            ->patch(route('users.update', 'some.username'), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
 
-        $response->assertInvalid(['email' => 'The email has already been taken.']);
+        $this
+            ->delete(route('users.destroy', 'some.username'), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
+
+        $user = User::factory()->create();
+        $this->assertDatabaseHas('users', ['email' => $user->email]);
+
+        $this
+            ->actingAs($regularUser = User::factory()->create())
+            ->assertAuthenticated()
+            ->post(route('users.store'), [])
+            ->assertForbidden();
+
+        $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
+        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+
+        $this
+            ->patch(route('users.update', $user->username), ['name' => 'John Doe'])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('users', ['name' => 'John Doe']);
+
+        $this
+            ->delete(route('users.destroy', $user->username))
+            ->assertForbidden();
+
+        $this
+            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->assertAuthenticated()
+            ->post(route('users.store'), [])
+            ->assertForbidden();
+
+        $this->assertFalse($editorUser->hasRole(UserRole::ADMIN));
+        $this->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+
+        $this
+            ->patch(route('users.update', $user->username), ['name' => 'John Doe'])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('users', ['name' => 'John Doe']);
+
+        $this
+            ->delete(route('users.destroy', $user->username))
+            ->assertForbidden();
     }
 
     /** @test */
-    public function it_validates_username_is_unique(): void
+    public function it_allows_admins_to_create_update_and_delete_users(): void
     {
-        $this->actingAs(User::factory()->admin()->create(['username' => 'test']));
+        $adminUser = User::factory()->admin()->create();
+        $this->assertTrue($adminUser->hasRole(UserRole::ADMIN));
 
-        $response = $this->post(route('users.store'), [
-            'username' => 'test',
-        ]);
+        $this
+            ->actingAs($adminUser)
+            ->assertAuthenticated()
+            ->post(route('users.store'), [
+                'email'                 => 'moderator@example.com',
+                'username'              => 'moderator',
+                'name'                  => 'Moderator',
+                'password'              => 'password',
+                'password_confirmation' => 'password',
+            ])
+            ->assertCreated();
 
-        $response->assertInvalid(['username' => 'The username has already been taken.']);
-    }
+        $this->assertDatabaseHas('users', ['email' => 'moderator@example.com']);
 
-    /** @test */
-    public function it_validates_password_must_be_confirmed(): void
-    {
-        $this->actingAs(User::factory()->admin()->create());
+        $user = User::where('email', 'moderator@example.com')->first();
 
-        $response = $this->post(route('users.store'), [
-            'password'              => 'test1234',
-            'password_confirmation' => 'wrong-match'
-        ]);
+        $this
+            ->patch(route('users.update', $user->username), [
+                'email'    => $user->email,
+                'username' => $user->username,
+                'name'     => 'Mr. Moderator'
+            ])
+            ->assertSuccessful();
 
-        $response->assertInvalid(['password' => 'The password confirmation does not match.']);
+        $this->assertDatabaseHas('users', ['name' => 'Mr. Moderator']);
 
-        $response = $this->post(route('users.store'), [
-            'password'              => 'test1234',
-            'password_confirmation' => 'test1234'
-        ]);
+        $this
+            ->delete(route('users.destroy', $user->username))
+            ->assertSuccessful();
 
-        $response->assertValid(['password']);
-    }
-
-    /** @test */
-    public function it_creates_a_user(): void
-    {
-        $this->actingAs(User::factory()->admin()->create());
-
-        $response = $this->post(route('users.store'), [
-            'email'                 => 'test@test.com',
-            'name'                  => 'Some user test',
-            'username'              => 'some.user',
-            'password'              => 'test1234',
-            'password_confirmation' => 'test1234'
-        ]);
-
-        $response->assertSuccessful();
-
-        $this->assertDatabaseHas(User::class, ['email' => 'test@test.com']);
-    }
-
-    /** @test */
-    public function it_updates_a_user(): void
-    {
-        $this->actingAs($user = User::factory()->admin()->create());
-
-        $response = $this->patch(route('users.update', $user->username), [
-            'email'    => $user->email,
-            'name'     => 'John Doe',
-            'username' => $user->username,
-            'about_me' => 'I like to make tests'
-        ]);
-
-        $response->assertValid();
-
-        $this->assertDatabaseHas(User::class, ['name' => 'John Doe', 'about_me' => 'I like to make tests']);
-
-        $this->assertEquals($user->email, $response['email']);
+        $this->assertModelMissing($user);
     }
 
     /** @test */
@@ -157,8 +191,6 @@ class UserTest extends TestCase
     /** @test */
     public function it_attaches_a_role_for_a_user(): void
     {
-        $this->withoutExceptionHandling();
-
         $role = Role::create(['name' => UserRole::ADMIN]);
 
         $this->actingAs(User::factory()->admin()->create());;
@@ -179,19 +211,5 @@ class UserTest extends TestCase
         $this->assertCount(1, $user->roles);
 
         $this->assertTrue($user->hasRole(UserRole::ADMIN));
-    }
-
-    /** @test */
-    public function it_deletes_a_user(): void
-    {
-        $this->actingAs(User::factory()->admin()->create());
-
-        $user = User::factory()->create();
-
-        $response = $this->delete(route('users.destroy', [$user->username]));
-
-        $response->assertSuccessful();
-
-        $this->assertModelMissing($user);
     }
 }
