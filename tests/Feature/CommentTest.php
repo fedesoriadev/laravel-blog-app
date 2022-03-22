@@ -10,20 +10,47 @@ use Tests\TestCase;
 class CommentTest extends TestCase
 {
     /** @test */
-    public function it_adds_a_comment(): void
+    public function it_denies_create_a_comment_when_unauthenticated(): void
     {
-        $this->actingAs($user = User::factory()->create());
+        $post = Post::factory()->published()->create();
+
+        $this
+            ->post(route('comments.store', $post->slug), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function it_allows_users_to_add_comments(): void
+    {
+        $this->actingAs(User::factory()->create());
 
         $post = Post::factory()->published()->create();
 
         $this
+            ->post(route('comments.store', $post->slug), ['body' => 'This comment belongs to a post.'])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('comments', ['body' => 'This comment belongs to a post.']);
+    }
+
+    /** @test */
+    public function it_denies_to_create_comments_for_other_user(): void
+    {
+        $this->actingAs($currentUser = User::factory()->create());
+
+        $post = Post::factory()->published()->create();
+
+        $otherUser = User::factory()->create();
+
+        $response = $this
             ->post(route('comments.store', $post->slug), [
-                'user_id' => $user->id,
-                'body'    => 'This comment belongs to a post.'
+                'user_id' => $otherUser->id,
+                'body'    => 'This comment belongs to the current user.'
             ])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas(Comment::class, ['body' => 'This comment belongs to a post.']);
+        $this->assertEquals($currentUser->id, $response['user_id']);
+        $this->assertNotEquals($otherUser->id, $response['user_id']);
     }
 
     /** @test */

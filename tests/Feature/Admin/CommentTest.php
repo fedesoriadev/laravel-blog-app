@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Enums\UserRole;
 use App\Models\Comment;
 use App\Models\User;
 use Tests\TestCase;
@@ -9,7 +10,31 @@ use Tests\TestCase;
 class CommentTest extends TestCase
 {
     /** @test */
-    public function it_deletes_a_comment(): void
+    public function it_denies_to_delete_comments_for_anonymous_regular_and_editors_users(): void
+    {
+        $comment = Comment::factory()->create();
+
+        $this
+            ->delete(route('comments.destroy', $comment->id), [], ['Accept' => 'application/json'])
+            ->assertUnauthorized();
+
+        $this
+            ->actingAs(User::factory()->create())
+            ->delete(route('comments.destroy', $comment->id), [], ['Accept' => 'application/json'])
+            ->assertForbidden();
+
+        $this
+            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->delete(route('comments.destroy', $comment->id), [], ['Accept' => 'application/json'])
+            ->assertForbidden();
+
+        $this->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+
+        $this->assertModelExists($comment);
+    }
+
+    /** @test */
+    public function it_allows_admins_to_delete_comments(): void
     {
         $this->actingAs(User::factory()->admin()->create());
 
