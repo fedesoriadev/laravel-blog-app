@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PostPagination;
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return View
      */
-    public function index(Request $request): Collection
+    public function index(Request $request): View
     {
-        return Post::published()
+        $posts = Post::with('author')
+                    ->published()
                     ->filter($request->only(['search']))
-                    ->get();
+                    ->simplePaginate(PostPagination::FRONT->value);
+
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**

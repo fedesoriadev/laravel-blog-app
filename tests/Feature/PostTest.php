@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PostPagination;
 use App\Models\Post;
 use App\Models\User;
 use Tests\TestCase;
@@ -11,14 +12,36 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_a_list_of_published_posts_only(): void
     {
-        Post::factory()->published()->create();
+        $publishedPost = Post::factory()->published()->create();
 
-        Post::factory()->draft()->create();
+        $draftPost = Post::factory()->draft()->create();
+
+        $response = $this
+            ->get('/')
+            ->assertOk()
+            ->assertSee($publishedPost->title)
+            ->assertDontSee($draftPost->title);
+
+        $this->assertCount(1, $response['posts']);
+    }
+
+    /** @test */
+    public function it_paginates_a_list_of_posts(): void
+    {
+        $posts = Post::factory(PostPagination::FRONT->value + 1)
+            ->published()
+            ->create();
 
         $this
             ->get('/')
             ->assertOk()
-            ->assertJsonCount(1);
+            ->assertSeeTextInOrder($posts->take(PostPagination::FRONT->value)->pluck('title')->all())
+            ->assertDontSee($posts->last()->title);
+
+        $this
+            ->get('/?page=2')
+            ->assertOk()
+            ->assertSeeText($posts->last()->title);
     }
 
     /** @test */
@@ -34,10 +57,12 @@ class PostTest extends TestCase
             )
             ->create();
 
-        $this
+        $response = $this
             ->get('/?search=Laravel')
             ->assertOk()
-            ->assertJsonCount(2);
+            ->assertSee("We found 2 posts");
+
+        $this->assertCount(2, $response['posts']);
     }
 
     /** @test */

@@ -27,7 +27,7 @@ class PostFactory extends Factory
             'user_id'      => User::factory(),
             'title'        => $this->faker->sentence(),
             'image'        => 'https://picsum.photos/seed/' . Str::random(8) . '/1600/700',
-            'excerpt'      => $this->faker->sentence(10),
+            'excerpt'      => $this->faker->sentence(20),
             'body'         => File::get(database_path('factories/stubs/post_body.md')),
             'status'       => $status->value,
             'published_at' => $status === PostStatus::PUBLISHED ? now() : null,
