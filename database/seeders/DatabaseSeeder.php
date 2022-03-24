@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,8 @@ class DatabaseSeeder extends Seeder
             ->editor()
             ->create();
 
+        $tags = Tag::factory(5)->create();
+
         Post::factory(100)
             ->sequence(
                 ['user_id' => $authors[0]->id],
@@ -28,6 +31,7 @@ class DatabaseSeeder extends Seeder
                 ['user_id' => $authors[2]->id],
             )
             ->published()
-            ->create();
+            ->create()
+            ->each(fn(Post $post) => $post->tags()->sync($tags->random()));
     }
 }

@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index(Request $request): View
     {
-        $posts = Post::with('author')
+        $posts = Post::with('author', 'tags')
                     ->published()
                     ->filter($request->only(['search']))
                     ->simplePaginate(PostPagination::FRONT->value);

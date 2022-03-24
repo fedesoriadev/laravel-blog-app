@@ -1,4 +1,4 @@
-<nav class="flex items-center py-4">
+<nav class="flex items-center justify-between py-4">
     <a href="{{ route('home') }}"
        class="text-indigo-600 flex items-center hover:text-indigo-900 transition-all duration-300 ease-linear">
         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -7,7 +7,7 @@
         <span class="font-bold text-2xl">{{ config('app.name') }}</span>
     </a>
 
-    <div class="ml-auto flex items-center space-x-2">
+    <div class="flex items-center space-x-2">
         <form action="/">
             <label for="search" class="sr-only">{{ __('Search posts') }}</label>
             <input
@@ -19,7 +19,7 @@
                 class="bg-slate-100 border-slate-200 text-sm rounded-lg">
         </form>
 
-        <a href="#" class="ml-auto">Login</a>
+        <a href="#">Login</a>
 
         <button
             x-init="
