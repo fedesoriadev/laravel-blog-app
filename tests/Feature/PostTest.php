@@ -102,7 +102,8 @@ class PostTest extends TestCase
         $this
             ->get(route('authors.show', $author->username))
             ->assertOk()
-            ->assertSee($author->name);
+            ->assertSee($author->name)
+            ->assertViewHasAll(['author', 'posts']);
 
         $this->assertCount(3, $author->posts);
     }
