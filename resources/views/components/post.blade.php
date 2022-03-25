@@ -1,5 +1,5 @@
 <article class="py-8 mb-8 border-b-2 border-slate-200">
-    <h2 class="mb-2 font-bold text-3xl transition-colors duration-300 ease-linear hover:text-indigo-600">
+    <h2 class="mb-2 font-bold text-4xl transition-colors duration-300 ease-linear hover:text-indigo-600">
         <a href="{{ $postUrl }}">{{ $post->title }}</a>
     </h2>
 

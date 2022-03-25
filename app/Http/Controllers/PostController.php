@@ -25,10 +25,10 @@ class PostController extends Controller
 
     /**
      * @param \App\Models\Post $post
-     * @return \App\Models\Post
+     * @return View
      */
-    public function show(Post $post): Post
+    public function show(Post $post): View
     {
-        return $post;
+        return view('posts.show', ['post' => $post]);
     }
 }
