@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,6 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()
+            ->admin()
+            ->create([
+                'email'    => 'admin@admin.com',
+                'username' => 'admin',
+                'name'     => 'Admin'
+            ]);
+
         /** @var \Illuminate\Database\Eloquent\Collection $authors */
         $authors = User::factory(3)
             ->editor()

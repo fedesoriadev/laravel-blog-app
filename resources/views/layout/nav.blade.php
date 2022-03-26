@@ -7,7 +7,7 @@
         <span class="font-bold text-2xl">{{ config('app.name') }}</span>
     </a>
 
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-4">
         <form action="/">
             <label for="search" class="sr-only">{{ __('Search posts') }}</label>
             <input
@@ -19,7 +19,16 @@
                 class="bg-slate-100 border-slate-200 text-sm rounded-lg">
         </form>
 
-        <a href="#">Login</a>
+        @if (Auth::check())
+            <a href="{{ route('admin.home') }}" class="text-sm text-slate-500">{{ __('Hi, :name', ['name' => Auth::user()->name]) }}</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="text-sm text-slate-500">{{ __('Logut') }}</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="text-sm text-slate-500">{{ __('Login') }}</a>
+            <a href="{{ route('register') }}" class="text-sm text-slate-500">{{ __('Register') }}</a>
+        @endif
 
         <button
             x-init="

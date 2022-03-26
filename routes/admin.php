@@ -10,7 +10,8 @@ Route::resource('posts', PostController::class)
     ->except('show');
 
 Route::middleware('can:admin')->group(function () {
-    Route::get('/', IndexController::class);
+    Route::get('/', IndexController::class)
+        ->name('admin.home');
 
     Route::resource('users', UserController::class)
         ->except('show');
