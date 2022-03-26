@@ -5,12 +5,12 @@ namespace App\View\Components\Form;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Input extends Component
+class Checkbox extends Component
 {
     public string $name;
-    public string $type;
     public ?string $label;
     public ?string $value;
+    public ?string $originalValue;
 
     /**
      * Create a new component instance.
@@ -19,13 +19,18 @@ class Input extends Component
      */
     public function __construct(
         string $name,
-        string $type = 'text',
         ?string $label = null,
+        ?string $originalValue = null
     ) {
         $this->name = $name;
-        $this->type = $type;
         $this->label = $label ?? __(str_replace('_', ' ', Str::title($name)));
         $this->value = old($name);
+        $this->originalValue = old($name, $originalValue);
+    }
+
+    public function isChecked($option): bool
+    {
+        return $option === $this->originalValue;
     }
 
     /**
@@ -35,6 +40,6 @@ class Input extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.form.input');
+        return view('components.form.checkbox');
     }
 }
