@@ -27,7 +27,7 @@ class CommentTest extends TestCase
         $post = Post::factory()->published()->create();
 
         $this
-            ->post(route('comments.store', $post->slug), ['body' => 'This comment belongs to a post.'])
+            ->post(route('comments.store', $post->slug), ['comment' => 'This comment belongs to a post.'])
             ->assertSuccessful();
 
         $this->assertDatabaseHas('comments', ['body' => 'This comment belongs to a post.']);
@@ -45,7 +45,7 @@ class CommentTest extends TestCase
         $response = $this
             ->post(route('comments.store', $post->slug), [
                 'user_id' => $otherUser->id,
-                'body'    => 'This comment belongs to the current user.'
+                'comment'    => 'This comment belongs to the current user.'
             ])
             ->assertSuccessful();
 
