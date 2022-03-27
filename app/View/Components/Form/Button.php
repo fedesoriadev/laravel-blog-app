@@ -12,7 +12,6 @@ class Button extends Component
      * @return void
      */
     public function __construct(
-        public string $value,
         public string $type = 'submit'
     ) {}
 
@@ -21,7 +20,7 @@ class Button extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
         return view('components.form.button');
     }

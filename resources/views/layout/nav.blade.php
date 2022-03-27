@@ -19,16 +19,16 @@
                 class="bg-slate-100 border-slate-200 text-sm rounded-lg">
         </form>
 
-        @if (Auth::check())
+        @auth
             <a href="{{ route('admin.home') }}" class="text-sm text-slate-500">{{ __('Hi, :name', ['name' => Auth::user()->name]) }}</a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
+
+            <x-form :action="route('logout')" method="POST">
                 <button type="submit" class="text-sm text-slate-500">{{ __('Logut') }}</button>
-            </form>
+            </x-form>
         @else
             <a href="{{ route('login') }}" class="text-sm text-slate-500">{{ __('Login') }}</a>
             <a href="{{ route('register') }}" class="text-sm text-slate-500">{{ __('Register') }}</a>
-        @endif
+        @endauth
 
         <button
             x-init="

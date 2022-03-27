@@ -15,11 +15,11 @@ class PostCommentsController extends Controller
      */
     public function __invoke(Request $request, Post $post): Model
     {
-        $request->validate(['body' => 'required']);
+        $request->validate(['comment' => 'required']);
 
         return $post->comments()->create([
             'user_id' => $request->user()->id,
-            'body'    => $request->body
+            'body'    => $request->comment
         ]);
     }
 }

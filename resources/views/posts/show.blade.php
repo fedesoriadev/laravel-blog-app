@@ -7,6 +7,7 @@
             <span>{{ __('Back to posts') }}</span>
         </a>
     </div>
+
     <article class="space-y-6">
         <h1 class="mb-12 text-xl sm:text-3xl md:text-5xl lg:text-7xl font-bold text-slate-800 dark:text-slate-300">
             {{ $post->title }}
@@ -26,4 +27,6 @@
             {!! \Illuminate\Support\Str::markdown($post->body) !!}
         </div>
     </article>
+
+    @include('posts.partials.comments')
 </x-app-layout>
