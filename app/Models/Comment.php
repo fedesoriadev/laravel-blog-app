@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Relationships
  * @property-read \App\Models\Post $post
  * @property-read \App\Models\User $author
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Comment extends Model
 {
