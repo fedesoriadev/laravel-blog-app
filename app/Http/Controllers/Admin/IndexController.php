@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 
 class IndexController extends Controller
 {
     /**
-     * @return string
+     * @return View
      */
-    public function __invoke(): string
+    public function __invoke(): View
     {
-        return 'admin dashboard';
+        return view('admin.index');
     }
 }

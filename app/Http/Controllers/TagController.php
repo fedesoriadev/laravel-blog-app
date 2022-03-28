@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PostPagination;
+use App\Enums\Pagination;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 
@@ -17,7 +17,7 @@ class TagController extends Controller
         $posts = $tag
             ->posts()
             ->published()
-            ->simplePaginate(PostPagination::FRONT->value);
+            ->simplePaginate(Pagination::FRONT->value);
 
         return view('tags.show', ['tag' => $tag, 'posts' => $posts]);
     }

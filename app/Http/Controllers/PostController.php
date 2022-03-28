@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PostPagination;
+use App\Enums\Pagination;
 use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class PostController extends Controller
         $posts = Post::with('author', 'tags')
                     ->published()
                     ->filter($request->only(['search']))
-                    ->simplePaginate(PostPagination::FRONT->value);
+                    ->simplePaginate(Pagination::FRONT->value);
 
         return view('posts.index', ['posts' => $posts]);
     }

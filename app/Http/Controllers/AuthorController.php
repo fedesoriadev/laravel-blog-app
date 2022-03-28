@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PostPagination;
+use App\Enums\Pagination;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 
@@ -17,7 +17,7 @@ class AuthorController extends Controller
         $posts = $author
             ->posts()
             ->published()
-            ->simplePaginate(PostPagination::FRONT->value);
+            ->simplePaginate(Pagination::FRONT->value);
 
         return view('authors.show', ['author' => $author, 'posts' => $posts]);
     }
