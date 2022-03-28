@@ -25,6 +25,11 @@ class Textarea extends Component
         $this->value = old($name);
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View|\Closure|string
+     */
     public function render(): \Illuminate\Contracts\View\View|string|\Closure
     {
         return view('components.form.textarea');

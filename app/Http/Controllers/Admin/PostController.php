@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Pagination;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,6 +15,18 @@ class PostController extends Controller
     public function __construct()
     {
         $this->authorizeResource(Post::class);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function index(Request $request): View
+    {
+        $posts = Post::with('author', 'tags')
+            ->simplePaginate(Pagination::ADMIN->value);
+
+        return view('admin.posts.index', ['posts' => $posts]);
     }
 
     /**

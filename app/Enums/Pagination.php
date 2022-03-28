@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PostPagination: int implements Arrayable
+enum Pagination: int implements Arrayable
 {
     case FRONT = 10;
     case ADMIN = 20;

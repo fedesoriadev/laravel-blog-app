@@ -1,11 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Table;
 
-use App\Models\Comment as CommentModel;
 use Illuminate\View\Component;
 
-class Comment extends Component
+class Cell extends Component
 {
     /**
      * Create a new component instance.
@@ -13,7 +12,7 @@ class Comment extends Component
      * @return void
      */
     public function __construct(
-        public CommentModel $comment
+        public string $tag = 'td'
     ) {}
 
     /**
@@ -21,8 +20,8 @@ class Comment extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render(): \Illuminate\Contracts\View\View|string|\Closure
+    public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.comment');
+        return view('components.table.cell');
     }
 }

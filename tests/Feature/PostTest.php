@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Enums\PostPagination;
+use App\Enums\Pagination;
 use App\Models\Post;
 use App\Models\User;
 use Tests\TestCase;
@@ -28,14 +28,14 @@ class PostTest extends TestCase
     /** @test */
     public function it_paginates_a_list_of_posts(): void
     {
-        $posts = Post::factory(PostPagination::FRONT->value + 1)
+        $posts = Post::factory(Pagination::FRONT->value + 1)
             ->published()
             ->create();
 
         $this
             ->get('/')
             ->assertOk()
-            ->assertSeeTextInOrder($posts->take(PostPagination::FRONT->value)->pluck('title')->all())
+            ->assertSeeTextInOrder($posts->take(Pagination::FRONT->value)->pluck('title')->all())
             ->assertDontSee($posts->last()->title);
 
         $this
