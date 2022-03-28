@@ -2,12 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Pagination;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function index(Request $request): View
+    {
+        $users = User::with('roles')
+            ->simplePaginate(Pagination::ADMIN->value);
+
+        return view('admin.users.index', ['users' => $users]);
+    }
+
     /**
      * @param \App\Models\User $user
      * @return \App\Models\User
