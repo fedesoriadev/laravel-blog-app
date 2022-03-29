@@ -212,4 +212,39 @@ class UserTest extends TestCase
 
         $this->assertTrue($user->hasRole(UserRole::ADMIN));
     }
+
+    /** @test */
+    public function it_redirects_after_login_according_to_user_role(): void
+    {
+        $regularUser = User::factory()->create();
+
+        $this
+            ->post(route('login'), [
+                'email' => $regularUser->email,
+                'password' => 'password'
+            ])
+            ->assertRedirect(config('fortify.home'));
+
+        $this->post(route('logout'), []);
+
+        $editorUser = User::factory()->editor()->create();
+
+        $this
+            ->post('login', [
+                'email' => $editorUser->email,
+                'password' => 'password'
+            ])
+            ->assertRedirect(route('posts.index'));
+
+        $this->post(route('logout'), []);
+
+        $adminUser = User::factory()->admin()->create();
+
+        $this
+            ->post('login', [
+                'email' => $adminUser->email,
+                'password' => 'password'
+            ])
+            ->assertRedirect(route('admin.home'));
+    }
 }
