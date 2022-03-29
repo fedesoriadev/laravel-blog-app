@@ -26,7 +26,7 @@ class CommentController extends Controller
      * @param \App\Models\Comment $comment
      * @return bool
      */
-    public function delete(Comment $comment): bool
+    public function destroy(Comment $comment): bool
     {
         return $comment->delete();
     }
