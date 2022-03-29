@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Pagination;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -23,8 +24,16 @@ class PostController extends Controller
      */
     public function index(Request $request): View
     {
-        $posts = Post::with('author', 'tags')
-            ->simplePaginate(Pagination::ADMIN->value);
+        if ($request->user()->hasRole(UserRole::EDITOR)) {
+            $posts = $request
+                ->user()
+                ->posts()
+                ->with('author', 'tags')
+                ->simplePaginate(Pagination::ADMIN->value);
+        } else {
+            $posts = Post::with('author', 'tags')
+                ->simplePaginate(Pagination::ADMIN->value);
+        }
 
         return view('admin.posts.index', ['posts' => $posts]);
     }

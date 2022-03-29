@@ -13,6 +13,15 @@ class PostPolicy
     use HandlesAuthorization;
 
     /**
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewAny(User $user): Response|bool
+    {
+        return $user->hasRole(UserRole::EDITOR);
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User|null  $user
