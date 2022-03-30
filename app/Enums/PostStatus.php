@@ -25,9 +25,9 @@ enum PostStatus: string implements Arrayable
     public function color(): string
     {
         return match ($this) {
-            self::DRAFT => 'text-grey-500',
-            self::PUBLISHED => 'text-green-500',
-            self::ARCHIVED => 'text-red-500',
+            self::DRAFT => 'bg-gray-500',
+            self::PUBLISHED => 'bg-green-500',
+            self::ARCHIVED => 'bg-red-500',
         };
     }
 

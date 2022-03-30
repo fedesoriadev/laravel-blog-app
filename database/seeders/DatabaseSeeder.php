@@ -42,5 +42,17 @@ class DatabaseSeeder extends Seeder
             ->published()
             ->create()
             ->each(fn(Post $post) => $post->tags()->sync($tags->random()));
+
+        Post::factory(10)
+            ->sequence(fn(Sequence $sequence) => ['user_id' => $authors->random()->id])
+            ->draft()
+            ->create()
+            ->each(fn(Post $post) => $post->tags()->sync($tags->random()));
+
+        Post::factory(10)
+            ->sequence(fn(Sequence $sequence) => ['user_id' => $authors->random()->id])
+            ->archived()
+            ->create()
+            ->each(fn(Post $post) => $post->tags()->sync($tags->random()));
     }
 }

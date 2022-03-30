@@ -7,7 +7,6 @@
                 <x-table.cell tag="th">{{ _('Title') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Tag') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Status') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Published at') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
             </tr>
@@ -15,12 +14,13 @@
 
         @foreach($posts as $post)
             <tr>
-                <x-table.cell>
+                <x-table.cell class="flex items-center">
+                    <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->color() }}"
+                          title="{{ $post->status->name }}"></span>
                     <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
                 </x-table.cell>
                 <x-table.cell>{{ $post->author->name }}</x-table.cell>
                 <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
-                <x-table.cell>{{ $post->status->value }}</x-table.cell>
                 <x-table.cell>{{ $post->published_at?->format('F j, Y') }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
             </tr>

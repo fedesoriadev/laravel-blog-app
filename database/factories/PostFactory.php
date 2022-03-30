@@ -56,4 +56,15 @@ class PostFactory extends Factory
             'published_at' => null
         ]);
     }
+
+    /**
+     * @return Factory
+     */
+    public function archived(): Factory
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => PostStatus::ARCHIVED,
+            'published_at' => now()->subDays($this->faker->numberBetween(1, 15))
+        ]);
+    }
 }
