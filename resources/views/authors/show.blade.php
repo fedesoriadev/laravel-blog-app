@@ -2,9 +2,7 @@
     <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <img src="{{ $author->avatar }}"
-                     class="w-16 h-16 rounded-full object-contain"
-                     alt="{{ $author->name }}">
+                <x-user-avatar :user="$author" />
 
                 <span class="text-xl font-semibold text-slate-700 dark:text-slate-100">{{ $author->name }}</span>
             </div>

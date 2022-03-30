@@ -15,9 +15,7 @@
 
         <div class="flex items-center space-x-6">
             <a href="{{ route('authors.show', $post->author->username) }}" class="inline-flex space-x-2 items-center">
-                <img src="{{ $post->author->avatar }}"
-                     class="w-8 h-8 rounded-full object-contain"
-                     alt="{{ $post->author->name }}">
+                <x-user-avatar :user="$post->author" />
                 <span class="text-slate-800 dark:text-slate-100">{{ $post->author->name }}</span>
             </a>
             <span>{{ $post->published_at->format('F j, Y') }}</span>
