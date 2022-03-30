@@ -34,7 +34,7 @@ class PostPolicy
             return true;
         }
 
-        return $post->status->isPubliclyAccessible() && $post->published_at <= now();
+        return $post->status->isPubliclyAccessible() && $post->date <= now();
     }
 
     /**

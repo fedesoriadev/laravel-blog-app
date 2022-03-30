@@ -7,7 +7,7 @@
                 <x-table.cell tag="th">{{ _('Title') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Tag') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Published at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ _('Date') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
             </tr>
         </x-slot>
@@ -21,7 +21,7 @@
                 </x-table.cell>
                 <x-table.cell>{{ $post->author->name }}</x-table.cell>
                 <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
-                <x-table.cell>{{ $post->published_at?->format('F j, Y') }}</x-table.cell>
+                <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
             </tr>
         @endforeach

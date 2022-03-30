@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
  * @property string|null $excerpt
  * @property string $body
  * @property \App\Enums\PostStatus $status
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -53,15 +53,14 @@ class Post extends Model
         'excerpt',
         'body',
         'status',
-        'published_at',
+        'date',
     ];
 
     /**
      * @inheritdoc
      */
     protected $casts = [
-        'status'       => PostStatus::class,
-        'published_at' => 'datetime'
+        'status' => PostStatus::class,
     ];
 
     /**
@@ -109,7 +108,7 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query
-            ->where('published_at', '<=', now())
+            ->where('date', '<=', now())
             ->where('status', PostStatus::PUBLISHED->value);
     }
 
@@ -141,7 +140,7 @@ class Post extends Model
             throw new AlreadyPublishedException;
         }
 
-        $this->update(['status' => PostStatus::PUBLISHED, 'published_at' => now()]);
+        $this->update(['status' => PostStatus::PUBLISHED, 'date' => now()]);
 
         return $this;
     }

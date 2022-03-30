@@ -24,13 +24,13 @@ class PostFactory extends Factory
         $status = $this->faker->randomElement(PostStatus::cases());
 
         return [
-            'user_id'      => User::factory(),
-            'title'        => $this->faker->sentence(),
-            'image'        => 'https://picsum.photos/seed/' . Str::random(8) . '/1600/700',
-            'excerpt'      => $this->faker->sentence(20),
-            'body'         => File::get(database_path('factories/stubs/post_body.md')),
-            'status'       => $status->value,
-            'published_at' => $status === PostStatus::PUBLISHED ? now() : null,
+            'user_id' => User::factory(),
+            'title'   => $this->faker->sentence(),
+            'image'   => 'https://picsum.photos/seed/' . Str::random(8) . '/1600/700',
+            'excerpt' => $this->faker->sentence(20),
+            'body'    => File::get(database_path('factories/stubs/post_body.md')),
+            'status'  => $status->value,
+            'date'    => $status === PostStatus::PUBLISHED ? now() : null,
         ];
     }
 
@@ -42,7 +42,7 @@ class PostFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'status' => PostStatus::PUBLISHED,
-            'published_at' => $timestamp ?? now()
+            'date' => $timestamp ?? now()
         ]);
     }
 
@@ -53,7 +53,7 @@ class PostFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'status' => PostStatus::DRAFT,
-            'published_at' => null
+            'date' => null
         ]);
     }
 
@@ -64,7 +64,7 @@ class PostFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'status' => PostStatus::ARCHIVED,
-            'published_at' => now()->subDays($this->faker->numberBetween(1, 15))
+            'date' => now()->subDays($this->faker->numberBetween(1, 15))
         ]);
     }
 }

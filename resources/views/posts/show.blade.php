@@ -18,7 +18,7 @@
                 <x-user-avatar :user="$post->author" />
                 <span class="text-slate-800 dark:text-slate-100">{{ $post->author->name }}</span>
             </a>
-            <span>{{ $post->published_at->format('F j, Y') }}</span>
+            <span>{{ $post->date }}</span>
         </div>
 
         <div class="prose prose-xl prose-indigo">

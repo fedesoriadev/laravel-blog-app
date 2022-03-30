@@ -7,7 +7,7 @@
         <a href="{{ $authorUrl }}" class="text-indigo-600 transition-all duration-300 ease-linear hover:text-indigo-900">
             {{ $authorName }}
         </a>
-        <span class="text-gray-700 dark:text-slate-100"> | {{ $post->published_at->format('F j, Y') }} | </span>
+        <span class="text-gray-700 dark:text-slate-100"> | {{ $post->date }} | </span>
         <div>
             @foreach($post->tags as $tag)
                 <a href="{{ route('tags.show', $tag->slug) }}"

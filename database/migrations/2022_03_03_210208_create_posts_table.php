@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('excerpt')->nullable();
             $table->text('body');
             $table->enum('status', PostStatus::toArray())->default(PostStatus::DRAFT->value);
-            $table->timestamp('published_at')->nullable();
+            $table->date('date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
