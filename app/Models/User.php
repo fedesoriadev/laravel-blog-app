@@ -112,8 +112,8 @@ class User extends Authenticatable
      */
     public function scopeWithRole(Builder $query, UserRole $role): Builder
     {
-        return $query->whereHas('roles', function (Builder $query) {
-            return $query->where('name', UserRole::EDITOR->value);
+        return $query->whereHas('roles', function (Builder $query) use ($role) {
+            return $query->where('name', $role->value);
         });
     }
 
