@@ -2,13 +2,14 @@
 
 namespace App\View\Components\Form;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Input extends Component
+class Select extends Component
 {
     public string $name;
-    public string $type;
+    public Collection $options;
     public ?string $label;
     public ?string $value;
 
@@ -19,12 +20,12 @@ class Input extends Component
      */
     public function __construct(
         string $name,
-        string $type = 'text',
+        Collection $options,
         ?string $label = null,
         ?string $value = null
     ) {
         $this->name = $name;
-        $this->type = $type;
+        $this->options = $options;
         $this->label = $label ?? __(str_replace('_', ' ', Str::title($name)));
         $this->value = old($name, $value);
     }
@@ -34,8 +35,17 @@ class Input extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render(): \Illuminate\Contracts\View\View|\Closure|string
+    public function render(): \Illuminate\Contracts\View\View|string|\Closure
     {
-        return view('components.form.input');
+        return view('components.form.select');
+    }
+
+    /**
+     * @param $option
+     * @return bool
+     */
+    public function isSelected($option): bool
+    {
+        return $option == $this->value;
     }
 }

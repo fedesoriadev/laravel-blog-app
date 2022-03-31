@@ -9,6 +9,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -29,9 +30,11 @@ class PostController extends Controller
                 ->user()
                 ->posts()
                 ->with('author', 'tags')
+                ->latest()
                 ->simplePaginate(Pagination::ADMIN->value);
         } else {
             $posts = Post::with('author', 'tags')
+                ->latest()
                 ->simplePaginate(Pagination::ADMIN->value);
         }
 
@@ -39,10 +42,18 @@ class PostController extends Controller
     }
 
     /**
-     * @param \App\Http\Requests\PostRequest $request
-     * @return \App\Models\Post
+     * @return \Illuminate\Contracts\View\View
      */
-    public function store(PostRequest $request): Post
+    public function create(): View
+    {
+        return view('admin.posts.form', ['post' => new Post()]);
+    }
+
+    /**
+     * @param \App\Http\Requests\PostRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(PostRequest $request): RedirectResponse
     {
         $attributes = $request->validated();
 
@@ -54,15 +65,24 @@ class PostController extends Controller
 
         $this->handleTags($request, $post);
 
-        return $post;
+        return redirect()->route('posts.index');
+    }
+
+    /**
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit(Post $post): View
+    {
+        return view('admin.posts.form', ['post' => $post]);
     }
 
     /**
      * @param \App\Http\Requests\PostRequest $request
      * @param \App\Models\Post $post
-     * @return \App\Models\Post
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(PostRequest $request, Post $post): Post
+    public function update(PostRequest $request, Post $post): RedirectResponse
     {
         $attributes = $request->validated();
 
@@ -74,16 +94,18 @@ class PostController extends Controller
 
         $this->handleTags($request, $post);
 
-        return $post;
+        return redirect()->route('posts.index');
     }
 
     /**
      * @param \App\Models\Post $post
-     * @return bool
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Post $post): bool
+    public function destroy(Post $post): RedirectResponse
     {
-        return $post->delete();
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 
     /**

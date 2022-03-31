@@ -118,7 +118,7 @@ class PostTest extends TestCase
                 'title'        => 'My awesome post',
                 'body'         => '## Some markdown body content'
             ])
-            ->assertCreated();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas('posts', [
             'title' => 'My awesome post',
@@ -133,13 +133,13 @@ class PostTest extends TestCase
                 'user_id' => $post->user_id,
                 'body'    => $post->body
             ])
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas('posts', ['title' => 'Updated post']);
 
         $this
             ->delete(route('posts.destroy', $post->slug))
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertModelMissing($post);
     }
@@ -158,7 +158,7 @@ class PostTest extends TestCase
                 'title'        => 'This post was created by an editor',
                 'body'         => '## Some markdown body content'
             ])
-            ->assertCreated();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas('posts', [
             'title' => 'This post was created by an editor',
@@ -182,13 +182,13 @@ class PostTest extends TestCase
                 'user_id' => $post->user_id,
                 'body'    => $post->body
             ])
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas('posts', ['title' => 'My post was updated']);
 
         $this
             ->delete(route('posts.destroy', $post->slug))
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertModelMissing($post);
 
@@ -215,7 +215,7 @@ class PostTest extends TestCase
                 'body'    => '## Some markdown body content',
                 'tags'    => ['Laravel', 'PHP']
             ])
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas(Tag::class, ['name' => 'Laravel']);
 
@@ -232,7 +232,7 @@ class PostTest extends TestCase
                 'body'    => $post->body,
                 'tags'    => ['Programming']
             ])
-            ->assertSuccessful();
+            ->assertRedirect(route('posts.index'));
 
         $this->assertCount(1, $post->refresh()->tags);
 
@@ -255,7 +255,7 @@ class PostTest extends TestCase
                 'image'   => $postCover,
                 'body'    => '## Some markdown body content'
             ])
-            ->assertCreated();
+            ->assertRedirect(route('posts.index'));
 
         $imagePath = "posts/{$postCover->hashName()}";
 

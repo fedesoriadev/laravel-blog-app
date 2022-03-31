@@ -28,11 +28,12 @@ class PostRequest extends FormRequest
             'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
             'title'   => ['required', 'string'],
             'slug'    => [
+                'nullable',
                 'string',
                 'regex:/^[a-z0-9_-]+$/i',
                 Rule::unique('posts', 'slug')->ignore($this->route('post')?->id)
             ],
-            'date'    => ['date'],
+            'date'    => ['nullable', 'date'],
             'image'   => ['image', 'max:2048'],
             'excerpt' => ['string'],
             'body'    => ['required']

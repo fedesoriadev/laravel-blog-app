@@ -9,6 +9,7 @@
                 <x-table.cell tag="th">{{ _('Tag') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Date') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
+                <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
 
@@ -23,6 +24,10 @@
                 <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
                 <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
+                <x-table.cell>
+                    <a href="{{ route('posts.edit', $post->slug) }}"
+                       class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                </x-table.cell>
             </tr>
         @endforeach
     </x-table>

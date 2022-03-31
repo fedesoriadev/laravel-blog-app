@@ -19,10 +19,11 @@ class Textarea extends Component
     public function __construct(
         string $name,
         ?string $label = null,
+        ?string $value = null
     ) {
         $this->name = $name;
         $this->label = $label ?? __(str_replace('_', ' ', Str::title($name)));
-        $this->value = old($name);
+        $this->value = old($name, $value);
     }
 
     /**

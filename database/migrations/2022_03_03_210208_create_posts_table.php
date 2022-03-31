@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('image')->nullable();
-            $table->string('excerpt')->nullable();
+            $table->text('excerpt')->nullable();
             $table->text('body');
             $table->enum('status', PostStatus::toArray())->default(PostStatus::DRAFT->value);
             $table->date('date')->nullable();

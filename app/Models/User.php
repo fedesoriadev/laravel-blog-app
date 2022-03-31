@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -33,6 +34,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ *
+ * Scopes
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User withRole(\App\Enums\UserRole $role)
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -99,6 +103,18 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Enums\UserRole $role
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithRole(Builder $query, UserRole $role): Builder
+    {
+        return $query->whereHas('roles', function (Builder $query) {
+            return $query->where('name', UserRole::EDITOR->value);
+        });
     }
 
     /**
