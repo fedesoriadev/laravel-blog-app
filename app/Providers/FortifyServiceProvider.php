@@ -34,7 +34,7 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->route('admin.home');
                 }
 
-                if ($request->user()->hasRole(UserRole::EDITOR)) {
+                if ($request->user()->hasRole(UserRole::AUTHOR)) {
                     return redirect()->route('posts.index');
                 }
 

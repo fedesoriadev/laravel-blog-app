@@ -27,7 +27,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('admin.posts.form', function (\Illuminate\View\View $view) {
-            return $view->with('authors', User::withRole(UserRole::EDITOR)->get());
+            return $view->with('authors', User::withRole(UserRole::AUTHOR)->get());
         });
     }
 }

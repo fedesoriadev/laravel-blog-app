@@ -74,7 +74,7 @@ class PostTest extends TestCase
             ->assertForbidden();
 
         $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
-        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+        $this->assertFalse($regularUser->hasRole(UserRole::AUTHOR));
     }
 
     /** @test */
@@ -99,7 +99,7 @@ class PostTest extends TestCase
             ->assertForbidden();
 
         $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
-        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+        $this->assertFalse($regularUser->hasRole(UserRole::AUTHOR));
 
         $this->assertDatabaseMissing('posts', ['title' => 'Updating title']);
     }
@@ -148,9 +148,9 @@ class PostTest extends TestCase
     public function it_allows_editors_to_create_posts(): void
     {
         $this
-            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->actingAs($editorUser = User::factory()->author()->create())
             ->assertAuthenticated()
-            ->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+            ->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
 
         $this
             ->post(route('posts.store'), [
@@ -170,9 +170,9 @@ class PostTest extends TestCase
     public function it_allows_editors_to_update_or_delete_owned_posts(): void
     {
         $this
-            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->actingAs($editorUser = User::factory()->author()->create())
             ->assertAuthenticated()
-            ->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+            ->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
 
         $post = Post::factory()->create(['user_id' => $editorUser->id]);
 

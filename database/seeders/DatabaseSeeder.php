@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
         $authors = User::factory(3)
-            ->editor()
+            ->author()
             ->create();
 
         $commenters = User::factory(10)->create();

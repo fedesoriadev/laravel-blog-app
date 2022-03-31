@@ -89,7 +89,7 @@ class PostTest extends TestCase
     /** @test */
     public function it_shows_posts_of_an_author(): void
     {
-        $author = User::factory()->editor()->create();
+        $author = User::factory()->author()->create();
 
         $author
             ->posts()

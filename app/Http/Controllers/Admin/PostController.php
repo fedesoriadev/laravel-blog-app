@@ -25,7 +25,7 @@ class PostController extends Controller
      */
     public function index(Request $request): View
     {
-        if ($request->user()->hasRole(UserRole::EDITOR)) {
+        if ($request->user()->hasRole(UserRole::AUTHOR)) {
             $posts = $request
                 ->user()
                 ->posts()

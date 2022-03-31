@@ -24,11 +24,11 @@ class CommentTest extends TestCase
             ->assertForbidden();
 
         $this
-            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->actingAs($editorUser = User::factory()->author()->create())
             ->delete(route('comments.destroy', $comment->id), [], ['Accept' => 'application/json'])
             ->assertForbidden();
 
-        $this->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+        $this->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
 
         $this->assertModelExists($comment);
     }

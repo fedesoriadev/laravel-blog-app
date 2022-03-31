@@ -65,10 +65,10 @@ class UserFactory extends Factory
     /**
      * @return $this
      */
-    public function editor(): static
+    public function author(): static
     {
         return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
-            Role::create(['name' => UserRole::EDITOR])
+            Role::create(['name' => UserRole::AUTHOR])
                 ->users()
                 ->attach($user);
         });

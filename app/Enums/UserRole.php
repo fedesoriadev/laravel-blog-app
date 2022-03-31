@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum UserRole: string implements Arrayable {
     case ADMIN = 'admin';
-    case EDITOR = 'editor';
+    case AUTHOR = 'author';
 
     /**
      * @return array

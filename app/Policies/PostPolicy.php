@@ -18,7 +18,7 @@ class PostPolicy
      */
     public function viewAny(User $user): Response|bool
     {
-        return $user->hasRole(UserRole::EDITOR);
+        return $user->hasRole(UserRole::AUTHOR);
     }
 
     /**
@@ -30,7 +30,7 @@ class PostPolicy
      */
     public function view(?User $user, Post $post): Response|bool
     {
-        if ($user && $user->hasRole(UserRole::EDITOR) && $post->author->is($user)) {
+        if ($user && $user->hasRole(UserRole::AUTHOR) && $post->author->is($user)) {
             return true;
         }
 
@@ -45,7 +45,7 @@ class PostPolicy
      */
     public function create(User $user): Response|bool
     {
-        return $user->hasRole(UserRole::EDITOR);
+        return $user->hasRole(UserRole::AUTHOR);
     }
 
     /**
@@ -57,7 +57,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): Response|bool
     {
-        return $user->hasRole(UserRole::EDITOR) && $post->author->is($user);
+        return $user->hasRole(UserRole::AUTHOR) && $post->author->is($user);
     }
 
     /**
@@ -69,6 +69,6 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): Response|bool
     {
-        return $user->hasRole(UserRole::EDITOR) && $post->author->is($user);
+        return $user->hasRole(UserRole::AUTHOR) && $post->author->is($user);
     }
 }

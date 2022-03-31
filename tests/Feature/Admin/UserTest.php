@@ -90,7 +90,7 @@ class UserTest extends TestCase
             ->assertForbidden();
 
         $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
-        $this->assertFalse($regularUser->hasRole(UserRole::EDITOR));
+        $this->assertFalse($regularUser->hasRole(UserRole::AUTHOR));
 
         $this
             ->patch(route('users.update', $user->username), ['name' => 'John Doe'])
@@ -103,13 +103,13 @@ class UserTest extends TestCase
             ->assertForbidden();
 
         $this
-            ->actingAs($editorUser = User::factory()->editor()->create())
+            ->actingAs($editorUser = User::factory()->author()->create())
             ->assertAuthenticated()
             ->post(route('users.store'), [])
             ->assertForbidden();
 
         $this->assertFalse($editorUser->hasRole(UserRole::ADMIN));
-        $this->assertTrue($editorUser->hasRole(UserRole::EDITOR));
+        $this->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
 
         $this
             ->patch(route('users.update', $user->username), ['name' => 'John Doe'])
@@ -227,7 +227,7 @@ class UserTest extends TestCase
 
         $this->post(route('logout'), []);
 
-        $editorUser = User::factory()->editor()->create();
+        $editorUser = User::factory()->author()->create();
 
         $this
             ->post('login', [
