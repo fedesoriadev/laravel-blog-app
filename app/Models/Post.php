@@ -131,16 +131,17 @@ class Post extends Model
     }
 
     /**
+     * @param string|null $date
      * @return $this
      * @throws \App\Exceptions\AlreadyPublishedException
      */
-    public function publish(): self
+    public function publish(string $date = null): self
     {
         if ($this->status === PostStatus::PUBLISHED) {
             throw new AlreadyPublishedException;
         }
 
-        $this->update(['status' => PostStatus::PUBLISHED, 'date' => now()]);
+        $this->update(['status' => PostStatus::PUBLISHED, 'date' => $date ?? now()]);
 
         return $this;
     }

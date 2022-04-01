@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Pagination;
+use App\Enums\PostStatus;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
@@ -52,6 +53,7 @@ class PostController extends Controller
     /**
      * @param \App\Http\Requests\PostRequest $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \App\Exceptions\AlreadyPublishedException
      */
     public function store(PostRequest $request): RedirectResponse
     {
@@ -62,6 +64,10 @@ class PostController extends Controller
         }
 
         $post = Post::create($attributes);
+
+        if ($request->has('publish') && $post->status !== PostStatus::PUBLISHED) {
+            $post->publish($attributes['date']);
+        }
 
         $this->handleTags($request, $post);
 
@@ -81,6 +87,7 @@ class PostController extends Controller
      * @param \App\Http\Requests\PostRequest $request
      * @param \App\Models\Post $post
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \App\Exceptions\AlreadyPublishedException
      */
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
@@ -91,6 +98,10 @@ class PostController extends Controller
         }
 
         $post->update($attributes);
+
+        if ($request->has('publish') && $post->status !== PostStatus::PUBLISHED) {
+            $post->publish($attributes['date']);
+        }
 
         $this->handleTags($request, $post);
 
