@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-slot name="title">{{ __('Comments') }}</x-slot>
+    @include('admin.comments._header')
 
     <x-table>
         <x-slot name="thead">

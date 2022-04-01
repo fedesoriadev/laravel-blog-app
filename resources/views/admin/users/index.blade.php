@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-slot name="title">{{ __('Users') }}</x-slot>
+    @include('admin.users._header')
 
     <x-table>
         <x-slot name="thead">
