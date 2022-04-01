@@ -1,13 +1,17 @@
 <x-app-layout>
-    <div class="max-w-sm mx-auto my-12 p-8 border border-slate-300 rounded-lg shadow-lg">
+    <x-auth.card>
+        <x-auth.errors />
+
         <x-form :action="route('login')" method="POST">
-            <x-form.input name="email" type="email" required/>
+            <x-form.input name="email" type="email" autofocus required/>
 
             <x-form.input name="password" type="password" autocomplete="new-password" required/>
 
             <x-form.checkbox name="remember" :label="__('Remember me')" />
 
+            <a href="{{ route('password.request') }}" class="text-xs text-gr">{{ __('Forgot password?') }}</a>
+
             <x-form.button>{{ __('Login') }}</x-form.button>
         </x-form>
-    </div>
+    </x-auth.card>
 </x-app-layout>
