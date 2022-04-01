@@ -10,7 +10,6 @@ class Checkbox extends Component
     public string $name;
     public ?string $label;
     public ?string $value;
-    public ?string $originalValue;
 
     /**
      * Create a new component instance.
@@ -20,17 +19,16 @@ class Checkbox extends Component
     public function __construct(
         string $name,
         ?string $label = null,
-        ?string $originalValue = null
+        ?string $value = null
     ) {
         $this->name = $name;
         $this->label = $label ?? __(str_replace('_', ' ', Str::title($name)));
-        $this->value = old($name);
-        $this->originalValue = old($name, $originalValue);
+        $this->value = old($name, $value);
     }
 
     public function isChecked($option): bool
     {
-        return $option === $this->originalValue;
+        return $option === $this->value;
     }
 
     /**

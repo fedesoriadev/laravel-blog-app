@@ -1,5 +1,5 @@
 <div class="text-right">
-    <button {{ $attributes->merge(['class' => 'px-6 py-2 font-semibold rounded-lg bg-indigo-600 text-white dark:bg-indigo-400']) }}>
+    <button {{ $attributes->merge(['class' => 'px-4 py-2 rounded-lg bg-indigo-600 text-white dark:bg-indigo-400']) }}>
         {{ $slot }}
     </button>
 </div>
