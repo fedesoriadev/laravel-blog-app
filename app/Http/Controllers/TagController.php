@@ -16,6 +16,7 @@ class TagController extends Controller
     {
         $posts = $tag
             ->posts()
+            ->with('author', 'tags')
             ->published()
             ->simplePaginate(Pagination::FRONT->value);
 

@@ -16,6 +16,7 @@ class AuthorController extends Controller
     {
         $posts = $author
             ->posts()
+            ->with('author', 'tags')
             ->published()
             ->simplePaginate(Pagination::FRONT->value);
 
