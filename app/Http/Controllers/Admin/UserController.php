@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -24,21 +25,18 @@ class UserController extends Controller
     }
 
     /**
-     * @param \App\Models\User $user
-     * @return \App\Models\User
+     * @return \Illuminate\Contracts\View\View
      */
-    public function show(User $user): User
+    public function create(): View
     {
-        $user->load('posts');
-
-        return $user;
+        return view('admin.users.form', ['user' => new User()]);
     }
 
     /**
      * @param \App\Http\Requests\UserRequest $request
-     * @return \App\Models\User
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UserRequest $request): User
+    public function store(UserRequest $request): RedirectResponse
     {
         $attributes = $request->validated();
 
@@ -50,15 +48,24 @@ class UserController extends Controller
 
         $user->roles()->sync($request->get('roles', []));
 
-        return $user;
+        return redirect()->route('users.index');
+    }
+
+    /**
+     * @param \App\Models\User $user
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit(User $user): View
+    {
+        return view('admin.users.form', ['user' => $user]);
     }
 
     /**
      * @param \App\Http\Requests\UserRequest $request
      * @param \App\Models\User $user
-     * @return \App\Models\User
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UserRequest $request, User $user): User
+    public function update(UserRequest $request, User $user): RedirectResponse
     {
         $attributes = $request->validated();
 
@@ -70,16 +77,18 @@ class UserController extends Controller
 
         $user->roles()->sync($request->get('roles', []));
 
-        return $user;
+        return redirect()->route('users.index');
     }
 
     /**
      * @param \App\Models\User $user
-     * @return bool
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user): bool
+    public function destroy(User $user): RedirectResponse
     {
-        return $user->delete();
+        $user->delete();
+
+        return redirect()->route('users.index');
     }
 
     /**

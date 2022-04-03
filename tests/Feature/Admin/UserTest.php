@@ -69,16 +69,16 @@ class UserTest extends TestCase
     public function it_denies_to_create_update_and_delete_users_for_anonymous_regular_and_editors_users(): void
     {
         $this
-            ->post(route('users.store'), [], ['Accept' => 'application/json'])
-            ->assertUnauthorized();
+            ->post(route('users.store'), [])
+            ->assertRedirect(route('login'));
 
         $this
-            ->patch(route('users.update', 'some.username'), [], ['Accept' => 'application/json'])
-            ->assertUnauthorized();
+            ->patch(route('users.update', 'some.username'), [])
+            ->assertRedirect(route('login'));
 
         $this
-            ->delete(route('users.destroy', 'some.username'), [], ['Accept' => 'application/json'])
-            ->assertUnauthorized();
+            ->delete(route('users.destroy', 'some.username'), [])
+            ->assertRedirect(route('login'));
 
         $user = User::factory()->create();
         $this->assertDatabaseHas('users', ['email' => $user->email]);
@@ -138,7 +138,7 @@ class UserTest extends TestCase
                 'password'              => 'password',
                 'password_confirmation' => 'password',
             ])
-            ->assertCreated();
+            ->assertRedirect(route('users.index'));
 
         $this->assertDatabaseHas('users', ['email' => 'moderator@example.com']);
 
@@ -150,13 +150,13 @@ class UserTest extends TestCase
                 'username' => $user->username,
                 'name'     => 'Mr. Moderator'
             ])
-            ->assertSuccessful();
+            ->assertRedirect(route('users.index'));
 
         $this->assertDatabaseHas('users', ['name' => 'Mr. Moderator']);
 
         $this
             ->delete(route('users.destroy', $user->username))
-            ->assertSuccessful();
+            ->assertRedirect(route('users.index'));
 
         $this->assertModelMissing($user);
     }
@@ -170,16 +170,16 @@ class UserTest extends TestCase
 
         $avatar = UploadedFile::fake()->image('avatar.jpg');
 
-        $response = $this->post(route('users.store'), [
-            'email'                 => 'test@test.com',
-            'name'                  => 'Some user test',
-            'username'              => 'some.user',
-            'password'              => 'test1234',
-            'password_confirmation' => 'test1234',
-            'avatar'                => $avatar,
-        ]);
-
-        $response->assertCreated();
+        $this
+            ->post(route('users.store'), [
+                'email'                 => 'test@test.com',
+                'name'                  => 'Some user test',
+                'username'              => 'some.user',
+                'password'              => 'test1234',
+                'password_confirmation' => 'test1234',
+                'avatar'                => $avatar,
+            ])
+            ->assertRedirect(route('users.index'));
 
         $imagePath = "avatars/{$avatar->hashName()}";
 
@@ -195,16 +195,16 @@ class UserTest extends TestCase
 
         $this->actingAs(User::factory()->admin()->create());;
 
-        $response = $this->post(route('users.store'), [
-            'email'                 => 'test@test.com',
-            'name'                  => 'Some user test',
-            'username'              => 'some.user',
-            'password'              => 'test1234',
-            'password_confirmation' => 'test1234',
-            'roles'                 => [$role->id],
-        ]);
-
-        $response->assertCreated();
+        $this
+            ->post(route('users.store'), [
+                'email'                 => 'test@test.com',
+                'name'                  => 'Some user test',
+                'username'              => 'some.user',
+                'password'              => 'test1234',
+                'password_confirmation' => 'test1234',
+                'roles'                 => [$role->id],
+            ])
+            ->assertRedirect(route('users.index'));
 
         $user = User::where('email', 'test@test.com')->first();
 
@@ -230,7 +230,7 @@ class UserTest extends TestCase
         $editorUser = User::factory()->author()->create();
 
         $this
-            ->post('login', [
+            ->post(route('login'), [
                 'email' => $editorUser->email,
                 'password' => 'password'
             ])
@@ -241,7 +241,7 @@ class UserTest extends TestCase
         $adminUser = User::factory()->admin()->create();
 
         $this
-            ->post('login', [
+            ->post(route('login'), [
                 'email' => $adminUser->email,
                 'password' => 'password'
             ])
