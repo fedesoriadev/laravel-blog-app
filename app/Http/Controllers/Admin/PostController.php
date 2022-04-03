@@ -71,6 +71,8 @@ class PostController extends Controller
 
         $this->handleTags($request, $post);
 
+        flash()->success(__('Post created'));
+
         return redirect()->route('posts.index');
     }
 
@@ -105,6 +107,8 @@ class PostController extends Controller
 
         $this->handleTags($request, $post);
 
+        flash()->success(__('Post updated'));
+
         return redirect()->route('posts.index');
     }
 
@@ -115,6 +119,8 @@ class PostController extends Controller
     public function destroy(Post $post): RedirectResponse
     {
         $post->delete();
+
+        flash()->success(__('Post deleted'));
 
         return redirect()->route('posts.index');
     }

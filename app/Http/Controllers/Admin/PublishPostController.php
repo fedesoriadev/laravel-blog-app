@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\AlreadyPublishedException;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
@@ -14,13 +15,16 @@ class PublishPostController extends Controller
      * @param \App\Models\Post $post
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \App\Exceptions\AlreadyPublishedException
      */
     public function __invoke(Request $request, Post $post): RedirectResponse
     {
         $this->authorize('update', $post);
 
-        $post->publish();
+        try {
+            $post->publish();
+        } catch (AlreadyPublishedException $e) {
+            flash()->danger(__('The post is already published'));
+        }
 
         return back();
     }

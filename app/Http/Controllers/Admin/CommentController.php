@@ -6,6 +6,7 @@ use App\Enums\Pagination;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -24,10 +25,14 @@ class CommentController extends Controller
 
     /**
      * @param \App\Models\Comment $comment
-     * @return bool
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Comment $comment): bool
+    public function destroy(Comment $comment): RedirectResponse
     {
-        return $comment->delete();
+        $comment->delete();
+
+        flash()->success(__('Comment deleted'));
+
+        return redirect()->route('comments.index');
     }
 }

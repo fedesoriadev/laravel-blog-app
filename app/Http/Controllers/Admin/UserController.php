@@ -48,6 +48,8 @@ class UserController extends Controller
 
         $user->roles()->sync($request->get('roles', []));
 
+        flash()->success(__('User created'));
+
         return redirect()->route('users.index');
     }
 
@@ -77,6 +79,8 @@ class UserController extends Controller
 
         $user->roles()->sync($request->get('roles', []));
 
+        flash()->success(__('User updated'));
+
         return redirect()->route('users.index');
     }
 
@@ -87,6 +91,8 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
+
+        flash()->success(__('User deleted'));
 
         return redirect()->route('users.index');
     }
