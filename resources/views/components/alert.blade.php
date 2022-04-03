@@ -1,12 +1,12 @@
 <div {{ $attributes->merge([
-    'class' => 'flex items-center p-4 rounded-lg text-base font-medium ' . $type->containerClasses(),
+    'class' => 'flex items-center p-4 rounded-lg text-base font-medium ' . $alertType->containerClasses(),
     'id' => 'alert'
 ]) }} role="alert">
     <div>
         {{ $slot }}
     </div>
     <button type="button"
-            class="h-8 w-8 p-1.5 ml-auto rounded-lg focus:ring-2 {{ $type->closeButtonClasses() }}"
+            class="h-8 w-8 p-1.5 ml-auto rounded-lg focus:ring-2 {{ $alertType->closeButtonClasses() }}"
             data-dismiss-target="#{{ $attributes->get('id', 'alert') }}"
             aria-label="{{ __('Close') }}">
         <span class="sr-only">{{ __('Close') }}</span>

@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Enums\AlertType;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Flash\Flash;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -16,7 +18,12 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Flash::levels([
+            'success' => AlertType::SUCCESS->name,
+            'danger'  => AlertType::DANGER->name,
+            'warning' => AlertType::WARNING->name,
+            'info'    => AlertType::INFO->name,
+        ]);
     }
 
     /**

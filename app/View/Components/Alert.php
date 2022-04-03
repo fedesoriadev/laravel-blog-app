@@ -7,14 +7,17 @@ use Illuminate\View\Component;
 
 class Alert extends Component
 {
+    public AlertType $alertType;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(
-        public AlertType $type = AlertType::SUCCESS
-    ) {}
+    public function __construct(string $type)
+    {
+        $this->alertType = AlertType::from($type);
+    }
 
     /**
      * Get the view / contents that represent the component.

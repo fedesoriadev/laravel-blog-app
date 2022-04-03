@@ -2,13 +2,13 @@
 
 namespace App\Enums;
 
-enum AlertType
+enum AlertType: string implements Arrayable
 {
-    case SUCCESS;
-    case DANGER;
-    case WARNING;
-    case INFO;
-    case DEFAULT;
+    case SUCCESS = 'success';
+    case DANGER = 'danger';
+    case WARNING = 'warning';
+    case INFO = 'info';
+    case DEFAULT = 'default';
 
     /**
      * @return string
@@ -36,5 +36,13 @@ enum AlertType
             self::INFO => 'text-blue-500 focus:ring-blue-400 hover:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300',
             self::DEFAULT => 'text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:text-gray-600 dark:hover:bg-gray-300',
         };
+    }
+
+    /**
+     * @return array
+     */
+    public static function toArray(): array
+    {
+        return array_column(self::cases(), 'value');
     }
 }
