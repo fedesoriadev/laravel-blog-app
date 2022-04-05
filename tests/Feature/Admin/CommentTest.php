@@ -42,7 +42,7 @@ class CommentTest extends TestCase
 
         $this
             ->delete(route('comments.destroy', $comment->id))
-            ->assertSuccessful();
+            ->assertRedirect(route('comments.index'));
 
         $this->assertModelMissing($comment);
     }
