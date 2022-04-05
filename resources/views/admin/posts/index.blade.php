@@ -25,21 +25,14 @@
                 <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
                 <x-table.cell>
-                    @if($post->status === \App\Enums\PostStatus::PUBLISHED)
-                        <x-form :action="route('posts.archive', $post->slug)" method="POST">
-                            <button type="submit" class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">
-                                {{ __('Archive') }}
-                            </button>
-                        </x-form>
-                    @else
-                        <x-form :action="route('posts.publish', $post->slug)" method="POST">
-                            <button type="submit" class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">
-                                {{ __('Publish') }}
-                            </button>
-                        </x-form>
-                    @endif
                     <a href="{{ route('posts.edit', $post->slug) }}"
                        class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+
+                    <x-form.confirmation
+                        :action="route('posts.' . ($post->status->isPublished() ? 'archive' : 'publish') , $post->slug)"
+                        method="POST">
+                        {{ __($post->status->isPublished() ? 'Archive' : 'Publish') }}
+                    </x-form.confirmation>
                 </x-table.cell>
             </tr>
         @endforeach

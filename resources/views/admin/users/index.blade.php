@@ -23,6 +23,10 @@
                 <x-table.cell>
                     <a href="{{ route('users.edit', $user->username) }}"
                        class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+
+                    <x-form.confirmation :action="route('users.destroy', $user->username)" method="DELETE">
+                        {{ __('Delete') }}
+                    </x-form.confirmation>
                 </x-table.cell>
             </tr>
         @endforeach
