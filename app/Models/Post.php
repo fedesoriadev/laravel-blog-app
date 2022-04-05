@@ -137,7 +137,7 @@ class Post extends Model
      */
     public function publish(string $date = null): self
     {
-        if ($this->status === PostStatus::PUBLISHED) {
+        if ($this->status->isPublished()) {
             throw new AlreadyPublishedException;
         }
 

@@ -20,6 +20,14 @@ enum PostStatus: string implements Arrayable
     }
 
     /**
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        return $this === self::PUBLISHED;
+    }
+
+    /**
      * @return string
      */
     public function color(): string

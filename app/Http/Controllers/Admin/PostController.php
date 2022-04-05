@@ -65,7 +65,7 @@ class PostController extends Controller
 
         $post = Post::create($attributes);
 
-        if ($request->has('publish') && $post->status !== PostStatus::PUBLISHED) {
+        if ($request->has('publish') && !$post->status->isPublished()) {
             $post->publish($attributes['date']);
         }
 
@@ -101,7 +101,7 @@ class PostController extends Controller
 
         $post->update($attributes);
 
-        if ($request->has('publish') && $post->status !== PostStatus::PUBLISHED) {
+        if ($request->has('publish') && !$post->status->isPublished()) {
             $post->publish($attributes['date']);
         }
 

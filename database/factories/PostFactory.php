@@ -30,7 +30,7 @@ class PostFactory extends Factory
             'excerpt' => $this->faker->sentence(20),
             'body'    => File::get(database_path('factories/stubs/post_body.md')),
             'status'  => $status->value,
-            'date'    => $status === PostStatus::PUBLISHED ? now() : null,
+            'date'    => $status->isPublished() ? now() : null,
         ];
     }
 
