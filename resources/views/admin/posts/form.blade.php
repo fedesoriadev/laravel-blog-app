@@ -52,12 +52,16 @@
 
                         <x-form.input name="slug" :value="$post->slug"/>
 
-                        <x-form.select
-                            name="user_id"
-                            :label="__('Author')"
-                            :options="$authors"
-                            :value="$post->user_id"
-                            required/>
+                        @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
+                            <x-form.select
+                                name="user_id"
+                                :label="__('Author')"
+                                :options="$authors"
+                                :value="$post->user_id"
+                                required/>
+                        @else
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                        @endif
 
                         <!-- Tags -->
                         <div class="mb-4">

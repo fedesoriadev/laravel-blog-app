@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,11 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // When creating/updating a post, check if the request user_id matches logged author
+        if ($this->user()->hasRole(UserRole::AUTHOR)) {
+            return $this->user()->id === (int) $this->get('user_id');
+        }
+
         return true;
     }
 

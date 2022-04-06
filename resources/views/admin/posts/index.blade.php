@@ -5,7 +5,9 @@
         <x-slot name="thead">
             <tr>
                 <x-table.cell tag="th">{{ _('Title') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
+                @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
+                    <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
+                @endif
                 <x-table.cell tag="th">{{ _('Tag') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Date') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
@@ -21,7 +23,9 @@
                     <a href="{{ route('posts.show', $post->slug) }}"
                        class="font-medium text-gray-800 hover:text-indigo-600 transition transition-all">{{ $post->title }}</a>
                 </x-table.cell>
-                <x-table.cell>{{ $post->author->name }}</x-table.cell>
+                @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
+                    <x-table.cell>{{ $post->author->name }}</x-table.cell>
+                @endif
                 <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
                 <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>

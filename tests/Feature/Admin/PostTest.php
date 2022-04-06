@@ -167,6 +167,27 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function it_denies_authors_to_set_another_owner_while_creating_posts(): void
+    {
+        $authorA = User::factory()->author()->create();
+
+        $this
+            ->actingAs($authorB = User::factory()->author()->create())
+            ->assertAuthenticated()
+            ->assertTrue($authorB->hasRole(UserRole::AUTHOR));
+
+        $this
+            ->post(route('posts.store'), [
+                'user_id'      => $authorA->id,
+                'title'        => 'This post was created by AUTHOR B',
+                'body'         => '## Some markdown body content'
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('posts', ['title' => 'This post was created by AUTHOR B']);
+    }
+
+    /** @test */
     public function it_allows_authors_to_update_or_delete_owned_posts(): void
     {
         $this
