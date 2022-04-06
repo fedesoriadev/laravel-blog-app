@@ -66,7 +66,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_denies_to_create_update_and_delete_users_for_anonymous_regular_and_editors_users(): void
+    public function it_denies_to_create_update_and_delete_users_for_anonymous_regular_and_authors_users(): void
     {
         $this
             ->post(route('users.store'), [])
@@ -103,13 +103,13 @@ class UserTest extends TestCase
             ->assertForbidden();
 
         $this
-            ->actingAs($editorUser = User::factory()->author()->create())
+            ->actingAs($authorUser = User::factory()->author()->create())
             ->assertAuthenticated()
             ->post(route('users.store'), [])
             ->assertForbidden();
 
-        $this->assertFalse($editorUser->hasRole(UserRole::ADMIN));
-        $this->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
+        $this->assertFalse($authorUser->hasRole(UserRole::ADMIN));
+        $this->assertTrue($authorUser->hasRole(UserRole::AUTHOR));
 
         $this
             ->patch(route('users.update', $user->username), ['name' => 'John Doe'])
@@ -227,11 +227,11 @@ class UserTest extends TestCase
 
         $this->post(route('logout'), []);
 
-        $editorUser = User::factory()->author()->create();
+        $authorUser = User::factory()->author()->create();
 
         $this
             ->post(route('login'), [
-                'email' => $editorUser->email,
+                'email' => $authorUser->email,
                 'password' => 'password'
             ])
             ->assertRedirect(route('posts.index'));

@@ -145,36 +145,36 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_editors_to_create_posts(): void
+    public function it_allows_authors_to_create_posts(): void
     {
         $this
-            ->actingAs($editorUser = User::factory()->author()->create())
+            ->actingAs($authorUser = User::factory()->author()->create())
             ->assertAuthenticated()
-            ->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
+            ->assertTrue($authorUser->hasRole(UserRole::AUTHOR));
 
         $this
             ->post(route('posts.store'), [
-                'user_id'      => $editorUser->id,
-                'title'        => 'This post was created by an editor',
+                'user_id'      => $authorUser->id,
+                'title'        => 'This post was created by an author',
                 'body'         => '## Some markdown body content'
             ])
             ->assertRedirect(route('posts.index'));
 
         $this->assertDatabaseHas('posts', [
-            'title' => 'This post was created by an editor',
-            'slug'  => Str::slug('This post was created by an editor')
+            'title' => 'This post was created by an author',
+            'slug'  => Str::slug('This post was created by an author')
         ]);
     }
 
     /** @test */
-    public function it_allows_editors_to_update_or_delete_owned_posts(): void
+    public function it_allows_authors_to_update_or_delete_owned_posts(): void
     {
         $this
-            ->actingAs($editorUser = User::factory()->author()->create())
+            ->actingAs($authorUser = User::factory()->author()->create())
             ->assertAuthenticated()
-            ->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
+            ->assertTrue($authorUser->hasRole(UserRole::AUTHOR));
 
-        $post = Post::factory()->create(['user_id' => $editorUser->id]);
+        $post = Post::factory()->create(['user_id' => $authorUser->id]);
 
         $this
             ->patch(route('posts.update', $post->slug), [

@@ -10,7 +10,7 @@ use Tests\TestCase;
 class CommentTest extends TestCase
 {
     /** @test */
-    public function it_denies_to_delete_comments_for_anonymous_regular_and_editors_users(): void
+    public function it_denies_to_delete_comments_for_anonymous_regular_and_authors_users(): void
     {
         $comment = Comment::factory()->create();
 
@@ -24,11 +24,11 @@ class CommentTest extends TestCase
             ->assertForbidden();
 
         $this
-            ->actingAs($editorUser = User::factory()->author()->create())
+            ->actingAs($authorUser = User::factory()->author()->create())
             ->delete(route('comments.destroy', $comment->id), [], ['Accept' => 'application/json'])
             ->assertForbidden();
 
-        $this->assertTrue($editorUser->hasRole(UserRole::AUTHOR));
+        $this->assertTrue($authorUser->hasRole(UserRole::AUTHOR));
 
         $this->assertModelExists($comment);
     }
