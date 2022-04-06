@@ -202,13 +202,13 @@ class UserTest extends TestCase
                 'username'              => 'some.user',
                 'password'              => 'test1234',
                 'password_confirmation' => 'test1234',
-                'roles'                 => [$role->id],
+                'role_id'               => $role->id,
             ])
             ->assertRedirect(route('users.index'));
 
         $user = User::where('email', 'test@test.com')->first();
 
-        $this->assertCount(1, $user->roles);
+        $this->assertNotNull($user->role);
 
         $this->assertTrue($user->hasRole(UserRole::ADMIN));
     }

@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $users = User::with('roles')
+        $users = User::with('role')
             ->simplePaginate(Pagination::ADMIN->value);
 
         return view('admin.users.index', ['users' => $users]);
@@ -44,9 +44,7 @@ class UserController extends Controller
             $attributes['avatar'] = $this->handleAvatar($request);
         }
 
-        $user = User::create($attributes);
-
-        $user->roles()->sync($request->get('roles', []));
+        User::create($attributes);
 
         flash()->success(__('User created'));
 
@@ -76,8 +74,6 @@ class UserController extends Controller
         }
 
         $user->update($attributes);
-
-        $user->roles()->sync($request->get('roles', []));
 
         flash()->success(__('User updated'));
 

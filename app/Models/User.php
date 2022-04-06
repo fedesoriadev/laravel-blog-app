@@ -6,7 +6,7 @@ use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,7 +31,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $github
  *
  * Relationships
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
+ * @property-read \App\Models\Role[] $role
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  *
@@ -51,8 +51,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'username',
         'email',
+        'username',
+        'role_id',
         'password',
         'avatar',
         'about_me',
@@ -82,11 +83,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function roles(): BelongsToMany
+    public function role(): BelongsTo
     {
-        return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsTo(Role::class);
     }
 
     /**
@@ -112,7 +113,7 @@ class User extends Authenticatable
      */
     public function scopeWithRole(Builder $query, UserRole $role): Builder
     {
-        return $query->whereHas('roles', function (Builder $query) use ($role) {
+        return $query->whereHas('role', function (Builder $query) use ($role) {
             return $query->where('name', $role->value);
         });
     }
@@ -123,6 +124,6 @@ class User extends Authenticatable
      */
     public function hasRole(UserRole $role): bool
     {
-        return $this->roles->contains('name', $role);
+        return $this->role?->name === $role;
     }
 }

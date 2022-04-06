@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Fields
@@ -40,10 +40,10 @@ class Role extends Model
     ];
 
     /**
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function users(): BelongsToMany
+    public function users(): HasMany
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->hasMany(User::class);
     }
 }

@@ -58,7 +58,7 @@ class UserFactory extends Factory
         return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
             Role::create(['name' => UserRole::ADMIN])
                 ->users()
-                ->attach($user);
+                ->save($user);
         });
     }
 
@@ -70,7 +70,7 @@ class UserFactory extends Factory
         return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
             Role::create(['name' => UserRole::AUTHOR])
                 ->users()
-                ->attach($user);
+                ->save($user);
         });
     }
 }

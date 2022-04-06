@@ -26,8 +26,9 @@ class UserRequest extends FormRequest
     {
         return [
             'name'     => ['required'],
-            'username' => ['required', Rule::unique('users')->ignore($this->route('user')?->id)],
             'email'    => ['required', 'email', Rule::unique('users')->ignore($this->route('user')?->id)],
+            'username' => ['required', Rule::unique('users')->ignore($this->route('user')?->id)],
+            'role_id'  => ['nullable', 'integer', Rule::exists('roles', 'id')],
             'password' => [Rule::requiredIf(!$this->route('user')), 'confirmed', 'min:8'],
             'avatar'   => ['nullable', 'image', 'max:1024'],
             'about_me' => ['nullable'],

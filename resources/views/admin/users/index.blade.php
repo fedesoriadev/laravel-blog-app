@@ -18,7 +18,7 @@
                 <x-table.cell>{{ $user->name }}</x-table.cell>
                 <x-table.cell>{{ $user->email }}</x-table.cell>
                 <x-table.cell>{{ $user->username }}</x-table.cell>
-                <x-table.cell>{{ $user->roles->first()?->name->value }}</x-table.cell>
+                <x-table.cell>{{ $user->role?->name->value }}</x-table.cell>
                 <x-table.cell>{{ $user->created_at->format('F j, Y') }}</x-table.cell>
                 <x-table.cell>
                     <x-link href="{{ route('users.edit', $user->username) }}">
