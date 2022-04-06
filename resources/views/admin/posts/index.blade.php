@@ -18,15 +18,17 @@
                 <x-table.cell class="flex items-center">
                     <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->color() }}"
                           title="{{ $post->status->name }}"></span>
-                    <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
+                    <a href="{{ route('posts.show', $post->slug) }}"
+                       class="font-medium text-gray-800 hover:text-indigo-600 transition transition-all">{{ $post->title }}</a>
                 </x-table.cell>
                 <x-table.cell>{{ $post->author->name }}</x-table.cell>
                 <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
                 <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
                 <x-table.cell>
-                    <a href="{{ route('posts.edit', $post->slug) }}"
-                       class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                    <x-link href="{{ route('posts.edit', $post->slug) }}">
+                        {{ __('Edit') }}
+                    </x-link>
 
                     <x-form.confirmation
                         :action="route('posts.' . ($post->status->isPublished() ? 'archive' : 'publish') , $post->slug)"
