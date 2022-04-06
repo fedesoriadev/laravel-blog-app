@@ -4,23 +4,27 @@
     <x-table>
         <x-slot name="thead">
             <tr>
-                <x-table.cell tag="th">{{ _('Comment') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Post') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ _('Comment') }}</x-table.cell>
+                <x-table.cell tag="th">{{ _('Create at') }}</x-table.cell>
+                <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
 
         @foreach($comments as $comment)
             <tr>
-                <x-table.cell>
-                    <a href="{{ route('posts.show', $comment->post->slug) }}#comments">{{ substr($comment->body, 0, 50) }}</a>
-                </x-table.cell>
-                <x-table.cell>{{ $comment->author->name }}</x-table.cell>
-                <x-table.cell>
-                    <a href="{{ route('posts.show', $comment->post->slug) }}">{{ $comment->post->title }}</a>
-                </x-table.cell>
+                <x-table.cell class="align-baseline">{{ $comment->author->name }}</x-table.cell>
+                <x-table.cell class="max-w-3xl">{{ $comment->body }}</x-table.cell>
                 <x-table.cell>{{ $comment->created_at->format('F j, Y') }}</x-table.cell>
+                <x-table.cell>
+                    <x-link href="{{ route('posts.show', $comment->post->slug) }}#comments" target="_blank">
+                        {{ __('View post') }}
+                    </x-link>
+
+                    <x-form.confirmation :action="route('comments.destroy', $comment)" method="DELETE">
+                        {{ __('Delete') }}
+                    </x-form.confirmation>
+                </x-table.cell>
             </tr>
         @endforeach
     </x-table>
