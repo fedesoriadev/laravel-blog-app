@@ -44,4 +44,20 @@ class UserTest extends TestCase
         $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
         $this->assertFalse($regularUser->hasRole(UserRole::AUTHOR));
     }
+
+    /** @test */
+    public function it_generates_a_home_link_depending_the_role(): void
+    {
+        $adminUser = User::factory()->admin()->create();
+
+        $this->assertEquals(route('admin.home'), $adminUser->home());
+
+        $authorUser = User::factory()->author()->create();
+
+        $this->assertEquals(route('posts.index'), $authorUser->home());
+
+        $regularUser = User::factory()->create();
+
+        $this->assertEquals(route('home'), $regularUser->home());
+    }
 }

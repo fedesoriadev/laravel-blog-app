@@ -6,7 +6,6 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Enums\UserRole;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -30,15 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
              */
             public function toResponse($request): Response
             {
-                if ($request->user()->hasRole(UserRole::ADMIN)) {
-                    return redirect()->route('admin.home');
-                }
-
-                if ($request->user()->hasRole(UserRole::AUTHOR)) {
-                    return redirect()->route('posts.index');
-                }
-
-                return redirect(config('fortify.home'));
+                return redirect($request->user()->home() ?? config('fortify.home'));
             }
         });
     }

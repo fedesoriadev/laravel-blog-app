@@ -126,4 +126,20 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role?->name === $role;
     }
+
+    /**
+     * @return string
+     */
+    public function home(): string
+    {
+        if ($this->role?->name === UserRole::ADMIN) {
+            return route('admin.home');
+        }
+
+        if ($this->role?->name === UserRole::AUTHOR) {
+            return route('posts.index');
+        }
+
+        return route('home');
+    }
 }

@@ -24,7 +24,7 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <x-app-logo :href="route('admin.home')" />
+                        <x-app-logo :href="Auth::user()->home()" />
                     </div>
 
                     <div class="hidden md:block">
