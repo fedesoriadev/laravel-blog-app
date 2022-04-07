@@ -28,7 +28,7 @@ class CommentTest extends TestCase
 
         $this
             ->post(route('comments.store', $post->slug), ['comment' => 'This comment belongs to a post.'])
-            ->assertSuccessful();
+            ->assertRedirect();
 
         $this->assertDatabaseHas('comments', ['body' => 'This comment belongs to a post.']);
     }
@@ -42,15 +42,17 @@ class CommentTest extends TestCase
 
         $otherUser = User::factory()->create();
 
-        $response = $this
+        $this
             ->post(route('comments.store', $post->slug), [
                 'user_id' => $otherUser->id,
-                'comment'    => 'This comment belongs to the current user.'
+                'comment' => 'This comment belongs to the current user.'
             ])
-            ->assertSuccessful();
+            ->assertRedirect();
 
-        $this->assertEquals($currentUser->id, $response['user_id']);
-        $this->assertNotEquals($otherUser->id, $response['user_id']);
+        $comment = Comment::first();
+
+        $this->assertEquals($currentUser->id, $comment->user_id);
+        $this->assertNotEquals($otherUser->id, $comment->user_id);
     }
 
     /** @test */

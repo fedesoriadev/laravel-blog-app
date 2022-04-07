@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostCommentsController extends Controller
@@ -11,15 +11,17 @@ class PostCommentsController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Post $post
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Request $request, Post $post): Model
+    public function __invoke(Request $request, Post $post): RedirectResponse
     {
         $request->validate(['comment' => 'required']);
 
-        return $post->comments()->create([
+        $post->comments()->create([
             'user_id' => $request->user()->id,
             'body'    => $request->comment
         ]);
+
+        return back();
     }
 }
