@@ -19,7 +19,7 @@
             <a href="{{ Auth::user()->home() }}" class="text-sm text-slate-500">{{ __('Hi, :name', ['name' => Auth::user()->name]) }}</a>
 
             <x-form :action="route('logout')" method="POST">
-                <button type="submit" class="text-sm text-slate-500">{{ __('Logut') }}</button>
+                <button type="submit" class="text-sm text-slate-500">{{ __('Logout') }}</button>
             </x-form>
         @else
             <a href="{{ route('login') }}" class="text-sm text-slate-500">{{ __('Login') }}</a>
