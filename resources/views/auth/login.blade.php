@@ -1,5 +1,11 @@
 <x-app-layout>
     <x-auth.card>
+        @if (session('status'))
+            <div class="font-medium text-sm text-green-600 mb-4">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <x-auth.errors />
 
         <x-form :action="route('login')" method="POST">

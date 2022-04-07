@@ -32,6 +32,6 @@ Route::get('tags/{tag}', TagController::class)
 
 Route::post('posts/{post}/comments', PostCommentsController::class)
     ->name('comments.store')
-    ->middleware('auth');
+    ->middleware(['auth', 'verified']);
 
 
