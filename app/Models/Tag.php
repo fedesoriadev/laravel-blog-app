@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
  */
 class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     /**
      * @inheritdoc
@@ -33,18 +33,6 @@ class Tag extends Model
         'slug',
         'description'
     ];
-
-    /**
-     * @inheritdoc
-     */
-    protected static function booted()
-    {
-        static::creating(function (Tag $tag) {
-            if (!$tag->slug) {
-                $tag->slug = Str::slug($tag->name);
-            }
-        });
-    }
 
     /**
      * @return BelongsToMany

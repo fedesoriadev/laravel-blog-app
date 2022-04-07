@@ -40,7 +40,7 @@ use Illuminate\Support\Str;
  */
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     /**
      * @inheritdoc
@@ -62,18 +62,6 @@ class Post extends Model
     protected $casts = [
         'status' => PostStatus::class,
     ];
-
-    /**
-     * @inheritdoc
-     */
-    protected static function booted()
-    {
-        self::creating(function (Post $post) {
-            if (!$post->slug) {
-                $post->slug = Str::slug($post->title);
-            }
-        });
-    }
 
     /**
      * @return BelongsTo
