@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Enums\AlertType;
 use App\Enums\UserRole;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,10 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer('admin.posts.form', function (\Illuminate\View\View $view) {
             return $view->with('authors', User::withRole(UserRole::AUTHOR)->get());
+        });
+
+        View::composer('admin.users.form', function (\Illuminate\View\View $view) {
+            return $view->with('roles', Role::all());
         });
     }
 }

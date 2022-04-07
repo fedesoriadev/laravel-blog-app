@@ -21,6 +21,34 @@
                     <x-form.input name="password_confirmation" type="password" required/>
                 @endif
 
+                <fieldset class="mb-4">
+                    <legend class="block text-base text-slate-500 dark:text-slate-50">{{ __('Role') }}</legend>
+                    <div class="mt-4 space-y-4">
+                        <div class="flex items-center">
+                            <input type="radio" name="role_id" value="" id="role-none">
+                            <label for="role-none" class="ml-3 block text-sm font-medium text-gray-700">
+                                {{ __('None') }}
+                            </label>
+                        </div>
+
+                        @foreach($roles as $role)
+                            <div class="flex items-center">
+                                <input
+                                    type="radio"
+                                    name="role_id"
+                                    value="{{ $role->id }}"
+                                    id="role-{{ $role->name->value }}"
+                                    {{ $user->role?->id === $role->id ? 'checked=checked' : '' }}>
+                                <label
+                                    for="role-{{ $role->name->value }}"
+                                    class="ml-3 block text-sm font-medium text-gray-700">
+                                    {{ ucfirst($role->name->value) }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </fieldset>
+
                 <x-form.input name="avatar" type="file"/>
 
                 <x-form.input name="about_me" :value="$user->about_me"/>

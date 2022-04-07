@@ -56,7 +56,7 @@ class UserFactory extends Factory
     public function admin(): static
     {
         return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
-            Role::create(['name' => UserRole::ADMIN])
+            Role::firstOrCreate(['name' => UserRole::ADMIN])
                 ->users()
                 ->save($user);
         });
@@ -68,7 +68,7 @@ class UserFactory extends Factory
     public function author(): static
     {
         return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
-            Role::create(['name' => UserRole::AUTHOR])
+            Role::firstOrCreate(['name' => UserRole::AUTHOR])
                 ->users()
                 ->save($user);
         });
