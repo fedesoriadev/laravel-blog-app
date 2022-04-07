@@ -63,6 +63,8 @@ class PostController extends Controller
             $attributes['image'] = $this->handleImage($request);
         }
 
+        $attributes['status'] = PostStatus::DRAFT;
+
         $post = Post::create($attributes);
 
         if ($request->has('publish') && !$post->status->isPublished()) {
