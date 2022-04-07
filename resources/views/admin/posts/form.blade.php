@@ -27,7 +27,7 @@
                         <div class="flex items-center justify-between">
                             @if($post->exists)
                                 <a href="{{ route('posts.show', $post->slug) }}"
-                                   class="px-4 py-2 rounded-lg border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400"
+                                   class="px-4 py-2 rounded-md border border-indigo-500 text-indigo-500 transition hover:bg-indigo-800 hover:border-indigo-800 hover:text-white dark:hover:bg-indigo-400"
                                    target="_blank">Preview</a>
                             @endif
                             <x-form.button x-text="publish ? publishText : draftText">{{ __('Save') }}</x-form.button>
@@ -82,7 +82,7 @@
                                        type="text">
 
                                 <template x-for="tag in tags" :key="tag">
-                                    <span class="inline-flex items-center space-x-1 px-2 py-1 bg-indigo-600 text-xs text-white rounded-full">
+                                    <span class="inline-flex items-center mr-1 space-x-1 px-2 py-1 bg-indigo-600 text-xs text-white rounded-full">
                                         <span x-text="tag"></span>
                                         <button type="button" @click="tags = tags.filter(i => i !== tag)">&times;</button>
                                     </span>

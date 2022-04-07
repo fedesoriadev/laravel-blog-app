@@ -9,7 +9,7 @@
                 <x-table.cell tag="th">{{ _('Username') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Role') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
-                <x-table.cell tag="th">&nbsp;</x-table.cell>
+                <x-table.cell tag="th" class="w-[1%] whitespace-nowrap"></x-table.cell>
             </tr>
         </x-slot>
 
@@ -18,10 +18,14 @@
                 <x-table.cell>{{ $user->name }}</x-table.cell>
                 <x-table.cell>{{ $user->email }}</x-table.cell>
                 <x-table.cell>{{ $user->username }}</x-table.cell>
-                <x-table.cell>{{ $user->role?->name->value }}</x-table.cell>
-                <x-table.cell>{{ $user->created_at->format('F j, Y') }}</x-table.cell>
                 <x-table.cell>
-                    <x-link href="{{ route('users.edit', $user->username) }}">
+                    <span class="text-xs text-gray-700 tracking-wide px-2 py-1 rounded-xl {{ $user->role?->name->background() }}">
+                        {{ ucfirst($user->role?->name->value) }}
+                    </span>
+                </x-table.cell>
+                <x-table.cell>{{ $user->created_at->format('F j, Y') }}</x-table.cell>
+                <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
+                    <x-link href="{{ route('users.edit', $user->username) }}" class="mr-2">
                         {{ __('Edit') }}
                     </x-link>
 

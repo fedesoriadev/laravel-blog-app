@@ -34,8 +34,8 @@ class PostStatusTest extends TestCase
     /** @test */
     public function it_returns_html_classes_depending_post_status(): void
     {
-        $this->assertTrue(str_contains(PostStatus::PUBLISHED->color(), 'green'));
-        $this->assertTrue(str_contains(PostStatus::ARCHIVED->color(), 'red'));
-        $this->assertTrue(str_contains(PostStatus::DRAFT->color(), 'gray'));
+        $this->assertTrue(str_contains(PostStatus::PUBLISHED->background(), 'green'));
+        $this->assertTrue(str_contains(PostStatus::ARCHIVED->background(), 'red'));
+        $this->assertTrue(str_contains(PostStatus::DRAFT->background(), 'gray'));
     }
 }

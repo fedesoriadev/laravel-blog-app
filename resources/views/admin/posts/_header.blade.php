@@ -5,7 +5,7 @@
         </h1>
 
         <a href="{{ route('posts.create') }}"
-           class="ml-auto px-4 py-2 rounded-lg bg-indigo-600 text-white dark:bg-indigo-400">
+           class="ml-auto px-4 py-2 rounded-md bg-indigo-600 text-white transition hover:bg-indigo-800 dark:bg-indigo-400">
             {{ __('Create post') }}
         </a>
     </div>

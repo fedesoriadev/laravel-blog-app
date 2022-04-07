@@ -19,7 +19,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'        => Str::title($this->faker->words(Arr::random([1, 2]), true)),
+            'name'        => ucfirst($this->faker->word()),
             'description' => $this->faker->sentence()
         ];
     }

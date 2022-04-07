@@ -1,7 +1,7 @@
 <{{ $tag }} {{ $attributes->merge([
     'class' => $tag === 'td'
-        ? 'px-6 py-4 text-sm text-slate-600'
-        : 'px-6 py-4 text-base text-slate-800 font-semibold'
+        ? 'px-4 py-3 text-sm text-slate-600'
+        : 'px-4 py-3 text-base text-slate-800 font-semibold'
 ]) }}>
     {{ $slot }}
 </{{ $tag }}>

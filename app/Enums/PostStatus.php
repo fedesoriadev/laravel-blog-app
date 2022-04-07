@@ -30,7 +30,7 @@ enum PostStatus: string implements Arrayable
     /**
      * @return string
      */
-    public function color(): string
+    public function background(): string
     {
         return match ($this) {
             self::DRAFT => 'bg-gray-500',

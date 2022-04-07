@@ -18,7 +18,7 @@
         @foreach($posts as $post)
             <tr>
                 <x-table.cell class="flex items-center">
-                    <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->color() }}"
+                    <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->background() }}"
                           title="{{ $post->status->name }}"></span>
                     <a href="{{ route('posts.show', $post->slug) }}"
                        class="font-medium text-gray-800 hover:text-indigo-600 transition transition-all">{{ $post->title }}</a>
@@ -26,11 +26,17 @@
                 @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
                     <x-table.cell>{{ $post->author->name }}</x-table.cell>
                 @endif
-                <x-table.cell>{{ $post->tags->first()?->name }}</x-table.cell>
+                <x-table.cell>
+                    @if($post->tags)
+                        @foreach($post->tags->pluck('name') as $tag)
+                            <span class="text-xs text-gray-700 tracking-wide px-2 py-1 rounded-xl bg-indigo-100">{{ $tag }}</span>
+                        @endforeach
+                    @endif
+                </x-table.cell>
                 <x-table.cell>{{ $post->date }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
-                <x-table.cell>
-                    <x-link href="{{ route('posts.edit', $post->slug) }}">
+                <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
+                    <x-link href="{{ route('posts.edit', $post->slug) }}" class="mr-2">
                         {{ __('Edit') }}
                     </x-link>
 
