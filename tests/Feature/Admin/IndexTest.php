@@ -18,6 +18,7 @@ class IndexTest extends TestCase
 
         $this
             ->get('admin')
-            ->assertViewIs('admin.index');
+            ->assertViewIs('admin.index')
+            ->assertViewHasAll(['posts_count', 'comments_count', 'user_count']);
     }
 }
