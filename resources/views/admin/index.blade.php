@@ -5,8 +5,10 @@
         </div>
     </x-slot>
 
-    <div class="grid md:grid-cols-3 gap-8">
-        <div class="rounded-lg bg-white drop-shadow">
+    <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- Stats: Posts -->
+        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -17,15 +19,30 @@
                 </div>
                 <div>
                     <h3 class="text-gray-600">{{ __('Posts') }}</h3>
-                    <h2 class="text-black text-3xl font-bold">{{ $posts_count }}</h2>
+                    <h2 class="text-black text-3xl font-bold">{{ $postsCount }}</h2>
                 </div>
+            </div>
+            <div class="divide-y divide-gray-200">
+                <div class="px-6 py-4 flex items-center">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <h3 class="ml-2 text-gray-600 font-medium">{{ __('Top posts') }}</h3>
+                </div>
+                @foreach($topPosts as $post)
+                    <a href="{{ route('posts.show', $post->slug) }}"
+                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                        {{ \Illuminate\Support\Str::words($post->title, 7) }}
+                    </a>
+                @endforeach
             </div>
             <div class="rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('posts.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>
 
-        <div class="rounded-lg bg-white drop-shadow">
+        <!-- Stats: Comments -->
+        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -36,15 +53,30 @@
                 </div>
                 <div>
                     <h3 class="text-gray-600">{{ __('Comments') }}</h3>
-                    <h2 class="text-black text-3xl font-bold">{{ $comments_count }}</h2>
+                    <h2 class="text-black text-3xl font-bold">{{ $commentsCount }}</h2>
                 </div>
+            </div>
+            <div class="divide-y divide-gray-200">
+                <div class="px-6 py-4 flex items-center">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="ml-2 text-gray-600 font-medium">{{ __('Latest comments') }}</h3>
+                </div>
+                @foreach($latestComments as $comment)
+                    <a href="{{ route('posts.show', $comment->post->slug) }}#comments"
+                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                        {{ \Illuminate\Support\Str::words($comment->body, 7) }}
+                    </a>
+                @endforeach
             </div>
             <div class="rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('comments.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>
 
-        <div class="rounded-lg bg-white drop-shadow">
+        <!-- Stats: Users -->
+        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -55,12 +87,28 @@
                 </div>
                 <div>
                     <h3 class="text-gray-600">{{ __('Users') }}</h3>
-                    <h2 class="text-black text-3xl font-bold">{{ $user_count }}</h2>
+                    <h2 class="text-black text-3xl font-bold">{{ $userCount }}</h2>
                 </div>
+            </div>
+            <div class="divide-y divide-gray-200">
+                <div class="px-6 py-4 flex items-center">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    <h3 class="ml-2 text-gray-600 font-medium">{{ __('New users') }}</h3>
+                </div>
+                @foreach($newUsers as $user)
+                    <a href="{{ route('users.edit', $user->username) }}"
+                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                        <x-user-avatar :user="$user" class="inline mr-2 w-[22px] h-[22px]"/>
+                        <span>{{ $user->name }} on {{ $user->created_at->format('F j, Y') }}</span>
+                    </a>
+                @endforeach
             </div>
             <div class="rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('users.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>
+
     </div>
 </x-admin-layout>

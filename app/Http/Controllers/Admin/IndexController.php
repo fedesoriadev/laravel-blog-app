@@ -15,11 +15,21 @@ class IndexController extends Controller
      */
     public function __invoke(): View
     {
-        $posts_count = Post::count();
-        $comments_count = Comment::count();
-        $user_count = User::count();
+        $postsCount = Post::count();
+        $commentsCount = Comment::count();
+        $userCount = User::count();
 
+        $topPosts = Post::take(3)->inRandomOrder()->get();
+        $latestComments = Comment::with('post')->latest()->take(3)->get();
+        $newUsers = User::latest()->take(3)->get();
 
-        return view('admin.index', compact('posts_count', 'comments_count', 'user_count'));
+        return view('admin.index', compact(
+            'postsCount',
+            'commentsCount',
+            'userCount',
+            'topPosts',
+            'latestComments',
+            'newUsers'
+        ));
     }
 }
