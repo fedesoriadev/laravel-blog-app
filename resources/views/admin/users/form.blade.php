@@ -38,7 +38,7 @@
                                     name="role_id"
                                     value="{{ $role->id }}"
                                     id="role-{{ $role->name->value }}"
-                                    {{ $user->role?->id === $role->id ? 'checked=checked' : '' }}>
+                                    {{ old('role_id', $user->role?->id) === $role->id ? 'checked=checked' : '' }}>
                                 <label
                                     for="role-{{ $role->name->value }}"
                                     class="ml-3 block text-sm font-medium text-gray-700">

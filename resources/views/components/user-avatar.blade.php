@@ -1,8 +1,10 @@
 @if ($user->avatar)
-    <img src="{{ $user->avatar }}" class="w-8 h-8 rounded-full object-contain" alt="{{ $user->name }}">
+    <img src="{{ $user->avatar }}"
+         alt="{{ $user->name }}"
+         {{ $attributes->merge(['class' => 'w-8 h-8 rounded-full object-contain']) }}>
 @else
     <svg xmlns="http://www.w3.org/2000/svg"
-         class="h-8 w-8 text-indigo-600"
+         {{ $attributes->merge(['class' => 'h-8 w-8 text-indigo-600']) }}
          fill="none"
          stroke="currentColor"
          viewBox="0 0 24 24"

@@ -44,6 +44,8 @@ class UserController extends Controller
             $attributes['avatar'] = $this->handleAvatar($request);
         }
 
+        $attributes['email_verified_at'] = now();
+
         User::create($attributes);
 
         flash()->success(__('User created'));
