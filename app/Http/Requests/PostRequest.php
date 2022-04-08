@@ -41,7 +41,7 @@ class PostRequest extends FormRequest
             ],
             'date'    => ['nullable', 'date'],
             'image'   => ['image', 'max:2048'],
-            'excerpt' => ['string'],
+            'excerpt' => ['nullable', 'string'],
             'body'    => ['required']
         ];
     }

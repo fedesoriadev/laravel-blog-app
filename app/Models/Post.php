@@ -97,7 +97,8 @@ class Post extends Model
     {
         return $query
             ->where('date', '<=', now())
-            ->where('status', PostStatus::PUBLISHED->value);
+            ->where('status', PostStatus::PUBLISHED->value)
+            ->latest('date');
     }
 
     /**

@@ -27,6 +27,7 @@ class PostTest extends TestCase
             'Test slug is unique'             => ['slug', 'first-post', 'unique'],
             'Test field date is a date'       => ['date', '2022-50-100', 'date'],
             'Test image is valid'             => ['image', 'not-a-image', 'image'],
+            'Test excerpt may be empty'       => ['excerpt', '', 'string'],
             'Test excerpt is a string'        => ['excerpt', 1, 'string'],
             'Test body is required'           => ['body', '', 'required'],
         ];

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\Pagination;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -23,6 +24,33 @@ class PostTest extends TestCase
             ->assertDontSee($draftPost->title);
 
         $this->assertCount(1, $response['posts']);
+    }
+
+    /** @test */
+    public function it_lists_posts_ordered_by_published_date(): void
+    {
+        Post::factory()
+            ->published(Carbon::createFromDate(2022, 1, 1))
+            ->create(['title' => 'Post A']);
+
+        Post::factory()
+            ->published(Carbon::createFromDate(2022, 2, 1))
+            ->create(['title' => 'Post B']);
+
+        Post::factory()
+            ->published(now()->addWeek())
+            ->create(['title' => 'Post C']);
+
+        $this
+            ->get('/')
+            ->assertSeeInOrder(['Post B', 'Post A'])
+            ->assertDontSee('Post C');
+
+        $this->travel(2)->weeks();
+
+        $this
+            ->get('/')
+            ->assertSeeInOrder(['Post C', 'Post B', 'Post A']);
     }
 
     /** @test */
