@@ -33,9 +33,9 @@ enum PostStatus: string implements Arrayable
     public function background(): string
     {
         return match ($this) {
-            self::DRAFT => 'bg-gray-500',
-            self::PUBLISHED => 'bg-green-500',
-            self::ARCHIVED => 'bg-red-500',
+            self::DRAFT => 'bg-gray-400',
+            self::PUBLISHED => 'bg-green-400',
+            self::ARCHIVED => 'bg-red-400',
         };
     }
 

@@ -21,7 +21,7 @@
                     <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->background() }}"
                           title="{{ $post->status->name }}"></span>
                     <a href="{{ route('posts.show', $post->slug) }}"
-                       class="font-medium text-gray-800 hover:text-indigo-600 transition transition-all">{{ $post->title }}</a>
+                       class="hover:text-indigo-800 transition">{{ $post->title }}</a>
                 </x-table.cell>
                 @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
                     <x-table.cell>{{ $post->author->name }}</x-table.cell>
