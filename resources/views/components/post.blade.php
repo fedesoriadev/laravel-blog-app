@@ -4,10 +4,15 @@
     </h2>
 
     <div class="flex items-center space-x-4">
-        <a href="{{ $authorUrl }}" class="text-indigo-600 transition hover:text-indigo-800">
-            {{ $authorName }}
-        </a>
-        <span class="text-gray-700 dark:text-slate-100"> | {{ $post->date }} | </span>
+        @if ($showAuthorLink)
+            <a href="{{ $authorUrl }}" class="text-indigo-600 transition hover:text-indigo-800">
+                {{ $authorName }}
+            </a>
+            <span> | </span>
+        @endif
+
+        <span class="text-gray-700 dark:text-slate-100">{{ $post->date }} | </span>
+
         <div>
             @foreach($post->tags as $tag)
                 <a href="{{ route('tags.show', $tag->slug) }}"

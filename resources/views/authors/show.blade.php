@@ -2,7 +2,7 @@
     <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <x-user-avatar :user="$author" />
+                <x-user-avatar :user="$author" size="md" />
 
                 <span class="text-xl font-semibold text-slate-700 dark:text-slate-100">{{ $author->name }}</span>
             </div>

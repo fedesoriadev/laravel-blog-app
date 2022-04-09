@@ -13,7 +13,8 @@ class UserAvatar extends Component
      * @return void
      */
     public function __construct(
-        public User $user
+        public User $user,
+        public string $size = 'sm'
     ) {}
 
     /**
@@ -24,5 +25,19 @@ class UserAvatar extends Component
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
         return view('components.user-avatar');
+    }
+
+    /**
+     * @return string
+     */
+    public function size(): string
+    {
+        return match ($this->size) {
+            'xs' => 'w-6 h-6',
+            'sm' => 'w-10 h-10',
+            'md' => 'w-16 h-16',
+            'lg' => 'w-24 h-24',
+            'xl' => 'w-32 h-32',
+        };
     }
 }

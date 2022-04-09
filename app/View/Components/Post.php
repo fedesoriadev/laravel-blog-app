@@ -9,6 +9,7 @@ class Post extends Component
 {
     public PostModel $post;
     public string $postUrl;
+    public bool $showAuthorLink;
     public string $authorUrl;
     public string $authorName;
 
@@ -21,6 +22,7 @@ class Post extends Component
     {
         $this->post = $post;
         $this->postUrl = route('posts.show', $post->slug);
+        $this->showAuthorLink = !request()->routeIs('authors.show');
         $this->authorName = $post->author->name;
         $this->authorUrl = route('authors.show', $post->author->username);
     }

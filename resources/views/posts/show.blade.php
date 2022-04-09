@@ -19,6 +19,12 @@
                 <span class="text-slate-800 dark:text-slate-100">{{ $post->author->name }}</span>
             </a>
             <span>{{ $post->date }}</span>
+            @foreach($post->tags as $tag)
+                <a href="{{ route('tags.show', $tag->slug) }}"
+                   class="text-indigo-600 transition hover:text-indigo-800">
+                    {{ $tag->name }}
+                </a>
+            @endforeach
         </div>
 
         <div class="prose prose-xl prose-indigo">

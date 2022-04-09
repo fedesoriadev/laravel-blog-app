@@ -7,6 +7,7 @@ module.exports = {
         './resources/**/*.js',
         './resources/**/*.vue',
         './app/Enums/**/*.php',
+        './app/View/**/*.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     ],
     theme: {
