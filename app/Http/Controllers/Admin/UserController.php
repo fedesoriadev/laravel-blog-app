@@ -40,6 +40,8 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
+        $user = User::createVerified($attributes);
+
         if ($request->has('avatar')) {
             $attributes['avatar'] = $this->handleAvatar($request);
         }

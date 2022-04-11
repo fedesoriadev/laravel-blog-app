@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,6 +83,18 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @param array $attributes
+     * @param \Carbon\Carbon|null $emailVerifiedAt
+     * @return static
+     */
+    public static function createVerified(array $attributes = [], Carbon $emailVerifiedAt = null): self
+    {
+        $attributes['email_verified_at'] = $emailVerifiedAt ?? now();
+
+        return self::create($attributes);
+    }
 
     /**
      * @return BelongsTo
