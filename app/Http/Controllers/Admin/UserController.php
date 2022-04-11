@@ -43,12 +43,8 @@ class UserController extends Controller
         $user = User::createVerified($attributes);
 
         if ($request->has('avatar')) {
-            $attributes['avatar'] = $this->handleAvatar($request);
+            $user->uploadAvatar($request->file('avatar'));
         }
-
-        $attributes['email_verified_at'] = now();
-
-        User::create($attributes);
 
         flash()->success(__('User created'));
 
@@ -73,11 +69,11 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
-        if ($request->has('avatar')) {
-            $attributes['avatar'] = $this->handleAvatar($request);
-        }
-
         $user->update($attributes);
+
+        if ($request->has('avatar')) {
+            $user->uploadAvatar($request->file('avatar'));
+        }
 
         flash()->success(__('User updated'));
 
@@ -95,14 +91,5 @@ class UserController extends Controller
         flash()->success(__('User deleted'));
 
         return redirect()->route('users.index');
-    }
-
-    /**
-     * @param \App\Http\Requests\UserRequest $request
-     * @return false|string
-     */
-    private function handleAvatar(UserRequest $request): string|false
-    {
-        return $request->file('avatar')->store('avatars', 'public');
     }
 }

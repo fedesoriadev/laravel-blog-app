@@ -6,10 +6,12 @@ use App\Enums\UserRole;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -139,6 +141,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole(UserRole $role): bool
     {
         return $this->role?->name === $role;
+    }
+
+    /**
+     * @param \Illuminate\Http\UploadedFile $avatar
+     * @return void
+     */
+    public function uploadAvatar(UploadedFile $avatar): void
+    {
+        $this->update([
+            'avatar' => $avatar->storePublicly('avatars', ['disk' => 'public'])
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function avatar(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) => is_null($value) || str_starts_with($value, 'http') ? $value : asset('storage/' . $value)
+        );
     }
 
     /**
