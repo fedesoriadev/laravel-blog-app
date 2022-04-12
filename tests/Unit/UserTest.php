@@ -64,20 +64,20 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_user_avatars(): void
+    public function it_handles_user_profile_picture(): void
     {
         Storage::fake('public');
 
-        $user = User::factory()->create(['avatar' => null]);
+        $user = User::factory()->create(['profile_picture' => null]);
 
-        $this->assertNull($user->avatar);
+        $this->assertNull($user->profile_picture);
 
-        $avatar = UploadedFile::fake()->image('avatar.jpg');
+        $profilePicture = UploadedFile::fake()->image('profile_picture.jpg');
 
-        $user->uploadAvatar($avatar);
+        $user->uploadProfilePicture($profilePicture);
 
-        $this->assertNotNull($user->fresh()->avatar);
+        $this->assertNotNull($user->fresh()->profile_picture);
 
-        $this->assertDatabaseHas('users', ['avatar' => "avatars/{$avatar->hashName()}"]);
+        $this->assertDatabaseHas('users', ['profile_picture' => "profile/{$profilePicture->hashName()}"]);
     }
 }

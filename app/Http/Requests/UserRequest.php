@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
             'username' => ['required', Rule::unique('users')->ignore($this->route('user')?->id)],
             'role_id'  => ['nullable', 'integer', Rule::exists('roles', 'id')],
             'password' => [Rule::requiredIf(!$this->route('user')), 'confirmed', 'min:8'],
-            'avatar'   => ['nullable', 'image', 'max:1024'],
+            'profile_picture'   => ['nullable', 'image', 'max:1024'],
             'about_me' => ['nullable'],
             'twitter'  => ['nullable', 'url'],
             'youtube'  => ['nullable', 'url'],

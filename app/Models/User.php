@@ -26,7 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $avatar
+ * @property string|null $profile_picture
  * @property string|null $about_me
  * @property string|null $twitter
  * @property string|null $youtube
@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role_id',
         'password',
         'email_verified_at',
-        'avatar',
+        'profile_picture',
         'about_me',
         'twitter',
         'youtube',
@@ -144,20 +144,20 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @param \Illuminate\Http\UploadedFile $avatar
+     * @param \Illuminate\Http\UploadedFile $profilePicture
      * @return void
      */
-    public function uploadAvatar(UploadedFile $avatar): void
+    public function uploadProfilePicture(UploadedFile $profilePicture): void
     {
         $this->update([
-            'avatar' => $avatar->storePublicly('avatars', ['disk' => 'public'])
+            'profile_picture' => $profilePicture->storePublicly('profile', ['disk' => 'public'])
         ]);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function avatar(): Attribute
+    public function profilePicture(): Attribute
     {
         return new Attribute(
             get: fn($value) => is_null($value) || str_starts_with($value, 'http') ? $value : asset('storage/' . $value)

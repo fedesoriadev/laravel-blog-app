@@ -100,7 +100,7 @@
                 @foreach($newUsers as $user)
                     <a href="{{ route('users.edit', $user->username) }}"
                        class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
-                        <x-user-avatar :user="$user" class="inline mr-2 w-[22px] h-[22px]"/>
+                        <x-profile-picture :user="$user" class="inline mr-2 w-[22px] h-[22px]"/>
                         <span>{{ $user->name }} on {{ $user->created_at->format('F j, Y') }}</span>
                     </a>
                 @endforeach

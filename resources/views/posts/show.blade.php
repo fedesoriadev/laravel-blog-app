@@ -15,7 +15,7 @@
 
         <div class="flex items-center space-x-6">
             <a href="{{ route('authors.show', $post->author->username) }}" class="inline-flex space-x-2 items-center">
-                <x-user-avatar :user="$post->author" />
+                <x-profile-picture :user="$post->author" />
                 <span class="text-slate-800 dark:text-slate-100">{{ $post->author->name }}</span>
             </a>
             <span>{{ $post->date }}</span>

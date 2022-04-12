@@ -49,7 +49,7 @@
                     </div>
                 </fieldset>
 
-                <x-form.input name="avatar" type="file"/>
+                <x-form.input name="profile_picture" type="file"/>
 
                 <x-form.input name="about_me" :value="$user->about_me"/>
 

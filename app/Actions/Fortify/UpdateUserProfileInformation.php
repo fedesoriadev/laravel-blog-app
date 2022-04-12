@@ -22,12 +22,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'username' => ['required', Rule::unique('users')->ignore($user->id)],
-            'avatar'   => ['nullable', 'image', 'max:1024'],
+            'profile_picture'   => ['nullable', 'image', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
-        if (isset($input['avatar'])) {
+        if (isset($input['profile_picture'])) {
             /** @var \App\Models\User $user */
-            $user->uploadAvatar($input['avatar']);
+            $user->uploadProfilePicture($input['profile_picture']);
         }
 
         if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {

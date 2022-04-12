@@ -1,5 +1,5 @@
-@if ($user->avatar)
-    <img src="{{ $user->avatar }}"
+@if ($user->profile_picture)
+    <img src="{{ $user->profile_picture }}"
          alt="{{ $user->name }}"
          {{ $attributes->merge(['class' => 'rounded-full object-contain ' . $size()]) }}>
 @else

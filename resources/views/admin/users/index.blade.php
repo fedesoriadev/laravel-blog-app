@@ -18,7 +18,7 @@
             <tr>
                 <x-table.cell>{{ $user->id }}</x-table.cell>
                 <x-table.cell>
-                    <x-user-avatar :user="$user" class="inline mr-2" />
+                    <x-profile-picture :user="$user" class="inline mr-2" />
                     <span class="font-medium">{{ $user->name }}</span>
                 </x-table.cell>
                 <x-table.cell>{{ $user->email }}</x-table.cell>

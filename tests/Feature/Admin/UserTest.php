@@ -162,13 +162,13 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_adds_an_avatar_for_a_user(): void
+    public function it_adds_an_profile_picture_for_a_user(): void
     {
         $this->actingAs(User::factory()->admin()->create());
 
         Storage::fake('public');
 
-        $avatar = UploadedFile::fake()->image('avatar.jpg');
+        $profilePicture = UploadedFile::fake()->image('profile_picture.jpg');
 
         $this
             ->post(route('users.store'), [
@@ -177,15 +177,15 @@ class UserTest extends TestCase
                 'username'              => 'some.user',
                 'password'              => 'test1234',
                 'password_confirmation' => 'test1234',
-                'avatar'                => $avatar,
+                'profile_picture'                => $profilePicture,
             ])
             ->assertRedirect(route('users.index'));
 
-        $imagePath = "avatars/{$avatar->hashName()}";
+        $imagePath = "profile/{$profilePicture->hashName()}";
 
         Storage::disk('public')->assertExists($imagePath);
 
-        $this->assertDatabaseHas('users', ['avatar' => $imagePath]);
+        $this->assertDatabaseHas('users', ['profile_picture' => $imagePath]);
     }
 
     /** @test */

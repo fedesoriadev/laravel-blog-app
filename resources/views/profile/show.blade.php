@@ -18,9 +18,9 @@
                     <x-form.input name="name" :value="$user->name" required/>
 
                     <div class="flex items-center space-x-4">
-                        <x-user-avatar :user="$user"/>
+                        <x-profile-picture :user="$user"/>
 
-                        <x-form.input name="avatar" type="file"/>
+                        <x-form.input name="profile_picture" type="file"/>
                     </div>
                 </div>
                 <div class="mt-6 px-6 py-4 bg-gray-100">

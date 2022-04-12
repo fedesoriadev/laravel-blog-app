@@ -42,8 +42,8 @@ class UserController extends Controller
 
         $user = User::createVerified($attributes);
 
-        if ($request->has('avatar')) {
-            $user->uploadAvatar($request->file('avatar'));
+        if ($request->has('profile_picture')) {
+            $user->uploadProfilePicture($request->file('profile_picture'));
         }
 
         flash()->success(__('User created'));
@@ -71,8 +71,8 @@ class UserController extends Controller
 
         $user->update($attributes);
 
-        if ($request->has('avatar')) {
-            $user->uploadAvatar($request->file('avatar'));
+        if ($request->has('profile_picture')) {
+            $user->uploadProfilePicture($request->file('profile_picture'));
         }
 
         flash()->success(__('User updated'));

@@ -62,7 +62,7 @@
 
                         <span class="sr-only">{{ __('Toggle user menu') }}</span>
 
-                        <x-user-avatar :user="Auth::user()" />
+                        <x-profile-picture :user="Auth::user()" />
                     </button>
 
                     <div
@@ -138,7 +138,7 @@
             <div class="pt-4 pb-3 border-t border-gray-700">
                 <div class="flex items-center px-5">
                     <div class="flex-shrink-0">
-                        <x-user-avatar :user="Auth::user()" />
+                        <x-profile-picture :user="Auth::user()" />
                     </div>
                     <div class="ml-3">
                         <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>

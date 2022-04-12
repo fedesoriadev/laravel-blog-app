@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\User;
 use Illuminate\View\Component;
 
-class UserAvatar extends Component
+class ProfilePicture extends Component
 {
     /**
      * Create a new component instance.
@@ -24,7 +24,7 @@ class UserAvatar extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.user-avatar');
+        return view('components.profile-picture');
     }
 
     /**
