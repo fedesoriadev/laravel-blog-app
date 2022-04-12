@@ -6,6 +6,8 @@ use App\Enums\UserRole;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -59,5 +61,23 @@ class UserTest extends TestCase
         $regularUser = User::factory()->create();
 
         $this->assertEquals(route('home'), $regularUser->home());
+    }
+
+    /** @test */
+    public function it_handles_user_avatars(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create(['avatar' => null]);
+
+        $this->assertNull($user->avatar);
+
+        $avatar = UploadedFile::fake()->image('avatar.jpg');
+
+        $user->uploadAvatar($avatar);
+
+        $this->assertNotNull($user->fresh()->avatar);
+
+        $this->assertDatabaseHas('users', ['avatar' => "avatars/{$avatar->hashName()}"]);
     }
 }

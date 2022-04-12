@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,5 +34,13 @@ Route::get('tags/{tag}', TagController::class)
 Route::post('posts/{post}/comments', PostCommentsController::class)
     ->name('comments.store')
     ->middleware(['auth', 'verified']);
+
+Route::get('profile', [ProfileController::class, 'show'])
+    ->name('profile.show')
+    ->middleware(['auth', 'verified']);
+
+Route::delete('profile', [ProfileController::class, 'destroy'])
+    ->name('profile.destroy')
+    ->middleware(['auth', 'verified', 'password.confirm']);
 
 

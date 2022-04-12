@@ -20,6 +20,10 @@
     <div class="max-w-3xl mx-auto p-6">
         @include('layout.nav')
 
+        @if (flash()->message)
+            <x-alert :type="flash()->level">{{ flash()->message }}</x-alert>
+        @endif
+
         <main>
             {{ $slot }}
         </main>
