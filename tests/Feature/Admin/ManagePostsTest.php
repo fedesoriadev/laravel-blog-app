@@ -4,21 +4,18 @@ namespace Tests\Feature\Admin;
 
 use App\Enums\UserRole;
 use App\Models\Post;
-use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class PostTest extends TestCase
+class ManagePostsTest extends TestCase
 {
     public function validationDataProvider(): array
     {
         return [
             'Test author is required'         => ['user_id', '', 'required'],
-            'Test author id is an integer'    => ['user_id', 'some-string', 'integer'],
+            'Test author is an integer'       => ['user_id', 'some-string', 'integer'],
             'Test author exists'              => ['user_id', 50, 'exists'],
             'Test title is required'          => ['title', '', 'required'],
             'Test title is string'            => ['title', true, 'string'],
@@ -44,9 +41,7 @@ class PostTest extends TestCase
     ): void {
         Post::factory()->create(['slug' => 'first-post']);
 
-        $admin = User::factory()->admin()->create();
-
-        $this->actingAs($admin);
+        $this->actingAsAdmin();
 
         $this
             ->post(route('posts.store'), [$field => $value])
@@ -222,66 +217,5 @@ class PostTest extends TestCase
         $this
             ->delete(route('posts.destroy', $notMyPost->slug), [])
             ->assertForbidden();
-    }
-
-    /** @test */
-    public function it_attaches_tags_when_save_a_post(): void
-    {
-        $this->actingAs($user = User::factory()->admin()->create());
-
-        $this
-            ->post(route('posts.store'), [
-                'user_id' => $user->id,
-                'title'   => 'A post with tags',
-                'body'    => '## Some markdown body content',
-                'tags'    => ['Laravel', 'PHP']
-            ])
-            ->assertRedirect(route('posts.index'));
-
-        $this->assertDatabaseHas(Tag::class, ['name' => 'Laravel']);
-
-        $this->assertDatabaseHas(Tag::class, ['name' => 'PHP']);
-
-        $post = Post::first();
-
-        $this->assertCount(2, $post->tags);
-
-        $this
-            ->patch(route('posts.update', $post->slug), [
-                'user_id' => $post->user_id,
-                'title'   => $post->title,
-                'body'    => $post->body,
-                'tags'    => ['Programming']
-            ])
-            ->assertRedirect(route('posts.index'));
-
-        $this->assertCount(1, $post->refresh()->tags);
-
-        $this->assertEquals(['Programming'], $post->refresh()->tags->pluck('name')->all());
-    }
-
-    /** @test */
-    public function it_uploads_a_cover_image(): void
-    {
-        $this->actingAs($user = User::factory()->admin()->create());
-
-        Storage::fake('public');
-
-        $postCover = UploadedFile::fake()->image('post-cover.jpg');
-
-        $this
-            ->post(route('posts.store'), [
-                'user_id' => $user->id,
-                'title'   => 'My awesome post',
-                'image'   => $postCover,
-                'body'    => '## Some markdown body content'
-            ])
-            ->assertRedirect(route('posts.index'));
-
-        $imagePath = "posts/{$postCover->hashName()}";
-
-        Storage::disk('public')->assertExists($imagePath);
-
-        $this->assertDatabaseHas('posts', ['image' => $imagePath]);
     }
 }

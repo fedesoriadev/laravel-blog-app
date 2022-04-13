@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
 use Tests\TestCase;
 
-class IndexTest extends TestCase
+class AdminDashboardTest extends TestCase
 {
     /** @test */
     public function it_returns_admin_homepage(): void
@@ -14,7 +13,7 @@ class IndexTest extends TestCase
             ->get('admin')
             ->assertRedirect();
 
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAsAdmin();
 
         $this
             ->get('admin')

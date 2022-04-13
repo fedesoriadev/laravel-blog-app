@@ -7,7 +7,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Tests\TestCase;
 
-class CommentTest extends TestCase
+class ManageCommentsTest extends TestCase
 {
     /** @test */
     public function it_denies_to_delete_comments_for_anonymous_regular_and_authors_users(): void
@@ -36,7 +36,7 @@ class CommentTest extends TestCase
     /** @test */
     public function it_allows_admins_to_delete_comments(): void
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAsAdmin();
 
         $comment = Comment::factory()->create();
 

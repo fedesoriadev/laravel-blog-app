@@ -24,7 +24,7 @@ class PostStatusTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_if_a_post_status_is_published(): void
+    public function it_checks_if_a_post_status_is_published(): void
     {
         $this->assertFalse(PostStatus::DRAFT->isPublished());
         $this->assertFalse(PostStatus::ARCHIVED->isPublished());

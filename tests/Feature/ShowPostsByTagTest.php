@@ -7,7 +7,7 @@ use App\Models\Tag;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class TagTest extends TestCase
+class ShowPostsByTagTest extends TestCase
 {
     /** @test */
     public function it_shows_a_tag_with_its_posts(): void

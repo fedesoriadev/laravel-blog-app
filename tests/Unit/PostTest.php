@@ -6,13 +6,10 @@ use App\Enums\PostStatus;
 use App\Exceptions\AlreadyArchivedException;
 use App\Exceptions\AlreadyPublishedException;
 use App\Models\Post;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function it_generates_a_slug_if_not_present(): void
     {
@@ -37,7 +34,6 @@ class PostTest extends TestCase
         Post::factory(5)->published()->create();
 
         $this->assertDatabaseCount('posts', 10);
-
         $this->assertCount(5, Post::published()->get());
     }
 
@@ -62,11 +58,9 @@ class PostTest extends TestCase
     public function it_may_publish_posts_in_isolation(): void
     {
         $post = Post::factory()->draft()->create();
-
         $this->assertFalse($post->status === PostStatus::PUBLISHED);
 
         $post->publish();
-
         $this->assertTrue($post->status === PostStatus::PUBLISHED);
 
         $this->expectException(AlreadyPublishedException::class);
@@ -78,11 +72,9 @@ class PostTest extends TestCase
     public function it_may_archive_posts_in_isolation(): void
     {
         $post = Post::factory()->published()->create();
-
         $this->assertFalse($post->status === PostStatus::ARCHIVED);
 
         $post->archive();
-
         $this->assertTrue($post->status === PostStatus::ARCHIVED);
 
         $this->expectException(AlreadyArchivedException::class);
@@ -106,10 +98,7 @@ class PostTest extends TestCase
         $this->assertCount(2, Post::withStatus(PostStatus::DRAFT)->get());
         $this->assertCount(2, Post::withStatus('draft')->get());
 
-
         $this->assertCount(6, Post::withStatus(null)->get());
         $this->assertCount(6, Post::withStatus('wrong-status')->get());
-
-
     }
 }

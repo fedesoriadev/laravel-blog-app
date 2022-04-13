@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Post;
-use App\Models\User;
 use Tests\TestCase;
 
 class FilterPostsTest extends TestCase
@@ -16,7 +15,7 @@ class FilterPostsTest extends TestCase
         Post::factory(2)->draft()->create();
 
         $response = $this
-            ->actingAs(User::factory()->admin()->create())
+            ->actingAsAdmin()
             ->get(route('posts.index'))
             ->assertOk();
 

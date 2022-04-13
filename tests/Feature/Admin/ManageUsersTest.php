@@ -3,16 +3,13 @@
 namespace Tests\Feature\Admin;
 
 use App\Enums\UserRole;
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 use function route;
 
-class UserTest extends TestCase
+class ManageUsersTest extends TestCase
 {
     public function validationDataProvider(): array
     {
@@ -51,7 +48,7 @@ class UserTest extends TestCase
             'username' => 'admin'
         ]);
 
-        $this->actingAs($admin);
+        $this->actingAsAdmin($admin);
 
         $this
             ->post(route('users.store'), array_merge([$field => $value], $extraFields))
@@ -159,92 +156,5 @@ class UserTest extends TestCase
             ->assertRedirect(route('users.index'));
 
         $this->assertModelMissing($user);
-    }
-
-    /** @test */
-    public function it_adds_an_profile_picture_for_a_user(): void
-    {
-        $this->actingAs(User::factory()->admin()->create());
-
-        Storage::fake('public');
-
-        $profilePicture = UploadedFile::fake()->image('profile_picture.jpg');
-
-        $this
-            ->post(route('users.store'), [
-                'email'                 => 'test@test.com',
-                'name'                  => 'Some user test',
-                'username'              => 'some.user',
-                'password'              => 'test1234',
-                'password_confirmation' => 'test1234',
-                'profile_picture'                => $profilePicture,
-            ])
-            ->assertRedirect(route('users.index'));
-
-        $imagePath = "profile/{$profilePicture->hashName()}";
-
-        Storage::disk('public')->assertExists($imagePath);
-
-        $this->assertDatabaseHas('users', ['profile_picture' => $imagePath]);
-    }
-
-    /** @test */
-    public function it_attaches_a_role_for_a_user(): void
-    {
-        $role = Role::create(['name' => UserRole::ADMIN]);
-
-        $this->actingAs(User::factory()->admin()->create());;
-
-        $this
-            ->post(route('users.store'), [
-                'email'                 => 'test@test.com',
-                'name'                  => 'Some user test',
-                'username'              => 'some.user',
-                'password'              => 'test1234',
-                'password_confirmation' => 'test1234',
-                'role_id'               => $role->id,
-            ])
-            ->assertRedirect(route('users.index'));
-
-        $user = User::where('email', 'test@test.com')->first();
-
-        $this->assertNotNull($user->role);
-
-        $this->assertTrue($user->hasRole(UserRole::ADMIN));
-    }
-
-    /** @test */
-    public function it_redirects_after_login_according_to_user_role(): void
-    {
-        $regularUser = User::factory()->create();
-
-        $this
-            ->post(route('login'), [
-                'email' => $regularUser->email,
-                'password' => 'password'
-            ])
-            ->assertRedirect(config('fortify.home'));
-
-        $this->post(route('logout'), []);
-
-        $authorUser = User::factory()->author()->create();
-
-        $this
-            ->post(route('login'), [
-                'email' => $authorUser->email,
-                'password' => 'password'
-            ])
-            ->assertRedirect(route('posts.index'));
-
-        $this->post(route('logout'), []);
-
-        $adminUser = User::factory()->admin()->create();
-
-        $this
-            ->post(route('login'), [
-                'email' => $adminUser->email,
-                'password' => 'password'
-            ])
-            ->assertRedirect(route('admin.home'));
     }
 }

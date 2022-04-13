@@ -17,7 +17,7 @@ class FilterUsersTest extends TestCase
         User::factory(3)->create();
 
         $response = $this
-            ->actingAs($admins[0])
+            ->actingAsAdmin($admins[0])
             ->get(route('users.index'))
             ->assertOk();
 

@@ -7,15 +7,12 @@ use App\Models\Comment;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function it_can_create_verified_users(): void
     {
@@ -55,25 +52,21 @@ class UserTest extends TestCase
         $this->assertCount(2, $scopedUsersByString);
         $this->assertEquals($authors->pluck('id'), $scopedUsersByString->pluck('id'));
 
-        $this->assertCount(User::count(), User::withRole(null)->get());
-        $this->assertCount(User::count(), User::withRole('wrong-role-name')->get());
+        $this->assertCount(4, User::withRole(null)->get());
+        $this->assertCount(4, User::withRole('wrong-role-name')->get());
     }
 
     /** @test */
     public function it_checks_if_a_user_has_role(): void
     {
         $adminUser = User::factory()->admin()->create();
-
         $this->assertTrue($adminUser->hasRole(UserRole::ADMIN));
 
         $authorUser = User::factory()->create();
-
         Role::create(['name' => UserRole::AUTHOR->value])->users()->save($authorUser);
-
         $this->assertTrue($authorUser->hasRole(UserRole::AUTHOR));
 
         $regularUser = User::factory()->create();
-
         $this->assertFalse($regularUser->hasRole(UserRole::ADMIN));
         $this->assertFalse($regularUser->hasRole(UserRole::AUTHOR));
     }
@@ -82,15 +75,12 @@ class UserTest extends TestCase
     public function it_generates_a_home_link_depending_the_role(): void
     {
         $adminUser = User::factory()->admin()->create();
-
         $this->assertEquals(route('admin.home'), $adminUser->home());
 
         $authorUser = User::factory()->author()->create();
-
         $this->assertEquals(route('posts.index'), $authorUser->home());
 
         $regularUser = User::factory()->create();
-
         $this->assertEquals(route('home'), $regularUser->home());
     }
 
@@ -100,15 +90,12 @@ class UserTest extends TestCase
         Storage::fake('public');
 
         $user = User::factory()->create(['profile_picture' => null]);
-
         $this->assertNull($user->profile_picture);
 
         $profilePicture = UploadedFile::fake()->image('profile_picture.jpg');
-
         $user->uploadProfilePicture($profilePicture);
 
         $this->assertNotNull($user->fresh()->profile_picture);
-
         $this->assertDatabaseHas('users', ['profile_picture' => "profile/{$profilePicture->hashName()}"]);
     }
 
@@ -118,11 +105,9 @@ class UserTest extends TestCase
         $user = User::factory()->has(Comment::factory())->create();
 
         $this->assertDatabaseHas('comments', ['user_id' => $user->id]);
-
         $this->assertCount(1, $user->comments);
 
         $user->delete();
-
         $this->assertDatabaseMissing('comments', ['user_id' => $user->id]);
     }
 }
