@@ -1,5 +1,5 @@
 <x-admin-layout>
-    @include('admin.posts._header')
+    @include('admin.posts._header', ['showCreateButton' => true])
 
     <x-table>
         <x-slot name="thead">
