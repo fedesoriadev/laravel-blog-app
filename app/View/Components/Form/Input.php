@@ -11,6 +11,7 @@ class Input extends Component
     public string $type;
     public ?string $label;
     public ?string $value;
+    public bool $required;
 
     /**
      * Create a new component instance.
@@ -21,12 +22,14 @@ class Input extends Component
         string $name,
         string $type = 'text',
         ?string $label = null,
-        ?string $value = null
+        ?string $value = null,
+        bool $required = false,
     ) {
         $this->name = $name;
         $this->type = $type;
         $this->label = $label ?? __(str_replace('_', ' ', Str::title($name)));
         $this->value = old($name, $value);
+        $this->required = $required;
     }
 
     /**

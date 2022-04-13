@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use App\Enums\UserRole;
+use App\Models\Comment;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +15,28 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function it_can_create_verified_users(): void
+    {
+        $userA = User::createVerified([
+            'email'    => 'user-a@test.com',
+            'username' => 'user-a',
+            'name'     => 'User A',
+            'password' => 'password'
+        ]);
+
+        $this->assertNotNull($userA->email_verified_at);
+
+        $userB = User::createVerified([
+            'email'    => 'user-b@test.com',
+            'username' => 'user-b',
+            'name'     => 'User B',
+            'password' => 'password'
+        ], Carbon::create(2022, 01, 01));
+
+        $this->assertEquals('2022-01-01 00:00:00', $userB->email_verified_at);
+    }
 
     /** @test */
     public function it_scopes_users_by_role(): void
@@ -79,5 +103,19 @@ class UserTest extends TestCase
         $this->assertNotNull($user->fresh()->profile_picture);
 
         $this->assertDatabaseHas('users', ['profile_picture' => "profile/{$profilePicture->hashName()}"]);
+    }
+
+    /** @test */
+    public function it_deletes_comments_after_account_deletion(): void
+    {
+        $user = User::factory()->has(Comment::factory())->create();
+
+        $this->assertDatabaseHas('comments', ['user_id' => $user->id]);
+
+        $this->assertCount(1, $user->comments);
+
+        $user->delete();
+
+        $this->assertDatabaseMissing('comments', ['user_id' => $user->id]);
     }
 }

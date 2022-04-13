@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('profile_picture')->nullable();
-            $table->string('about_me')->nullable();
+            $table->mediumText('about_me')->nullable();
             $table->string('twitter')->nullable();
             $table->string('youtube')->nullable();
             $table->string('twitch')->nullable();
