@@ -19,6 +19,7 @@ class UserController extends Controller
     public function index(Request $request): View
     {
         $users = User::with('role')
+            ->withRole($request->get('role'))
             ->simplePaginate(Pagination::ADMIN->value);
 
         return view('admin.users.index', ['users' => $users]);

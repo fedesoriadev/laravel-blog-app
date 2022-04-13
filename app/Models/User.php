@@ -39,7 +39,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  *
  * Scopes
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User withRole(\App\Enums\UserRole $role)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User withRole(\App\Enums\UserRole|string|null $role)
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -124,11 +124,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Enums\UserRole $role
+     * @param \App\Enums\UserRole|string|null $role
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithRole(Builder $query, UserRole $role): Builder
+    public function scopeWithRole(Builder $query, mixed $role): Builder
     {
+        if (!$role) {
+            return $query;
+        }
+
+        if (is_string($role) && !$role = UserRole::tryFrom($role)) {
+            return $query;
+        }
+
         return $query->whereHas('role', function (Builder $query) use ($role) {
             return $query->where('name', $role->value);
         });

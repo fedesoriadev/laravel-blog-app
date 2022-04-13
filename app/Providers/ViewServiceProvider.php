@@ -38,7 +38,7 @@ class ViewServiceProvider extends ServiceProvider
             return $view->with('authors', User::withRole(UserRole::AUTHOR)->get());
         });
 
-        View::composer('admin.users.form', function (\Illuminate\View\View $view) {
+        View::composer('admin.users.*', function (\Illuminate\View\View $view) {
             return $view->with('roles', Role::all());
         });
     }

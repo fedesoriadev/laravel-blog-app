@@ -45,11 +45,18 @@ class UserTest extends TestCase
 
         User::factory(2)->create();
 
-        $scopedUsers = User::withRole(UserRole::AUTHOR)->get();
+        $scopedUsersByEnum = User::withRole(UserRole::AUTHOR)->get();
 
-        $this->assertCount(2, $scopedUsers);
+        $this->assertCount(2, $scopedUsersByEnum);
+        $this->assertEquals($authors->pluck('id'), $scopedUsersByEnum->pluck('id'));
 
-        $this->assertEquals($authors->pluck('id'), $scopedUsers->pluck('id'));
+        $scopedUsersByString = User::withRole('author')->get();
+
+        $this->assertCount(2, $scopedUsersByString);
+        $this->assertEquals($authors->pluck('id'), $scopedUsersByString->pluck('id'));
+
+        $this->assertCount(User::count(), User::withRole(null)->get());
+        $this->assertCount(User::count(), User::withRole('wrong-role-name')->get());
     }
 
     /** @test */
