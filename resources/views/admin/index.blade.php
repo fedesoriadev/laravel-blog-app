@@ -1,14 +1,14 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold text-gray-900">{{ __('Dashboard') }}</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ __('Dashboard') }}</h1>
         </div>
     </x-slot>
 
     <div class="grid md:grid-cols-3 gap-6">
 
         <!-- Stats: Posts -->
-        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
+        <div class="rounded-lg bg-white drop-shadow flex flex-col">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -31,18 +31,18 @@
                 </div>
                 @foreach($topPosts as $post)
                     <a href="{{ route('posts.show', $post->slug) }}"
-                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                       class="block sm:whitespace-nowrap sm:overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
                         {{ \Illuminate\Support\Str::words($post->title, 7) }}
                     </a>
                 @endforeach
             </div>
-            <div class="rounded-b-lg bg-gray-100 px-6 py-4">
+            <div class="mt-auto rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('posts.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>
 
         <!-- Stats: Comments -->
-        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
+        <div class="rounded-lg bg-white drop-shadow flex flex-col">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -65,18 +65,18 @@
                 </div>
                 @foreach($latestComments as $comment)
                     <a href="{{ route('posts.show', $comment->post->slug) }}#comments"
-                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                       class="block sm:whitespace-nowrap sm:overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
                         {{ \Illuminate\Support\Str::words($comment->body, 7) }}
                     </a>
                 @endforeach
             </div>
-            <div class="rounded-b-lg bg-gray-100 px-6 py-4">
+            <div class="mt-auto rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('comments.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>
 
         <!-- Stats: Users -->
-        <div class="rounded-lg bg-white drop-shadow flex flex-col justify-between">
+        <div class="rounded-lg bg-white drop-shadow flex flex-col">
             <div class="rounded-t-lg px-6 py-4 pb-10 flex space-x-4">
                 <div>
                     <div class="w-14 h-14 bg-indigo-500 rounded-md text-white flex items-center justify-center">
@@ -99,13 +99,13 @@
                 </div>
                 @foreach($newUsers as $user)
                     <a href="{{ route('users.edit', $user->username) }}"
-                       class="block whitespace-nowrap overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
-                        <x-profile-picture :user="$user" class="inline mr-2 w-[22px] h-[22px]"/>
+                       class="block sm:whitespace-nowrap sm:overflow-hidden px-6 py-4 text-sm text-gray-600 transition hover:text-indigo-600">
+                        <x-profile-picture :user="$user" class="inline mr-2" size="xs"/>
                         <span>{{ $user->name }} on {{ $user->created_at->format('F j, Y') }}</span>
                     </a>
                 @endforeach
             </div>
-            <div class="rounded-b-lg bg-gray-100 px-6 py-4">
+            <div class="mt-auto rounded-b-lg bg-gray-100 px-6 py-4">
                 <a href="{{ route('users.index') }}" class="text-indigo-600 font-medium">{{ __('View all') }}</a>
             </div>
         </div>

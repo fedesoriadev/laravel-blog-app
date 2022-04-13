@@ -60,7 +60,7 @@
                 </x-table.cell>
 
                 <x-table.cell>{{ $post->date }}</x-table.cell>
-                <x-table.cell>{{ $post->created_at->format('F j, Y') }}</x-table.cell>
+                <x-table.cell>{{ $post->created_at->format('Y-m-d H:i') }}</x-table.cell>
                 <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
                     <x-link href="{{ route('posts.edit', $post->slug) }}" class="mr-2">
                         {{ __('Edit') }}

@@ -40,7 +40,7 @@
                     </span>
                 </x-table.cell>
                 <x-table.cell>
-                    {{ $user->created_at->format('F j, Y') }}
+                    {{ $user->created_at->format('Y-m-d H:i') }}
 
                     @if($user->email_verified_at)
                         <span title="{{ __('Email verified at :date', ['date' => $user->email_verified_at]) }}"

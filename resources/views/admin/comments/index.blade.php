@@ -6,7 +6,7 @@
             <tr>
                 <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Comment') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Create at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
                 <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
@@ -14,8 +14,8 @@
         @foreach($comments as $comment)
             <tr>
                 <x-table.cell>{{ $comment->author->name }}</x-table.cell>
-                <x-table.cell class="max-w-3xl">{{ $comment->body }}</x-table.cell>
-                <x-table.cell>{{ $comment->created_at->format('F j, Y') }}</x-table.cell>
+                <x-table.cell class="max-w-2xl">{{ $comment->body }}</x-table.cell>
+                <x-table.cell>{{ $comment->created_at->format('Y-m-d H:i') }}</x-table.cell>
                 <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
                     <x-link href="{{ route('posts.show', $comment->post->slug) }}#comments" target="_blank" class="mr-2">
                         {{ __('View post') }}

@@ -1,6 +1,6 @@
 <x-slot name="header">
     <div class="flex items-center">
-        <h1 class="text-3xl font-bold text-gray-900">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
             <a href="{{ route('users.index') }}">{{ __('Users') }}</a>
         </h1>
 
@@ -27,7 +27,7 @@
 
             <div class="ml-auto">
                 <a href="{{ route('users.create') }}"
-                   class="block px-4 py-2 rounded-md bg-indigo-600 font-medium text-white transition hover:bg-indigo-800 dark:bg-indigo-400">
+                   class="block px-3 py-2 text-sm sm:px-4 sm:text-base rounded-md bg-indigo-600 font-medium text-white transition hover:bg-indigo-800 dark:bg-indigo-400">
                     {{ __('Create user') }}
                 </a>
             </div>
