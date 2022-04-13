@@ -89,4 +89,27 @@ class PostTest extends TestCase
 
         $post->archive();
     }
+
+    /** @test */
+    public function it_scopes_posts_by_status(): void
+    {
+        Post::factory(2)->published()->create();
+        Post::factory(2)->archived()->create();
+        Post::factory(2)->draft()->create();
+
+        $this->assertCount(2, Post::withStatus(PostStatus::PUBLISHED)->get());
+        $this->assertCount(2, Post::withStatus('published')->get());
+
+        $this->assertCount(2, Post::withStatus(PostStatus::ARCHIVED)->get());
+        $this->assertCount(2, Post::withStatus('archived')->get());
+
+        $this->assertCount(2, Post::withStatus(PostStatus::DRAFT)->get());
+        $this->assertCount(2, Post::withStatus('draft')->get());
+
+
+        $this->assertCount(6, Post::withStatus(null)->get());
+        $this->assertCount(6, Post::withStatus('wrong-status')->get());
+
+
+    }
 }

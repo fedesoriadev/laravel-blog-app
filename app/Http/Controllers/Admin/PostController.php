@@ -31,10 +31,12 @@ class PostController extends Controller
                 ->user()
                 ->posts()
                 ->with('author', 'tags')
+                ->withStatus($request->get('status'))
                 ->latest()
                 ->simplePaginate(Pagination::ADMIN->value);
         } else {
             $posts = Post::with('author', 'tags')
+                ->withStatus($request->get('status'))
                 ->latest()
                 ->simplePaginate(Pagination::ADMIN->value);
         }

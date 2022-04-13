@@ -35,6 +35,7 @@ use Illuminate\Support\Str;
  * Scopes
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post published()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post filter(array $filters = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post withStatus(\App\Enums\PostStatus|string|null $status)
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -117,6 +118,24 @@ class Post extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Enums\PostStatus|string|null $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithStatus(Builder $query, mixed $status): Builder
+    {
+        if (!$status) {
+            return $query;
+        }
+
+        if (is_string($status) && !$status = PostStatus::tryFrom($status)) {
+            return $query;
+        }
+
+        return $query->where('status', $status->value);
     }
 
     /**
