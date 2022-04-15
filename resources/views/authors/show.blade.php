@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="__('Latest posts by :author', ['author' => $author->name])">
     <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">

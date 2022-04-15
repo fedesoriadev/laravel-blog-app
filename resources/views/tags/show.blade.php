@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="__('Latest posts of :tag', ['tag' => $tag->name])">
     <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg text-lg font-semibold">
         {{ __('Latest posts of tag ') }}
         <span class="text-indigo-600">{{ $tag->name }}</span>

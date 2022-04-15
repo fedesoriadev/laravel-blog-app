@@ -6,12 +6,12 @@ use App\Enums\PostStatus;
 use App\Exceptions\AlreadyArchivedException;
 use App\Exceptions\AlreadyPublishedException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 /**
  * Fields
@@ -36,6 +36,10 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post published()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post filter(array $filters = [])
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post withStatus(\App\Enums\PostStatus|string|null $status)
+ *
+ * Casts
+ * @property-read string|null $cover_image
+ * @property-read string $seo_cover_image
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -62,6 +66,7 @@ class Post extends Model
      */
     protected $casts = [
         'status' => PostStatus::class,
+        'date' => 'date'
     ];
 
     /**
@@ -136,6 +141,30 @@ class Post extends Model
         }
 
         return $query->where('status', $status->value);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function coverImage(): Attribute
+    {
+        return new Attribute(
+            get: function ($value, $attributes) {
+                return is_null($attributes['image']) || str_starts_with($attributes['image'], 'http')
+                    ? $attributes['image']
+                    : asset('storage/' . $attributes['image']);
+            }
+        );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function seoCoverImage(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->cover_image ?? asset('img/site_cover.jpg')
+        );
     }
 
     /**

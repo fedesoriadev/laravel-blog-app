@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="p-4">
-                        <x-form.input name="date" type="date" :value="$post->date"/>
+                        <x-form.input name="date" type="date" :value="$post->date?->toDateString()"/>
 
                         <x-form.input name="slug" :value="$post->slug"/>
 

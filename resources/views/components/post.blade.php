@@ -11,7 +11,7 @@
             <span> | </span>
         @endif
 
-        <span class="text-gray-700 dark:text-slate-100">{{ $post->date }} | </span>
+        <span class="text-gray-700 dark:text-slate-100">{{ $post->date->toDateString() }} | </span>
 
         <div>
             @foreach($post->tags as $tag)

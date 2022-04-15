@@ -101,4 +101,31 @@ class PostTest extends TestCase
         $this->assertCount(6, Post::withStatus(null)->get());
         $this->assertCount(6, Post::withStatus('wrong-status')->get());
     }
+
+    /** @test */
+    public function it_returns_a_cover_image(): void
+    {
+        $post = Post::factory()->create(['image' => null]);
+        $this->assertNull($post->cover_image);
+
+        $post = Post::factory()->create(['image' => 'https://example.com/remote-image.jpg']);
+        $this->assertEquals('https://example.com/remote-image.jpg', $post->cover_image);
+
+        $post = Post::factory()->create(['image' => 'posts/local-image.jpg']);
+        $this->assertEquals(asset('storage/posts/local-image.jpg'), $post->cover_image);
+    }
+
+    /** @test */
+    public function it_returns_a_cover_image_for_seo(): void
+    {
+        $post = Post::factory()->create(['image' => 'https://example.com/remote-image.jpg']);
+        $this->assertEquals($post->seo_cover_image, $post->cover_image);
+
+        $post = Post::factory()->create(['image' => 'posts/local-image.jpg']);
+        $this->assertEquals($post->seo_cover_image, $post->cover_image);
+
+        $post = Post::factory()->create(['image' => null]);
+        $this->assertNotNull($post->seo_cover_image);
+        $this->assertEquals(asset('img/site_cover.jpg'), $post->seo_cover_image);
+    }
 }
