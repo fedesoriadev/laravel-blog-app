@@ -1,5 +1,13 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      x-data="{
+          darkMode: localStorage.darkMode || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+          toggleTheme: function () {
+              this.darkMode ? localStorage.removeItem('darkMode') : localStorage.darkMode = true;
+              this.darkMode = !this.darkMode
+          }
+      }"
+      x-bind:class="darkMode ? 'dark' : ''">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,8 +24,8 @@
 
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-800 dark:text-white">
-    <div class="max-w-3xl mx-auto p-6">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-800 dark:text-white">
+    <div class="max-w-3xl mx-auto p-4">
         @include('layout.nav')
 
         @if (flash()->message)

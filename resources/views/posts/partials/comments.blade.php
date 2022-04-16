@@ -1,5 +1,5 @@
 <div id="comments" class="my-8">
-    <h3 class="text-2xl font-semibold text-slate-800">{{ __('Comments') }}</h3>
+    <h3 class="text-2xl font-semibold text-gray-800">{{ __('Comments') }}</h3>
 
     <div class="my-6">
         @auth

@@ -9,14 +9,14 @@
     </div>
 
     <article class="space-y-6">
-        <h1 class="mb-12 text-xl sm:text-3xl md:text-5xl lg:text-7xl font-bold text-slate-800 dark:text-slate-300">
+        <h1 class="mb-12 text-xl sm:text-3xl md:text-5xl lg:text-7xl font-bold text-gray-800 dark:text-gray-300">
             {{ $post->title }}
         </h1>
 
         <div class="flex items-center space-x-6">
             <a href="{{ route('authors.show', $post->author->username) }}" class="inline-flex space-x-2 items-center">
                 <x-profile-picture :user="$post->author" />
-                <span class="text-slate-800 dark:text-slate-100">{{ $post->author->name }}</span>
+                <span class="text-gray-800 dark:text-gray-100">{{ $post->author->name }}</span>
             </a>
             <span>{{ $post->date->toDateString() }}</span>
             @foreach($post->tags as $tag)

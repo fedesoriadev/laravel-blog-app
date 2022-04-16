@@ -4,7 +4,7 @@
             <div class="flex items-center space-x-4">
                 <x-profile-picture :user="$author" size="md" />
 
-                <span class="text-xl font-semibold text-slate-700 dark:text-slate-100">{{ $author->name }}</span>
+                <span class="text-xl font-semibold text-gray-700 dark:text-gray-100">{{ $author->name }}</span>
             </div>
             <div class="flex items-center space-x-4">
                 @if($author->twitter)
@@ -43,7 +43,7 @@
         </div>
 
         @if($author->about_me)
-            <div class="mt-6 text-lg text-slate-700 dark:text-slate-100">{{ $author->about_me }}</div>
+            <div class="mt-6 text-lg text-gray-700 dark:text-gray-100">{{ $author->about_me }}</div>
         @endif
     </header>
 

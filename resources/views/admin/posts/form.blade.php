@@ -36,7 +36,7 @@
 
                     <div class="p-4">
                         <label for="publish" class="mb-4 flex items-center justify-between cursor-pointer">
-                            <span class="text-base text-slate-500">{{ __('Publish') }}</span>
+                            <span class="text-base text-gray-500">{{ __('Publish') }}</span>
                             <input
                                 type="checkbox"
                                 name="publish"

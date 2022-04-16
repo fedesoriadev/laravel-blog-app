@@ -1,4 +1,4 @@
-<footer class="py-12 text-center text-sm text-slate-700">
+<footer class="py-12 text-center text-sm text-gray-700">
     <p>
         Developed by <a href="https://github.com/fedesoriadev/"
                         class="text-indigo-600 transition hover:text-indigo-800">Federico

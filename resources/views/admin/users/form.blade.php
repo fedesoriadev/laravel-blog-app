@@ -36,7 +36,7 @@
                 </fieldset>
 
                 <fieldset class="py-6">
-                    <label class="block text-base text-slate-500 dark:text-slate-50">{{ __('Role') }}</label>
+                    <label class="block text-base text-gray-500 dark:text-gray-50">{{ __('Role') }}</label>
                     <div class="mt-4 space-y-4">
                         <div class="flex items-center">
                             <input type="radio" name="role_id" value="" id="role-none">

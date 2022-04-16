@@ -1,4 +1,4 @@
-<article class="py-8 mb-8 border-b-2 border-slate-200">
+<article class="py-8 mb-8 border-b-2 border-gray-200">
     <h2 class="mb-2 font-bold text-4xl transition hover:text-indigo-600">
         <a href="{{ $postUrl }}">{{ $post->title }}</a>
     </h2>
@@ -11,7 +11,7 @@
             <span> | </span>
         @endif
 
-        <span class="text-gray-700 dark:text-slate-100">{{ $post->date->toDateString() }} | </span>
+        <span class="text-gray-700 dark:text-gray-100">{{ $post->date->toDateString() }} | </span>
 
         <div>
             @foreach($post->tags as $tag)
