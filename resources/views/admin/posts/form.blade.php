@@ -27,7 +27,7 @@
                         <div class="flex items-center justify-between">
                             @if($post->exists)
                                 <a href="{{ route('posts.show', $post->slug) }}"
-                                   class="px-4 py-2 rounded-md border border-indigo-500 text-indigo-500 transition hover:bg-indigo-800 hover:border-indigo-800 hover:text-white dark:hover:bg-indigo-400"
+                                   class="px-4 py-2 rounded-md border border-indigo-500 text-indigo-500 transition hover:bg-indigo-800 hover:border-indigo-800 hover:text-white"
                                    target="_blank">Preview</a>
                             @endif
                             <x-form.button x-text="publish ? publishText : draftText">{{ __('Save') }}</x-form.button>

@@ -27,7 +27,7 @@
 
             <div class="ml-auto">
                 <a href="{{ route('users.create') }}"
-                   class="block px-3 py-2 text-sm sm:px-4 sm:text-base rounded-md bg-indigo-600 font-medium text-white transition hover:bg-indigo-800 dark:bg-indigo-400">
+                   class="block px-3 py-2 text-sm sm:px-4 sm:text-base rounded-md bg-indigo-600 font-medium text-white transition hover:bg-indigo-800">
                     {{ __('Create user') }}
                 </a>
             </div>

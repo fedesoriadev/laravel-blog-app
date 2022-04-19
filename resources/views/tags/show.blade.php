@@ -1,7 +1,7 @@
 <x-app-layout :title="__('Latest posts of :tag', ['tag' => $tag->name])">
-    <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg text-lg font-semibold">
+    <header class="mb-12 p-8 border-2 border-indigo-600 rounded-lg dark:border-indigo-300 dark:text-neutral-200">
         {{ __('Latest posts of tag ') }}
-        <span class="text-indigo-600">{{ $tag->name }}</span>
+        <span class="text-indigo-600 dark:text-indigo-300">{{ $tag->name }}</span>
     </header>
 
     @foreach($posts as $post)

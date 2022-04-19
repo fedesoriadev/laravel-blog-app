@@ -1,15 +1,15 @@
 <nav x-data="{ showSearch: false, showUserDropdown: false }">
-    <div class="flex items-center">
+    <div class="flex items-center py-4 sm:py-6 md:py-10 mb-4">
         <!-- Logo -->
         <x-app-logo :href="route('home')" class="flex items-center">
-            <span class="hidden sm:block font-bold text-2xl">{{ config('app.name') }}</span>
+            <span class="hidden sm:block font-bold text-2xl sm:text-3xl">{{ config('app.name') }}</span>
         </x-app-logo>
 
         <div class="ml-auto flex items-center space-x-2">
             <!-- Search -->
             <div class="flex items-center space-x-2" @click.away="showSearch = false">
                 <button type="button" @click="showSearch = !showSearch">
-                    <svg class="w-6 h-6 text-gray-500 hover:text-indigo-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg class="w-6 h-6 text-gray-500 hover:text-indigo-600 transition dark:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </button>
                 <form
                     action="/"
@@ -29,11 +29,11 @@
             <!-- Theme -->
             <button
                 @click="toggleTheme()"
-                class="w-8 h-8 flex items-center justify-center transition">
-                <svg class="w-6 h-6" x-show="!darkMode" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                class="flex items-center justify-center transition">
+                <svg class="w-7 h-7 text-indigo-600 hover:text-indigo-600 transition" x-show="!darkMode" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <svg class="w-6 h-6" x-show="darkMode" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-7 h-7 text-indigo-300 hover:text-indigo-600 transition" x-show="darkMode" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
             </button>
@@ -80,7 +80,7 @@
                     </ul>
                 </div>
             @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-500 hover:text-indigo-600 transition">{{ __('Login') }}</a>
+                <a href="{{ route('login') }}" class="text-gray-500 hover:text-indigo-600 transition dark:text-neutral-200">{{ __('Login') }}</a>
             @endauth
         </div>
     </div>

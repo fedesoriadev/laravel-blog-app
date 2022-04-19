@@ -1,4 +1,4 @@
-<div class="flex bg-gray-200 mb-6 space-x-4 p-5 rounded-xl">
+<div class="flex bg-gray-200 mb-6 space-x-4 p-5 rounded-xl dark:bg-neutral-800 dark:text-neutral-200">
     <x-profile-picture :user="$comment->author" />
 
     <div>

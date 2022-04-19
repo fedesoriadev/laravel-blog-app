@@ -1,84 +1,38 @@
 <x-app-layout>
-    <div class="my-4">
-        <a href="{{ route('home') }}" class="flex items-center">
-            <svg class="mr-2 w-4 h-4" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.47159 11.0739L0.306818 5.90909L5.47159 0.744318L6.49432 1.76705L3.07955 5.17045H12V6.64773H3.07955L6.49432 10.0568L5.47159 11.0739Z" fill="#0A214C"></path>
+    <div class="mb-4">
+        <a href="{{ route('home') }}" class="flex items-center text-gray-900 space-x-2 dark:text-neutral-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>{{ __('Back to posts') }}</span>
         </a>
     </div>
 
-    <article class="space-y-6">
-        <h1 class="mb-12 text-xl sm:text-3xl md:text-5xl lg:text-7xl font-bold text-gray-800 dark:text-gray-300">
+    <article>
+        <h1 class="mb-12 text-2xl sm:text-4xl lg:text-6xl font-bold text-gray-800 dark:text-neutral-200">
             {{ $post->title }}
         </h1>
 
-        <div class="flex items-center space-x-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-12">
             <a href="{{ route('authors.show', $post->author->username) }}" class="inline-flex space-x-2 items-center">
                 <x-profile-picture :user="$post->author" />
-                <span class="text-gray-800 dark:text-gray-100">{{ $post->author->name }}</span>
+                <span class="text-gray-800 dark:text-neutral-200">{{ $post->author->name }}</span>
             </a>
-            <span>{{ $post->date->toDateString() }}</span>
+            <span>{{ $post->date->format('F d, Y') }}</span>
             @foreach($post->tags as $tag)
                 <a href="{{ route('tags.show', $tag->slug) }}"
-                   class="text-indigo-600 transition hover:text-indigo-800">
+                   class="text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-600">
                     {{ $tag->name }}
                 </a>
             @endforeach
         </div>
 
-        <div class="prose prose-xl prose-indigo">
+        <div class="prose prose-xl prose-neutral dark:prose-invert">
             {!! \Illuminate\Support\Str::markdown($post->body) !!}
         </div>
     </article>
 
     @include('posts.partials.comments')
 
-    <x-slot name="seo">
-        <!-- Primary Meta Tags -->
-        <title>{{ $post->title }} | {{ config('app.name') }}</title>
-        <meta name="title" content="{{ $post->title }} | {{ config('app.name') }}">
-        <meta name="description" content="{{ $post->excerpt }}">
-
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="article">
-        <meta property="og:url" content="{{ request()->url() }}">
-        <meta property="og:site_name" content="{{ config('app.name') }}">
-        <meta property="og:locale" content="en_US">
-        <meta property="og:title" content="{{ $post->title }} | {{ config('app.name') }}">
-        <meta property="og:description" content="{{ $post->excerpt }}">
-        <meta property="og:image" content="{{ $post->seo_cover_image }}">
-
-        @foreach($post->tags as $tag)
-            <meta property="article:tag" content="{{ $tag->name }}"/>
-        @endforeach
-
-        <meta property="article:published_time" content="{{ $post->date?->toIso8601String() }}">
-        <meta property="og:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
-        <meta property="article:author" content="{{ route('authors.show', $post->author->username) }}">
-
-        <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="{{ request()->url() }}">
-        <meta property="twitter:title" content="{{ $post->title }} | {{ config('app.name') }}">
-        <meta property="twitter:description" content="{{ $post->excerpt }}">
-        <meta property="twitter:image" content="{{ $post->seo_cover_image }}">
-
-        <!-- Structured Data -->
-        <script type='application/ld+json'>
-        {
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            "headline": "{{ $post->title }}",
-            "image": "{{ $post->seo_cover_image }}",
-            "datePublished": "{{ $post->date?->toIso8601String() }}",
-            "dateModified": "{{ $post->updated_at->toIso8601String() }}",
-            "author": [{
-                "@type": "Person",
-                "name": "{{ $post->author->name }}",
-                "url": "{{ route('authors.show', $post->author->username) }}"
-            }]
-        }
-        </script>
-    </x-slot>
+    @include('posts.partials.seo')
 </x-app-layout>

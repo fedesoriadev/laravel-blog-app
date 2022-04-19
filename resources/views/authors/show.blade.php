@@ -1,10 +1,10 @@
 <x-app-layout :title="__('Latest posts by :author', ['author' => $author->name])">
-    <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg">
+    <header class="mb-12 p-8 border-2 border-indigo-600 rounded-lg dark:border-indigo-300 dark:text-neutral-200">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <x-profile-picture :user="$author" size="md" />
 
-                <span class="text-xl font-semibold text-gray-700 dark:text-gray-100">{{ $author->name }}</span>
+                <span class="text-xl font-semibold">{{ $author->name }}</span>
             </div>
             <div class="flex items-center space-x-4">
                 @if($author->twitter)
@@ -43,7 +43,7 @@
         </div>
 
         @if($author->about_me)
-            <div class="mt-6 text-lg text-gray-700 dark:text-gray-100">{{ $author->about_me }}</div>
+            <div class="mt-6 text-lg">{{ $author->about_me }}</div>
         @endif
     </header>
 

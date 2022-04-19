@@ -2,24 +2,24 @@
     <nav role="navigation" aria-label="Pagination Navigation" class="flex justify-between">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
-            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+            <x-button class="opacity-50">
                 {!! __('pagination.previous') !!}
-            </span>
+            </x-button>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 bg-white border border-indigo-600 leading-5 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+            <x-button href="{{ $paginator->previousPageUrl() }}" rel="prev">
                 {!! __('pagination.previous') !!}
-            </a>
+            </x-button>
         @endif
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 bg-white border border-indigo-600 leading-5 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+            <x-button href="{{ $paginator->nextPageUrl() }}" rel="next">
                 {!! __('pagination.next') !!}
-            </a>
+            </x-button>
         @else
-            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+            <x-button class="opacity-50">
                 {!! __('pagination.next') !!}
-            </span>
+            </x-button>
         @endif
     </nav>
 @endif

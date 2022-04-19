@@ -1,32 +1,30 @@
-<article class="py-8 mb-8 border-b-2 border-gray-200">
-    <h2 class="mb-2 font-bold text-4xl transition hover:text-indigo-600">
+<article class="pb-10 mb-10 border-b-2 border-gray-200 dark:border-neutral-800">
+    <div class="mb-2 text-sm text-gray-800 dark:text-indigo-300">{{ $post->date?->format('F d, Y') }}</div>
+
+    <h2 class="mb-4 font-bold text-2xl sm:text-3xl transition hover:text-indigo-600 dark:hover:text-indigo-300">
         <a href="{{ $postUrl }}">{{ $post->title }}</a>
     </h2>
 
-    <div class="flex items-center space-x-4">
-        @if ($showAuthorLink)
-            <a href="{{ $authorUrl }}" class="text-indigo-600 transition hover:text-indigo-800">
-                {{ $authorName }}
+    <div class="mb-4">
+        <a href="{{ $authorUrl }}"
+           class="text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-500">
+            &commat;{{ $authorName }}
+        </a>
+        <span>&nbsp;in&nbsp;</span>
+        @foreach($post->tags as $tag)
+            <a href="{{ route('tags.show', $tag->slug) }}"
+               class="text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-500">
+                {{ $tag->name }}
             </a>
-            <span> | </span>
-        @endif
-
-        <span class="text-gray-700 dark:text-gray-100">{{ $post->date->toDateString() }} | </span>
-
-        <div>
-            @foreach($post->tags as $tag)
-                <a href="{{ route('tags.show', $tag->slug) }}"
-                   class="text-indigo-600 transition hover:text-indigo-800">
-                    {{ $tag->name }}
-                </a>
-            @endforeach
-        </div>
+        @endforeach
     </div>
 
-    <p class="my-6">{{ $post->excerpt }}</p>
+    <div class="mb-6 text-lg">{{ $post->excerpt }}</div>
 
-    <a href="{{ $postUrl }}"
-       class="inline-block px-6 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-900 transition">
-        {{ __('Continue reading') }}
-    </a>
+    <x-button href="{{ $postUrl }}">
+        {{ __('Read more') }}
+        <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+    </x-button>
 </article>
