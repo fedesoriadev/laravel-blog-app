@@ -81,7 +81,7 @@ class UserTest extends TestCase
         $this->assertEquals(route('posts.index'), $authorUser->home());
 
         $regularUser = User::factory()->create();
-        $this->assertEquals(route('home'), $regularUser->home());
+        $this->assertEquals(route('home'), $regularUser->adminRoute());
     }
 
     /** @test */

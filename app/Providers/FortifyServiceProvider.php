@@ -29,7 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
              */
             public function toResponse($request): Response
             {
-                return redirect($request->user()->home() ?? config('fortify.home'));
+                return redirect($request->user()->adminRoute() ?? config('fortify.home'));
             }
         });
     }

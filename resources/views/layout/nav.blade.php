@@ -57,15 +57,28 @@
                     <ul
                         x-show="showUserDropdown"
                         style="display: none;"
-                        class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100"
+                        class="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="user-menu-button"
                         tabindex="-1">
+
+                        @if (Auth::user()->role)
+                            <li>
+                                <a class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                                   href="{{ Auth::user()->adminRoute() }}">
+                                    {{ __('Dashboard') }}
+                                </a>
+                            </li>
+                        @endif
+
                         <li>
                             <a class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                               href="{{ Auth::user()->home() }}">{{ __('Profile') }}</a>
+                               href="{{ route('profile.show') }}">
+                                {{ __('Profile') }}
+                            </a>
                         </li>
+
                         <li>
                             <x-form :action="route('logout')" method="POST">
                                 <button type="submit"
@@ -80,7 +93,9 @@
                     </ul>
                 </div>
             @else
-                <a href="{{ route('login') }}" class="text-gray-500 hover:text-indigo-600 transition dark:text-neutral-200">{{ __('Login') }}</a>
+                <a href="{{ route('login') }}" class="text-gray-500 hover:text-indigo-600 transition dark:text-neutral-200">
+                    {{ __('Sign in') }}
+                </a>
             @endauth
         </div>
     </div>

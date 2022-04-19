@@ -23,7 +23,7 @@
                         <x-form.input name="profile_picture" type="file"/>
                     </div>
                 </div>
-                <div class="mt-6 px-6 py-4 bg-gray-100">
+                <div class="mt-6 px-6 py-4 bg-gray-100 dark:bg-neutral-800">
                     <x-form.button>{{ __('Save') }}</x-form.button>
                 </div>
             </x-form>
@@ -45,7 +45,7 @@
                                   autocomplete="new-password" required/>
                     <x-form.input name="password_confirmation" type="password" required/>
                 </div>
-                <div class="mt-6 px-6 py-4 bg-gray-100">
+                <div class="mt-6 px-6 py-4 bg-gray-100 dark:bg-neutral-800">
                     <x-form.button>{{ __('Save') }}</x-form.button>
                 </div>
             </x-form>
@@ -58,7 +58,7 @@
                 <div class="px-6">
                     {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
                 </div>
-                <div class="mt-6 px-6 py-4 bg-gray-100">
+                <div class="mt-6 px-6 py-4 bg-gray-100 dark:bg-neutral-800">
                     <x-form.button>{{ __('Delete') }}</x-form.button>
                 </div>
             </x-form>

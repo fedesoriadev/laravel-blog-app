@@ -175,7 +175,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return string
      */
-    public function home(): string
+    public function adminRoute(): string
     {
         if ($this->role?->name === UserRole::ADMIN) {
             return route('admin.home');
