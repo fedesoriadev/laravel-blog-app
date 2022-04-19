@@ -24,7 +24,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 <body class="bg-gray-50 text-gray-900 transition dark:bg-neutral-900 dark:text-neutral-200">
-    <div class="max-w-3xl mx-auto p-4">
+    <div class="max-w-3xl mx-auto p-6 md:p-4">
         @include('layout.nav')
 
         @if (flash()->message)

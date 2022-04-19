@@ -1,7 +1,7 @@
 <article class="pb-10 mb-10 border-b-2 border-gray-200 dark:border-neutral-800">
     <div class="mb-2 text-sm text-gray-800 dark:text-indigo-300">{{ $post->date?->format('F d, Y') }}</div>
 
-    <h2 class="mb-4 font-bold text-2xl sm:text-3xl transition hover:text-indigo-600 dark:hover:text-indigo-300">
+    <h2 class="mb-4 font-bold text-3xl md:text-5xl transition hover:text-indigo-600 dark:hover:text-indigo-300">
         <a href="{{ $postUrl }}">{{ $post->title }}</a>
     </h2>
 

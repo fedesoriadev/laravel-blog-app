@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-auth.card>
-        <div class="mb-4 text-sm text-gray-600">
+        <div class="mb-4 text-sm text-gray-600 dark:text-neutral-200">
             {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
         </div>
 
@@ -16,7 +16,7 @@
             </x-form>
 
             <x-form :action="route('logout')" method="POST">
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <button type="submit" class="underline text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-200 dark:hover:text-indigo-600">
                     {{ __('Log Out') }}
                 </button>
             </x-form>

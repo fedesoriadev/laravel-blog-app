@@ -13,6 +13,10 @@ A small river named Duden flows by their place and supplies it with the necessar
 >
 > One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.
 
+and images can be specified like so:
+
+![example image](https://picsum.photos/700/350 "An exemplary image")
+
 An h2 header
 ------------
 
@@ -75,7 +79,3 @@ Notice again how text always lines up on 4-space indents (including that last li
 
 Here's a link to [a website](http://foo.bar), to a [local doc](local-doc.html), and to
 a [section heading in the current doc](#an-h2-header).
-
-and images can be specified like so:
-
-![example image](https://picsum.photos/700/350 "An exemplary image")
