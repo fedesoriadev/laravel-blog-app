@@ -10,7 +10,7 @@
                 <x-table.cell tag="th">{{ _('Username') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Role') }}</x-table.cell>
                 <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
-                <x-table.cell tag="th" class="w-[1%] whitespace-nowrap"></x-table.cell>
+                <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
 
@@ -51,7 +51,7 @@
                         </span>
                     @endif
                 </x-table.cell>
-                <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
+                <x-table.cell class="flex items-center">
                     <x-link href="{{ route('users.edit', $user->username) }}" class="mr-2">
                         {{ __('Edit') }}
                     </x-link>

@@ -19,7 +19,7 @@
             <tr>
                 <x-table.cell>
                     <div class="flex items-center space-x-2">
-                        <span class="w-2 h-2 block rounded-full mr-3 {{ $post->status->background() }}"
+                        <span class="shrink-0 w-2 h-2 block rounded-full mr-3 {{ $post->status->background() }}"
                               title="{{ $post->status->name }}"></span>
                         <span>{{ $post->title }}</span>
                         <a href="{{ route('posts.show', $post->slug) }}"
@@ -61,7 +61,7 @@
 
                 <x-table.cell>{{ $post->date?->toDateString() }}</x-table.cell>
                 <x-table.cell>{{ $post->created_at->format('Y-m-d H:i') }}</x-table.cell>
-                <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
+                <x-table.cell class="flex items-center">
                     <x-link href="{{ route('posts.edit', $post->slug) }}" class="mr-2">
                         {{ __('Edit') }}
                     </x-link>

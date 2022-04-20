@@ -16,7 +16,7 @@
 
                     <div class="flex items-center space-x-2">
                         <x-profile-picture :user="$user" />
-                        <x-form.input name="profile_picture" type="file"/>
+                        <x-form.input name="profile_picture" type="file" class="w-full"/>
                     </div>
                 </fieldset>
 

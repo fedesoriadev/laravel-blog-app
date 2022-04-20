@@ -14,9 +14,9 @@
         @foreach($comments as $comment)
             <tr>
                 <x-table.cell>{{ $comment->author->name }}</x-table.cell>
-                <x-table.cell class="max-w-2xl">{{ $comment->body }}</x-table.cell>
+                <x-table.cell class="!whitespace-normal">{{ $comment->body }}</x-table.cell>
                 <x-table.cell>{{ $comment->created_at->format('Y-m-d H:i') }}</x-table.cell>
-                <x-table.cell class="flex items-center w-[1%] whitespace-nowrap">
+                <x-table.cell class="flex items-center">
                     <x-link href="{{ route('posts.show', $comment->post->slug) }}#comments" target="_blank" class="mr-2">
                         {{ __('View post') }}
                     </x-link>

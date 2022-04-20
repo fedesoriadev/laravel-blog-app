@@ -17,10 +17,10 @@
 
                     <x-form.input name="name" :value="$user->name" required/>
 
-                    <div class="flex items-center space-x-4 overflow-hidden">
+                    <div class="flex items-center space-x-4">
                         <x-profile-picture :user="$user"/>
 
-                        <x-form.input name="profile_picture" type="file"/>
+                        <x-form.input name="profile_picture" type="file" class="w-full"/>
                     </div>
                 </div>
                 <div class="mt-6 px-4 sm:px-6 py-4 bg-gray-100 dark:bg-neutral-800">

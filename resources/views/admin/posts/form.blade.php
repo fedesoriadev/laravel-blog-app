@@ -14,7 +14,7 @@
             <div class="md:w-3/4 p-4 rounded-lg bg-white drop-shadow">
                 <x-form.input name="title" :value="$post->title" required/>
 
-                <x-form.input name="image" type="file"/>
+                <x-form.input name="image" type="file" class="w-full"/>
 
                 <x-form.textarea name="excerpt" :value="$post->excerpt" rows="3"/>
 
