@@ -25,17 +25,17 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => ['required'],
-            'email'    => ['required', 'email', Rule::unique('users')->ignore($this->route('user')?->id)],
-            'username' => ['required', Rule::unique('users')->ignore($this->route('user')?->id)],
-            'role_id'  => ['nullable', 'integer', Rule::exists('roles', 'id')],
-            'password' => [Rule::requiredIf(!$this->route('user')), 'confirmed', 'min:8'],
-            'profile_picture'   => ['nullable', 'image', 'max:1024'],
-            'about_me' => ['nullable'],
-            'twitter'  => ['nullable', 'url'],
-            'youtube'  => ['nullable', 'url'],
-            'twitch'   => ['nullable', 'url'],
-            'github'   => ['nullable', 'url'],
+            'name'            => ['required'],
+            'email'           => ['required', 'email', Rule::unique('users')->ignore($this->route('user')?->id)],
+            'username'        => ['required', Rule::unique('users')->ignore($this->route('user')?->id)],
+            'role_id'         => ['nullable', 'integer', Rule::exists('roles', 'id')],
+            'password'        => [$this->route('user') ? 'nullable' : 'required', 'sometimes', 'confirmed', 'min:8'],
+            'profile_picture' => ['nullable', 'image', 'max:1024'],
+            'about_me'        => ['nullable'],
+            'twitter'         => ['nullable', 'url'],
+            'youtube'         => ['nullable', 'url'],
+            'twitch'          => ['nullable', 'url'],
+            'github'          => ['nullable', 'url'],
         ];
     }
 }

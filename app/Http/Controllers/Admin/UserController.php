@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -41,6 +42,8 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
+        $attributes['password'] = Hash::make($attributes['password']);
+
         $user = User::createVerified($attributes);
 
         if ($request->has('profile_picture')) {
@@ -69,6 +72,10 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user): RedirectResponse
     {
         $attributes = $request->validated();
+
+        if (!is_null($attributes['password'])) {
+            $attributes['password'] = Hash::make($attributes['password']);
+        }
 
         $user->update($attributes);
 
