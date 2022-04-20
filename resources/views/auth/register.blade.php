@@ -20,9 +20,8 @@
     <div class="mt-4 text-center">
         <p class="text-sm text-gray-700 dark:text-neutral-200">{{ __('Already have an account?') }}</p>
 
-        <a href="{{ route('login') }}"
-           class="text-md text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-600">
+        <x-link href="{{ route('login') }}">
             {{ __('Sign in') }}
-        </a>
+        </x-link>
     </div>
 </x-app-layout>

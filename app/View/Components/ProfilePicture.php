@@ -24,7 +24,7 @@ class ProfilePicture extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.profile-picture');
+        return view('components.auth.profile-picture');
     }
 
     /**

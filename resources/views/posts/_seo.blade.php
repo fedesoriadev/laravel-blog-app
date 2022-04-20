@@ -43,6 +43,5 @@
                 "url": "{{ route('authors.show', $post->author->username) }}"
             }]
         }
-        
     </script>
 </x-slot>

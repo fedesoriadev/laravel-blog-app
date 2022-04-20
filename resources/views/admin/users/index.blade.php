@@ -52,9 +52,9 @@
                     @endif
                 </x-table.cell>
                 <x-table.cell class="flex items-center space-x-2">
-                    <x-link href="{{ route('users.edit', $user->username) }}">
+                    <x-admin.button href="{{ route('users.edit', $user->username) }}">
                         {{ __('Edit') }}
-                    </x-link>
+                    </x-admin.button>
 
                     <x-form.confirmation :action="route('users.destroy', $user->username)" method="DELETE">
                         {{ __('Delete') }}

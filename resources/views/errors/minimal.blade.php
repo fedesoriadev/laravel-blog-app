@@ -17,7 +17,7 @@
     </head>
     <body class="antialiased">
         <main class="grid place-content-center place-items-center min-h-screen">
-            <x-app-logo :href="route('home')" class="my-6"/>
+            <x-logo :href="route('home')" class="my-6"/>
 
             <div class="flex flex-auto items-center justify-center text-center px-4 flex-col sm:flex-row">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight sm:pr-6 sm:mr-6 sm:border-r sm:border-slate-900/10 sm:dark:border-slate-300/10 dark:text-slate-200">

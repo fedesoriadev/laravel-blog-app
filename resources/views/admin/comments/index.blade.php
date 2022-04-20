@@ -17,9 +17,9 @@
                 <x-table.cell class="!whitespace-normal">{{ $comment->body }}</x-table.cell>
                 <x-table.cell>{{ $comment->created_at->format('Y-m-d H:i') }}</x-table.cell>
                 <x-table.cell class="flex items-center">
-                    <x-link href="{{ route('posts.show', $comment->post->slug) }}#comments" target="_blank" class="mr-2">
+                    <x-admin.button href="{{ route('posts.show', $comment->post->slug) }}#comments" target="_blank" class="mr-2">
                         {{ __('View post') }}
-                    </x-link>
+                    </x-admin.button>
 
                     <x-form.confirmation :action="route('comments.destroy', $comment)" method="DELETE">
                         {{ __('Delete') }}

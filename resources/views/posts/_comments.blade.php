@@ -14,7 +14,7 @@
             </div>
 
         @else
-            <p class="text-md">Please <a href="{{ route('login') }}" class="text-indigo-600">Log In</a> to comment!</p>
+            <p class="text-md">Please <x-link href="{{ route('login') }}">Log In</x-link> to comment!</p>
         @endauth
     </div>
 

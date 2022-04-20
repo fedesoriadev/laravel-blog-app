@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-auth.card>
         @if (session('status'))
-            <div class="font-medium text-sm text-green-600 mb-4">
+            <x-auth.success-message>
                 {{ session('status') }}
-            </div>
+            </x-auth.success-message>
         @endif
 
         <x-auth.errors />
@@ -19,10 +19,9 @@
                     <span class="ml-2 text-sm text-gray-500">{{ __('Remember me') }}</span>
                 </label>
 
-                <a href="{{ route('password.request') }}"
-                   class="text-xs text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-600">
+                <x-link href="{{ route('password.request') }}">
                     {{ __('Forgot password?') }}
-                </a>
+                </x-link>
             </div>
 
             <x-form.button>{{ __('Login') }}</x-form.button>
@@ -32,9 +31,8 @@
     <div class="mt-4 text-center">
         <p class="text-sm text-gray-700 dark:text-neutral-200">{{ __('Don\'t have an account?') }}</p>
 
-        <a href="{{ route('register') }}"
-           class="text-md text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-600">
+        <x-link href="{{ route('register') }}">
             {{ __('Sign up') }}
-        </a>
+        </x-link>
     </div>
 </x-app-layout>

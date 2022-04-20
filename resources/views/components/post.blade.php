@@ -6,16 +6,14 @@
     </h2>
 
     <div class="mb-4">
-        <a href="{{ $authorUrl }}"
-           class="text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-500">
+        <x-link href="{{ $authorUrl }}">
             &commat;{{ $authorName }}
-        </a>
+        </x-link>
         <span>&nbsp;in&nbsp;</span>
         @foreach($post->tags as $tag)
-            <a href="{{ route('tags.show', $tag->slug) }}"
-               class="text-indigo-600 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-500">
+            <x-link href="{{ route('tags.show', $tag->slug) }}">
                 {{ $tag->name }}
-            </a>
+            </x-link>
         @endforeach
     </div>
 

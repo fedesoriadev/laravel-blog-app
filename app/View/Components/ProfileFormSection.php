@@ -23,6 +23,6 @@ class ProfileFormSection extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.profile-form-section');
+        return view('components.auth.profile-form-section');
     }
 }

@@ -1,9 +1,9 @@
 <x-app-layout>
     @if(request()->has('search'))
-        <header class="my-6 p-8 border-2 border-indigo-500 rounded-lg text-lg font-semibold dark:border-indigo-300">
+        <x-header-frame>
             {{ __('We found :count posts containing ', ['count' => $posts->count()]) }}
             <span class="text-indigo-600 dark:text-indigo-300">{{ request()->get('search') }}</span>
-        </header>
+        </x-header-frame>
     @endif
 
     @foreach($posts as $post)
