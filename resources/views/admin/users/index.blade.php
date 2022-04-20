@@ -42,7 +42,7 @@
                 <x-table.cell>
                     {{ $user->created_at->format('Y-m-d H:i') }}
 
-                    @if($user->email_verified_at)
+                    @if($user->hasVerifiedEmail())
                         <span title="{{ __('Email verified at :date', ['date' => $user->email_verified_at]) }}"
                               class="-mb-1 ml-2 text-green-500 inline-block">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -51,14 +51,25 @@
                         </span>
                     @endif
                 </x-table.cell>
-                <x-table.cell class="flex items-center">
-                    <x-link href="{{ route('users.edit', $user->username) }}" class="mr-2">
+                <x-table.cell class="flex items-center space-x-2">
+                    <x-link href="{{ route('users.edit', $user->username) }}">
                         {{ __('Edit') }}
                     </x-link>
 
                     <x-form.confirmation :action="route('users.destroy', $user->username)" method="DELETE">
                         {{ __('Delete') }}
                     </x-form.confirmation>
+
+                    @if (!$user->hasVerifiedEmail())
+                        <x-form.confirmation
+                                :action="route('users.resend-verification', $user->username)"
+                                title="{{ __('Resend verification email') }}"
+                                method="POST">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </x-form.confirmation>
+                    @endif
                 </x-table.cell>
             </tr>
         @endforeach

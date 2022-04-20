@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PublishPostController;
+use App\Http\Controllers\Admin\ResendVerificationEmailController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::middleware('can:admin')->group(function () {
 
     Route::resource('users', UserController::class)
         ->except('show');
+
+    Route::post('users/{user}/resend-verification', ResendVerificationEmailController::class)
+        ->name('users.resend-verification');
 
     Route::resource('comments', CommentController::class)
         ->only(['index', 'destroy']);
