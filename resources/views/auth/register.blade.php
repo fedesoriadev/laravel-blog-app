@@ -2,7 +2,7 @@
     <x-auth.card>
         <x-auth.errors />
 
-        <x-form :action="route('register')" method="POST">
+        <x-form :action="route('register')">
             <x-form.input name="email" type="email" required/>
 
             <x-form.input name="username" required/>

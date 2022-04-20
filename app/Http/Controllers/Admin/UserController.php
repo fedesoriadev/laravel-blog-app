@@ -75,6 +75,8 @@ class UserController extends Controller
 
         if (!empty($attributes['password'])) {
             $attributes['password'] = Hash::make($attributes['password']);
+        } else {
+            unset($attributes['password']);
         }
 
         $user->update($attributes);

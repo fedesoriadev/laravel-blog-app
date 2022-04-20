@@ -12,7 +12,7 @@
 
         <x-auth.errors />
 
-        <x-form :action="route('password.email')" method="POST">
+        <x-form :action="route('password.email')">
             <x-form.input name="email" type="email" autofocus required />
 
             <div class="flex items-center justify-end mt-4">

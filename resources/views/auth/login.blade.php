@@ -8,7 +8,7 @@
 
         <x-auth.errors />
 
-        <x-form :action="route('login')" method="POST">
+        <x-form :action="route('login')">
             <x-form.input name="email" type="email" autofocus required />
 
             <x-form.input name="password" type="password" autocomplete="new-password" required />

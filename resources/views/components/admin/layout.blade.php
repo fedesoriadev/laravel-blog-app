@@ -84,7 +84,7 @@
                                 <span class="block">{{ Auth::user()->name }}</span>
                                 <span class="block">{{ Auth::user()->email }}</span>
                             </div>
-                            <x-form :action="route('logout')" method="POST">
+                            <x-form :action="route('logout')">
                                 <button type="submit"
                                         class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
                                         role="menuitem"
@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <div class="mt-3 px-2 space-y-1">
-                    <x-form :action="route('logout')" method="POST">
+                    <x-form :action="route('logout')">
                         <button type="submit"
                                 class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">
                             {{ __('Logout') }}

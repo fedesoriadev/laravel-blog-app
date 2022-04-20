@@ -68,7 +68,7 @@
 
                     <x-form.confirmation
                         :action="route('posts.' . ($post->status->isPublished() ? 'archive' : 'publish') , $post->slug)"
-                        method="POST">
+                       >
                         {{ __($post->status->isPublished() ? 'Archive' : 'Publish') }}
                     </x-form.confirmation>
                 </x-table.cell>

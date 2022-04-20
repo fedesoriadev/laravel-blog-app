@@ -6,7 +6,7 @@
 
         <x-auth.errors />
 
-        <x-form :action="route('password.confirm')" method="POST">
+        <x-form :action="route('password.confirm')">
             <x-form.input name="password" type="password" autocomplete="current-password" required/>
 
             <div class="flex justify-end mt-4">

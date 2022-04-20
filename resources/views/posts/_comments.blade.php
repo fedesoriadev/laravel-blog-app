@@ -6,7 +6,7 @@
             <div class="flex space-x-4">
                 <x-profile-picture :user="Auth::user()" />
 
-                <x-form :action="route('comments.store', $post->slug)" method="POST" class="w-full">
+                <x-form :action="route('comments.store', $post->slug)" class="w-full">
                     <x-form.textarea name="comment" label="" rows="6" />
 
                     <x-form.button>{{ __('Comment') }}</x-form.button>

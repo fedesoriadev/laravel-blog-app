@@ -1,4 +1,4 @@
-@props(['action', 'method'])
+@props(['action', 'method' => 'POST'])
 
 <x-form
     :action="$action"

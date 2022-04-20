@@ -11,7 +11,7 @@
         @endif
 
         <div class="mt-4 flex items-center justify-between">
-            <x-form :action="route('verification.send')" method="POST">
+            <x-form :action="route('verification.send')">
                 <x-form.button>{{ __('Resend verification email') }}</x-form.button>
             </x-form>
         </div>
