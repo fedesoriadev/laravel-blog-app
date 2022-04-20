@@ -18,11 +18,11 @@
     [multiple],
     textarea,
     select {
-        @apply block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-neutral-800 dark:text-neutral-200 dark:border-none;
+        @apply block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-neutral-800 dark:text-neutral-200 dark:border-none dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 dark:autofill:bg-neutral-700;
     }
 
     [type="checkbox"],
     [type="radio"] {
-        @apply rounded-md border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+        @apply rounded-md border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-neutral-800 dark:text-neutral-200 dark:border-none dark:hover:bg-neutral-800 dark:focus:bg-neutral-800;
     }
 }
