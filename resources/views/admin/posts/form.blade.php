@@ -14,7 +14,15 @@
             <div class="md:w-3/4 p-4 rounded-lg bg-white drop-shadow">
                 <x-form.input name="title" :value="$post->title" required/>
 
-                <x-form.input name="image" type="file" class="w-full"/>
+                <div class="flex flex-col mb-6 sm:flex-row sm:mb-0 sm:items-center justify-between">
+                    <x-form.input name="image" type="file" class="w-full"/>
+
+                    @if($post->cover_image)
+                        <img src="{{ $post->cover_image }}"
+                             class="max-h-32 w-fit"
+                             alt="{{ __('Cover image') }}">
+                    @endif
+                </div>
 
                 <x-form.textarea name="excerpt" :value="$post->excerpt" rows="3"/>
 

@@ -150,6 +150,10 @@ class Post extends Model
     {
         return new Attribute(
             get: function ($value, $attributes) {
+                if (!isset($attributes['image'])) {
+                    return null;
+                }
+
                 return is_null($attributes['image']) || str_starts_with($attributes['image'], 'http')
                     ? $attributes['image']
                     : asset('storage/' . $attributes['image']);
