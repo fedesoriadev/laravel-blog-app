@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
-        if (!is_null($attributes['password'])) {
+        if (!empty($attributes['password'])) {
             $attributes['password'] = Hash::make($attributes['password']);
         }
 

@@ -75,10 +75,10 @@ class UserTest extends TestCase
     public function it_generates_a_home_link_depending_the_role(): void
     {
         $adminUser = User::factory()->admin()->create();
-        $this->assertEquals(route('admin.home'), $adminUser->home());
+        $this->assertEquals(route('admin.home'), $adminUser->adminRoute());
 
         $authorUser = User::factory()->author()->create();
-        $this->assertEquals(route('posts.index'), $authorUser->home());
+        $this->assertEquals(route('posts.index'), $authorUser->adminRoute());
 
         $regularUser = User::factory()->create();
         $this->assertEquals(route('home'), $regularUser->adminRoute());
