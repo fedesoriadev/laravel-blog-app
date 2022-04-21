@@ -159,7 +159,7 @@ class Post extends Model
                     return null;
                 }
 
-                return is_null($attributes['image']) || str_starts_with($attributes['image'], 'http')
+                return str_starts_with($attributes['image'], 'http')
                     ? $attributes['image']
                     : asset('storage/' . $attributes['image']);
             }
