@@ -6,6 +6,7 @@ use App\Enums\PostStatus;
 use App\Exceptions\AlreadyArchivedException;
 use App\Exceptions\AlreadyPublishedException;
 use App\Models\Post;
+use App\Models\User;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -52,6 +53,21 @@ class PostTest extends TestCase
         $this->assertCount(4, Post::filter(['NOT-EXISTING-KEYWORD' => 'ABC'])->get());
         $this->assertCount(0, Post::filter(['search' => 'ZERO-RESULTS-KEYWORD'])->get());
         $this->assertCount(2, Post::filter(['search' => 'KEYWORD'])->get());
+    }
+
+    /** @test */
+    public function it_filters_posts_by_user_id(): void
+    {
+        $authorA = User::factory()->author()->create();
+        Post::factory()->create(['user_id' => $authorA->id]);
+
+        $authorB = User::factory()->author()->create();
+        Post::factory()->create(['user_id' => $authorB->id]);
+
+        $this->assertCount(2, Post::all());
+        $this->assertCount(2, Post::filter([])->get());
+        $this->assertCount(1, Post::filter(['user_id' => 1])->get());
+        $this->assertCount(0, Post::filter(['user_id' => 50])->get());
     }
 
     /** @test */

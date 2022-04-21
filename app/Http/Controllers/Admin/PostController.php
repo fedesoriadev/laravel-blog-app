@@ -26,20 +26,11 @@ class PostController extends Controller
      */
     public function index(Request $request): View
     {
-        if ($request->user()->hasRole(UserRole::AUTHOR)) {
-            $posts = $request
-                ->user()
-                ->posts()
-                ->with('author', 'tags')
-                ->withStatus($request->get('status'))
-                ->latest()
-                ->simplePaginate(Pagination::ADMIN->value);
-        } else {
-            $posts = Post::with('author', 'tags')
-                ->withStatus($request->get('status'))
-                ->latest()
-                ->simplePaginate(Pagination::ADMIN->value);
-        }
+        $posts = Post::with('author', 'tags')
+            ->filter($request->user()->hasRole(UserRole::AUTHOR) ? ['user_id' => $request->user()->id] : [])
+            ->withStatus($request->get('status'))
+            ->latest()
+            ->simplePaginate(Pagination::ADMIN->value);
 
         return view('admin.posts.index', ['posts' => $posts]);
     }

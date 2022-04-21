@@ -122,6 +122,11 @@ class Post extends Model
                 ->orWhere('body', 'LIKE', "%{$filter['search']}%");
         }
 
+        if (!empty($filter['user_id'])) {
+            return $query
+                ->where('user_id', $filter['user_id']);
+        }
+
         return $query;
     }
 
