@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -170,6 +171,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return new Attribute(
             get: fn($value) => is_null($value) || str_starts_with($value, 'http') ? $value : asset('storage/' . $value)
         );
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function password(): Attribute
+    {
+        return Attribute::set( fn($plainPassword) => Hash::make($plainPassword) );
     }
 
     /**

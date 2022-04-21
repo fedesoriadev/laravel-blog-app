@@ -42,8 +42,6 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
-        $attributes['password'] = Hash::make($attributes['password']);
-
         $user = User::createVerified($attributes);
 
         if ($request->has('profile_picture')) {
@@ -73,9 +71,7 @@ class UserController extends Controller
     {
         $attributes = $request->validated();
 
-        if (!empty($attributes['password'])) {
-            $attributes['password'] = Hash::make($attributes['password']);
-        } else {
+        if (empty($attributes['password'])) {
             unset($attributes['password']);
         }
 

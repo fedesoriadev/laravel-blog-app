@@ -18,7 +18,7 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition():array
+    public function definition(): array
     {
         $username = $this->faker->userName();
 
@@ -27,9 +27,9 @@ class UserFactory extends Factory
             'username'          => $username,
             'email'             => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password'          => 'password',
             'remember_token'    => Str::random(10),
-            'profile_picture'            => 'https://i.pravatar.cc/150?u=' . $username,
+            'profile_picture'   => 'https://i.pravatar.cc/150?u=' . $username,
             'about_me'          => $this->faker->sentence(20),
             'twitter'           => 'https://twitter.com/' . $username,
             'youtube'           => 'https://www.youtube.com/' . $username,
@@ -55,7 +55,7 @@ class UserFactory extends Factory
      */
     public function admin(): static
     {
-        return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
+        return $this->state(fn(array $attributes) => [])->afterCreating(function (User $user) {
             Role::firstOrCreate(['name' => UserRole::ADMIN])
                 ->users()
                 ->save($user);
@@ -67,7 +67,7 @@ class UserFactory extends Factory
      */
     public function author(): static
     {
-        return $this->state(fn(array $attributes) => [])->afterCreating(function(User $user) {
+        return $this->state(fn(array $attributes) => [])->afterCreating(function (User $user) {
             Role::firstOrCreate(['name' => UserRole::AUTHOR])
                 ->users()
                 ->save($user);
