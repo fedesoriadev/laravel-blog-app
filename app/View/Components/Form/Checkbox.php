@@ -26,6 +26,10 @@ class Checkbox extends Component
         $this->value = old($name, $value);
     }
 
+    /**
+     * @param $option
+     * @return bool
+     */
     public function isChecked($option): bool
     {
         return $option === $this->value;

@@ -7,6 +7,10 @@ use App\Models\User;
 
 class ResendVerificationEmailController extends Controller
 {
+    /**
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function __invoke(User $user)
     {
         if ($user->hasVerifiedEmail()) {
