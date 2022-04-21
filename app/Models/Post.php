@@ -66,7 +66,7 @@ class Post extends Model
      */
     protected $casts = [
         'status' => PostStatus::class,
-        'date' => 'date'
+        'date'   => 'date'
     ];
 
     /**
@@ -153,17 +153,15 @@ class Post extends Model
      */
     public function coverImage(): Attribute
     {
-        return new Attribute(
-            get: function ($value, $attributes) {
-                if (!isset($attributes['image'])) {
-                    return null;
-                }
-
-                return str_starts_with($attributes['image'], 'http')
-                    ? $attributes['image']
-                    : asset('storage/' . $attributes['image']);
+        return Attribute::get(function ($value, $attributes) {
+            if (!isset($attributes['image'])) {
+                return null;
             }
-        );
+
+            return str_starts_with($attributes['image'], 'http')
+                ? $attributes['image']
+                : asset('storage/' . $attributes['image']);
+        });
     }
 
     /**
@@ -171,9 +169,7 @@ class Post extends Model
      */
     public function seoCoverImage(): Attribute
     {
-        return new Attribute(
-            get: fn() => $this->cover_image ?? asset('img/site_cover.jpg')
-        );
+        return Attribute::get(fn() => $this->cover_image ?? asset('img/site_cover.jpg'));
     }
 
     /**

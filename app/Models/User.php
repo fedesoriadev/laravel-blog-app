@@ -168,9 +168,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function profilePicture(): Attribute
     {
-        return new Attribute(
-            get: fn($value) => is_null($value) || str_starts_with($value, 'http') ? $value : asset('storage/' . $value)
-        );
+        return Attribute::get(function ($value) {
+            return is_null($value) || str_starts_with($value, 'http') ? $value : asset('storage/' . $value);
+        });
     }
 
     /**
@@ -179,7 +179,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function password(): Attribute
     {
-        return Attribute::set( fn($plainPassword) => Hash::make($plainPassword) );
+        return Attribute::set(fn($plainPassword) => Hash::make($plainPassword));
     }
 
     /**
