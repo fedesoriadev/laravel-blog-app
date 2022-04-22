@@ -21,7 +21,7 @@
         <p class="text-sm text-gray-700 dark:text-neutral-200">{{ __('Already have an account?') }}</p>
 
         <x-link href="{{ route('login') }}">
-            {{ __('Sign in') }}
+            {{ __('Log in') }}
         </x-link>
     </div>
 </x-app-layout>

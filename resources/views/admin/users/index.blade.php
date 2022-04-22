@@ -5,11 +5,11 @@
         <x-slot name="thead">
             <tr>
                 <x-table.cell tag="th">#</x-table.cell>
-                <x-table.cell tag="th">{{ _('Name') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Email') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Username') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Role') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Name') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Email') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Username') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Role') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Created at') }}</x-table.cell>
                 <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
@@ -36,7 +36,7 @@
                 <x-table.cell>{{ $user->username }}</x-table.cell>
                 <x-table.cell>
                     <span class="text-xs text-gray-700 tracking-wide px-2 py-1 rounded-xl {{ $user->role?->name->background() }}">
-                        {{ ucfirst($user->role?->name->value) }}
+                        {{ ucfirst(__($user->role?->name->value)) }}
                     </span>
                 </x-table.cell>
                 <x-table.cell>

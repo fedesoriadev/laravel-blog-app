@@ -11,7 +11,8 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "spatie/laravel-flash": "^1.9"
+        "spatie/laravel-flash": "^1.9",
+        "vemcogroup/laravel-translation": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

@@ -56,7 +56,7 @@
                                 <label
                                     for="role-{{ $role->name->value }}"
                                     class="ml-3 block text-sm font-medium text-gray-700">
-                                    {{ ucfirst($role->name->value) }}
+                                    {{ ucfirst(__($role->name->value)) }}
                                 </label>
                             </div>
                         @endforeach

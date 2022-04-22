@@ -4,13 +4,13 @@
     <x-table>
         <x-slot name="thead">
             <tr>
-                <x-table.cell tag="th">{{ _('Title') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Title') }}</x-table.cell>
                 @if(!Auth::user()->hasRole(\App\Enums\UserRole::AUTHOR))
-                    <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
+                    <x-table.cell tag="th">{{ __('Author') }}</x-table.cell>
                 @endif
-                <x-table.cell tag="th">{{ _('Tag') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Date') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Tag') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Date') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Created at') }}</x-table.cell>
                 <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>
@@ -20,7 +20,7 @@
                 <x-table.cell>
                     <div class="flex items-center space-x-2">
                         <span class="shrink-0 w-2 h-2 block rounded-full mr-3 {{ $post->status->background() }}"
-                              title="{{ $post->status->name }}"></span>
+                              title="{{ __($post->status->name) }}"></span>
                         <span>{{ $post->title }}</span>
                         <a href="{{ route('posts.show', $post->slug) }}"
                            class="text-gray-400 transition hover:text-indigo-600"

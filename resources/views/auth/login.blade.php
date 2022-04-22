@@ -24,12 +24,12 @@
                 </x-link>
             </div>
 
-            <x-form.button>{{ __('Login') }}</x-form.button>
+            <x-form.button>{{ __('Log in') }}</x-form.button>
         </x-form>
     </x-auth.card>
 
     <div class="mt-4 text-center">
-        <p class="text-sm text-gray-700 dark:text-neutral-200">{{ __('Don\'t have an account?') }}</p>
+        <p class="text-sm text-gray-700 dark:text-neutral-200">{{ __("Don't have an account?") }}</p>
 
         <x-link href="{{ route('register') }}">
             {{ __('Sign up') }}

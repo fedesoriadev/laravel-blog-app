@@ -9,12 +9,13 @@
                 <x-form :action="route('comments.store', $post->slug)" class="w-full">
                     <x-form.textarea name="comment" label="" rows="6" />
 
-                    <x-form.button>{{ __('Comment') }}</x-form.button>
+                    <x-form.button>{{ __('Send') }}</x-form.button>
                 </x-form>
             </div>
 
         @else
-            <p class="text-md">Please <x-link href="{{ route('login') }}">Log In</x-link> to comment!</p>
+            <p class="text-md">
+                {{ __('Please') }} <x-link href="{{ route('login') }}">{{ __('Log in') }}</x-link> {{ __('to comment!') }}</p>
         @endauth
     </div>
 

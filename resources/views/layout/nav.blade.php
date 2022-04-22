@@ -21,7 +21,7 @@
                         name="search"
                         id="search"
                         value="{{ request()->get('search', '') }}"
-                        placeholder="Search..."
+                        placeholder="{{ __('Search...') }}"
                         class="bg-gray-100 border-gray-200 text-sm rounded-lg">
                 </form>
             </div>
@@ -49,6 +49,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
             </button>
+
+            <!-- Language Switcher -->
+            <x-lang-switcher />
 
             <!-- User -->
             @auth
@@ -98,7 +101,7 @@
                                         role="menuitem"
                                         tabindex="-1"
                                         id="user-menu-item-0">
-                                    {{ __('Logout') }}
+                                    {{ __('Log out') }}
                                 </button>
                             </x-form>
                         </li>
@@ -107,7 +110,7 @@
             @else
                 <a href="{{ route('login') }}" class="text-gray-500 hover:text-indigo-600 transition dark:text-neutral-200">
                     <span class="hidden sm:inline">
-                        {{ __('Sign in') }}
+                        {{ __('Log in') }}
                     </span>
                     <svg class="w-6 h-6 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />

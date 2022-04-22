@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\LanguageSelectorController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -43,4 +44,5 @@ Route::delete('profile', [ProfileController::class, 'destroy'])
     ->name('profile.destroy')
     ->middleware(['auth', 'verified', 'password.confirm']);
 
-
+Route::get('lang/{locale}', LanguageSelectorController::class)
+    ->name('lang');

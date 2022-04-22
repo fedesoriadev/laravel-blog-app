@@ -51,6 +51,9 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-4">
+                    <!-- Language Switcher -->
+                    <x-lang-switcher class="text-white" />
+
                     <x-link href="{{ route('home') }}" title="{{ __('Back to site') }}">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -90,7 +93,7 @@
                                         role="menuitem"
                                         tabindex="-1"
                                         id="user-menu-item-0">
-                                    {{ __('Logout') }}
+                                    {{ __('Log out') }}
                                 </button>
                             </x-form>
                         </div>
@@ -99,6 +102,9 @@
 
                 <!-- Mobile menu button -->
                 <div class="-mr-2 flex items-center space-x-2 md:hidden">
+                    <!-- Language Switcher -->
+                    <x-lang-switcher class="text-white" />
+
                     <x-link href="{{ route('home') }}" title="{{ __('Back to site') }}">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -167,7 +173,7 @@
                     <x-form :action="route('logout')">
                         <button type="submit"
                                 class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">
-                            {{ __('Logout') }}
+                            {{ __('Log out') }}
                         </button>
                     </x-form>
                 </div>

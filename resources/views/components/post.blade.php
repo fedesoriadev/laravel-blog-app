@@ -9,7 +9,7 @@
         <x-link href="{{ $authorUrl }}">
             &commat;{{ $authorName }}
         </x-link>
-        <span>&nbsp;in&nbsp;</span>
+        <span>&nbsp;{{ __('in') }}&nbsp;</span>
         @foreach($post->tags as $tag)
             <x-link href="{{ route('tags.show', $tag->slug) }}">
                 {{ $tag->name }}

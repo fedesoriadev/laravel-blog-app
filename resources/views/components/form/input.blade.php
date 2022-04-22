@@ -1,5 +1,5 @@
 <div class="mb-4">
-    <x-form._label :name="$name">{{ $label }}</x-form._label>
+    <x-form._label :name="$name">{{ __($label) }}</x-form._label>
 
     <input
         type="{{ $type }}"

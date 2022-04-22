@@ -4,9 +4,9 @@
     <x-table>
         <x-slot name="thead">
             <tr>
-                <x-table.cell tag="th">{{ _('Author') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Comment') }}</x-table.cell>
-                <x-table.cell tag="th">{{ _('Created at') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Author') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Comment') }}</x-table.cell>
+                <x-table.cell tag="th">{{ __('Created at') }}</x-table.cell>
                 <x-table.cell tag="th">&nbsp;</x-table.cell>
             </tr>
         </x-slot>

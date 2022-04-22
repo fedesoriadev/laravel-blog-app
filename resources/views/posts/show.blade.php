@@ -27,7 +27,7 @@
                 <span>{{ $post->author->name }}</span>
             </x-link>
 
-            <span class="text-sm text-gray-800 dark:text-indigo-300"> / {{ $post->date->format('F d, Y') }} in </span>
+            <span class="text-sm text-gray-800 dark:text-indigo-300"> / {{ $post->date->format('F d, Y') }} {{ __('in') }} </span>
 
             @foreach($post->tags as $tag)
                 <x-link href="{{ route('tags.show', $tag->slug) }}">

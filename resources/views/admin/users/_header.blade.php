@@ -18,7 +18,7 @@
                             <option
                                 value="{{ $role->name->value }}"
                                 {{ request()->get('role') === $role->name->value ? 'selected=selected' : '' }}>
-                                {{ ucfirst($role->name->value) }}
+                                {{ ucfirst(__($role->name->value)) }}
                             </option>
                         @endforeach
                     </select>
