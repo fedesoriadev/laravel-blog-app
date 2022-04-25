@@ -13,6 +13,6 @@ class AdminLayout extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|\Closure|string
     {
-        return view('components.admin.layout');
+        return view('admin.layout.app');
     }
 }

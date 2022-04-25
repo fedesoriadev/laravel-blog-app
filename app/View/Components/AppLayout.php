@@ -25,6 +25,6 @@ class AppLayout extends Component
      */
     public function render(): \Illuminate\Contracts\View\View|string|\Closure
     {
-        return view('components.app-layout');
+        return view('layout.app');
     }
 }

@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @include('layout.seo')
+    @include('layout._seo')
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900 transition dark:bg-neutral-900 dark:text-neutral-200">
     <div class="max-w-3xl mx-auto p-6 md:p-4">
-        @include('layout.nav')
+        @include('layout._navigation')
 
         @if (flash()->message)
             <x-alert :type="flash()->level">{{ flash()->message }}</x-alert>
@@ -35,7 +35,7 @@
             {{ $slot }}
         </main>
 
-        @include('layout.footer')
+        @include('layout._footer')
     </div>
 </body>
 </html>
