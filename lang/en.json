@@ -110,8 +110,8 @@
     "and": "and",
     "in": "in",
     "of": "of",
-    "pagination.next": "pagination.next",
-    "pagination.previous": "pagination.previous",
+    "pagination.next": "Next &raquo;",
+    "pagination.previous": "&laquo; Previous",
     "results": "results",
     "to": "to",
     "to comment!": "to comment!"
