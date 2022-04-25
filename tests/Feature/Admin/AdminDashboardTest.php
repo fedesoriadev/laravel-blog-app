@@ -18,6 +18,6 @@ class AdminDashboardTest extends TestCase
         $this
             ->get('admin')
             ->assertViewIs('admin.index')
-            ->assertViewHasAll(['postsCount', 'commentsCount', 'userCount', 'topPosts', 'latestComments', 'newUsers']);
+            ->assertViewHasAll(['postsCount', 'commentsCount', 'usersCount', 'topPosts', 'latestComments', 'newUsers']);
     }
 }

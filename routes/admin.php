@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ArchivePostController;
-use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PublishPostController;
@@ -20,7 +20,7 @@ Route::post('posts/{post}/archive', ArchivePostController::class)
 
 
 Route::middleware('can:admin')->group(function () {
-    Route::get('/', IndexController::class)
+    Route::get('/', AdminDashboardController::class)
         ->name('admin.home');
 
     Route::resource('users', UserController::class)

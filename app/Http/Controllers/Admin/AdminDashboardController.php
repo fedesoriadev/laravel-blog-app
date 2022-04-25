@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 
-class IndexController extends Controller
+class AdminDashboardController extends Controller
 {
     /**
      * @return View
@@ -17,7 +17,7 @@ class IndexController extends Controller
     {
         $postsCount = Post::count();
         $commentsCount = Comment::count();
-        $userCount = User::count();
+        $usersCount = User::count();
 
         $topPosts = Post::take(3)->inRandomOrder()->get();
         $latestComments = Comment::with('post')->latest()->take(3)->get();
@@ -26,7 +26,7 @@ class IndexController extends Controller
         return view('admin.index', compact(
             'postsCount',
             'commentsCount',
-            'userCount',
+            'usersCount',
             'topPosts',
             'latestComments',
             'newUsers'
