@@ -5,7 +5,7 @@
             :method="$post->exists ? 'PATCH' : 'POST'"
             enctype="multipart/form-data"
             x-data="{
-                publish: {{ $post->status->isPublished() ? 'true' : 'false' }},
+                publish: {{ $post->status?->isPublished() ? 'true' : 'false' }},
                 publishText: '{{ __('Save & publish') }}',
                 draftText: '{{ __('Save draft') }}'
             }">
@@ -51,7 +51,7 @@
                                 id="publish"
                                 class="ml-auto w-6 h-6"
                                 @click="publish = !publish"
-                                {{ $post->status->isPublished() ? 'checked=checked' : '' }}>
+                                {{ $post->status?->isPublished() ? 'checked=checked' : '' }}>
                         </label>
                     </div>
 
